@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <!-- MIZA ARDIANSYAH -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layanan Zakat & Donasi - ZakatKu</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #f8f9fa; 
+            padding-top: 76px; 
+        }
+        
+        .text-emerald { color: #059669; }
+        .bg-emerald { background-color: #059669; }
+        
+        .navbar { background-color: #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .navbar-brand { font-size: 1.5rem; }
+        
+        .btn-emerald { 
+            background-color: #059669; 
+            color: white; 
+            border-radius: 8px; 
+            transition: 0.3s; 
+            font-weight: 600;
+        }
+        .btn-emerald:hover { background-color: #047857; color: white; transform: translateY(-2px); }
+
+        /* Header Hero */
+        .hero-zakat { 
+            background: linear-gradient(rgba(5, 150, 105, 0.9), rgba(5, 150, 105, 0.95)), url('https://images.unsplash.com/photo-1574282893982-f16b2ce4b1b3?auto=format&fit=crop&w=1200&q=80') center/cover; 
+            padding: 80px 0; 
+            color: white; 
+            text-align: center;
+        }
+
+        /* Card Form Zakat */
+        .zakat-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            padding: 40px;
+            margin-top: -50px; /* Efek melayang bertumpuk dengan header */
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Custom Tabs */
+        .nav-pills .nav-link {
+            color: #6c757d;
+            font-weight: 600;
+            border-radius: 12px;
+            padding: 12px 20px;
+            transition: 0.3s;
+            margin: 0 5px;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #059669;
+            box-shadow: 0 4px 10px rgba(5, 150, 105, 0.3);
+        }
+        .nav-pills .nav-link:hover:not(.active) { background-color: #e9ecef; }
+
+        .form-control, .input-group-text { border-radius: 10px; padding: 12px 15px; }
+        .form-control:focus { border-color: #059669; box-shadow: 0 0 0 0.25rem rgba(5, 150, 105, 0.25); }
+        
+        /* Tombol Nominal Cepat */
+        .btn-nominal { border: 1px solid #dee2e6; color: #495057; border-radius: 10px; transition: 0.2s; }
+        .btn-nominal:hover, .btn-nominal.active { background-color: #059669; color: white; border-color: #059669; }
+
+        footer { background-color: #111827; color: #d1d5db; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-emerald" href="index.html">🌿 ZakatKu</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fw-semibold">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="zakat.html">Layanan Zakat</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html#kontak">Hubungi Amil</a></li>
+                </ul>
+                <div class="ms-lg-3">
+                    <a href="login.html" class="btn btn-emerald px-4">Login / Daftar</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-zakat">
+        <div class="container" data-aos="fade-down" data-aos-duration="1000">
+            <h1 class="display-5 fw-bold mb-3">Tunaikan Kewajiban Anda</h1>
+            <p class="lead w-75 mx-auto">"Ambillah zakat dari sebagian harta mereka, dengan zakat itu kamu membersihkan dan mensucikan mereka." (QS. At-Taubah: 103)</p>
+        </div>
+    </header>
+
+    <section class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10" data-aos="zoom-in" data-aos-duration="1000">
+                <div class="zakat-card">
+                    
+                    <ul class="nav nav-pills nav-justified mb-5" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-fitrah" type="button"><h3 class="mb-1">🌾</h3> Zakat Fitrah</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-maal" type="button"><h3 class="mb-1">💰</h3> Zakat Maal</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-infaq" type="button"><h3 class="mb-1">🤝</h3> Infaq / Sedekah</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="pills-tabContent">
+                        
+                        <div class="tab-pane fade show active" id="tab-fitrah">
+                            <div class="row g-4 align-items-center">
+                                <div class="col-md-6">
+                                    <h4 class="fw-bold text-emerald">Kalkulator Zakat Fitrah</h4>
+                                    <p class="text-muted">Berdasarkan SK BAZNAS, nilai zakat fitrah setara dengan 2,5 kg atau 3,5 liter beras (Rp 45.000/jiwa).</p>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Jumlah Tanggungan (Jiwa)</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="jmlJiwa" value="1" min="1" oninput="hitungFitrah()">
+                                            <span class="input-group-text">Orang</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <div class="bg-light p-4 rounded-4 border">
+                                        <p class="mb-1 text-muted fw-semibold">Total Zakat Fitrah Anda</p>
+                                        <h2 class="fw-bold text-emerald mb-4" id="totalFitrah">Rp 45.000</h2>
+                                        <button class="btn btn-emerald w-100 py-3 rounded-pill"><i class="bi bi-wallet2 me-2"></i> Lanjut Pembayaran</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="tab-maal">
+                            <div class="row g-4 align-items-center">
+                                <div class="col-md-7">
+                                    <h4 class="fw-bold text-emerald">Kalkulator Zakat Maal</h4>
+                                    <p class="text-muted">Zakat maal wajib ditunaikan sebesar 2,5% jika harta telah mencapai nisab (Setara 85 gram emas atau ± Rp 85.000.000) dan mengendap 1 tahun (haul).</p>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Total Harta / Tabungan / Deposito (Rp)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">Rp</span>
+                                            <input type="number" class="form-control" id="jmlHarta" placeholder="0" oninput="hitungMaal()">
+                                        </div>
+                                        <div id="pesanNisab" class="form-text mt-2 fw-semibold"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 text-center">
+                                    <div class="bg-light p-4 rounded-4 border h-100 d-flex flex-column justify-content-center">
+                                        <p class="mb-1 text-muted fw-semibold">Wajib Dikeluarkan (2,5%)</p>
+                                        <h2 class="fw-bold text-emerald mb-4" id="totalMaal">Rp 0</h2>
+                                        <button class="btn btn-emerald w-100 py-3 rounded-pill" id="btnMaal" disabled><i class="bi bi-wallet2 me-2"></i> Lanjut Pembayaran</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="tab-infaq">
+                            <div class="text-center mb-4">
+                                <h4 class="fw-bold text-emerald">Pilih Nominal Donasi</h4>
+                                <p class="text-muted">Setiap rupiah yang Anda sedekahkan akan membantu program pemberdayaan umat.</p>
+                            </div>
+                            <div class="row g-3 justify-content-center mb-4">
+                                <div class="col-6 col-md-3"><button class="btn btn-nominal w-100 py-2 fw-bold" onclick="setInfaq(50000)">Rp 50.000</button></div>
+                                <div class="col-6 col-md-3"><button class="btn btn-nominal w-100 py-2 fw-bold" onclick="setInfaq(100000)">Rp 100.000</button></div>
+                                <div class="col-6 col-md-3"><button class="btn btn-nominal w-100 py-2 fw-bold" onclick="setInfaq(250000)">Rp 250.000</button></div>
+                                <div class="col-6 col-md-3"><button class="btn btn-nominal w-100 py-2 fw-bold" onclick="setInfaq(500000)">Rp 500.000</button></div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-8 text-center">
+                                    <label class="form-label fw-semibold">Atau Masukkan Nominal Lainnya</label>
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text">Rp</span>
+                                        <input type="number" class="form-control form-control-lg text-center fw-bold text-emerald" id="inputInfaq" placeholder="0" oninput="cekInfaq()">
+                                    </div>
+                                    <button class="btn btn-emerald w-100 py-3 rounded-pill" id="btnInfaq" disabled><i class="bi bi-heart-fill me-2"></i> Sedekah Sekarang</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-4 text-center">
+        <div class="container">
+            <h5 class="text-emerald fw-bold mb-2">🌿 ZakatKu</h5>
+            <p class="mb-0 small">© 2026 ZakatKu. Dibuat dengan niat baik untuk umat.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        AOS.init({ once: true, duration: 800 });
+
+        const formatRupiah = (angka) => {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+        };
+
+        function hitungFitrah() {
+            let jiwa = document.getElementById("jmlJiwa").value;
+            let total = jiwa * 45000;
+            document.getElementById("totalFitrah").innerText = formatRupiah(total);
+        }
+
+        function hitungMaal() {
+            let nisab = 85000000;
+            let harta = document.getElementById("jmlHarta").value;
+            let pesan = document.getElementById("pesanNisab");
+            let btn = document.getElementById("btnMaal");
+            
+            if (harta >= nisab) {
+                let wajibZakat = harta * 0.025;
+                document.getElementById("totalMaal").innerText = formatRupiah(wajibZakat);
+                pesan.innerHTML = "<span class='text-success'><i class='bi bi-check-circle-fill'></i> Harta Anda telah mencapai Nisab.</span>";
+                btn.disabled = false;
+            } else {
+                document.getElementById("totalMaal").innerText = "Rp 0";
+                if(harta > 0) {
+                    pesan.innerHTML = "<span class='text-danger'><i class='bi bi-x-circle-fill'></i> Harta belum mencapai Nisab (Min. " + formatRupiah(nisab) + ").</span>";
+                } else {
+                    pesan.innerHTML = "";
+                }
+                btn.disabled = true;
+            }
+        }
+
+        function setInfaq(nominal) {
+            document.getElementById("inputInfaq").value = nominal;
+            cekInfaq();
+        }
+
+        function cekInfaq() {
+            let nominal = document.getElementById("inputInfaq").value;
+            let btn = document.getElementById("btnInfaq");
+            if (nominal > 0) {
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>

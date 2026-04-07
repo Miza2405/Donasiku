@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <!-- KEVIN DWI SAPUTRO -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ZakatKu</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f7f6; overflow-x: hidden; }
+        .text-emerald { color: #059669; }
+        .bg-emerald { background-color: #059669; }
+        
+        /* Layout Sidebar & Konten */
+        .wrapper { display: flex; width: 100%; align-items: stretch; }
+        
+        #sidebar {
+            min-width: 250px;
+            max-width: 250px;
+            background: #ffffff;
+            color: #333;
+            transition: all 0.3s;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            min-height: 100vh;
+        }
+        
+        #sidebar .sidebar-header { padding: 20px; background: #059669; color: white; text-align: center; }
+        #sidebar ul.components { padding: 20px 0; }
+        #sidebar ul p { padding: 10px; font-weight: 600; font-size: 1.1em; }
+        #sidebar ul li a { padding: 12px 20px; font-size: 1em; display: block; color: #555; text-decoration: none; font-weight: 600; transition: 0.2s; }
+        #sidebar ul li a:hover, #sidebar ul li.active > a { color: #059669; background: #eef2f0; border-right: 4px solid #059669; }
+        
+        #content { width: 100%; padding: 20px; transition: all 0.3s; }
+        
+        /* Navbar dalam konten */
+        .top-navbar { background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); padding: 10px 20px; margin-bottom: 20px; }
+        
+        /* Kartu Statistik Dashboard */
+        .dash-card { border: none; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: 0.3s; }
+        .dash-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.08); }
+        .icon-box { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+
+        /* Tabel */
+        .table-custom { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .table-custom thead { background-color: #f8f9fa; color: #555; }
+        .table-custom th, .table-custom td { padding: 15px; vertical-align: middle; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <nav id="sidebar" class="d-none d-md-block">
+        <div class="sidebar-header">
+            <h3 class="fw-bold mb-0">🌿 ZakatKu</h3>
+            <small>Panel Amil</small>
+        </div>
+        <ul class="list-unstyled components">
+            <li class="active"><a href="#"><i class="bi bi-grid-1x2-fill me-2"></i> Dashboard</a></li>
+            <li><a href="#"><i class="bi bi-people-fill me-2"></i> Data Muzakki</a></li>
+            <li><a href="#"><i class="bi bi-wallet-fill me-2"></i> Data Transaksi</a></li>
+            <li><a href="#"><i class="bi bi-file-earmark-bar-graph-fill me-2"></i> Laporan</a></li>
+            <li><a href="#"><i class="bi bi-gear-fill me-2"></i> Pengaturan</a></li>
+        </ul>
+        <div class="p-3 mt-5">
+            <a href="index.html" class="btn btn-danger w-100 rounded-pill"><i class="bi bi-box-arrow-left me-2"></i> Keluar</a>
+        </div>
+    </nav>
+
+    <div id="content">
+        <div class="top-navbar d-flex justify-content-between align-items-center">
+            <div>
+                <button class="btn btn-light d-md-none"><i class="bi bi-list fs-4"></i></button>
+                <h5 class="fw-bold mb-0 d-none d-md-block text-emerald">Dashboard Admin</h5>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="me-3 fw-semibold text-muted">Halo, Ust. Kyosei</span>
+                <img src="https://ui-avatars.com/api/?name=Kyosei&background=059669&color=fff" alt="Profile" class="rounded-circle" width="40">
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card dash-card p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted fw-semibold mb-1">Total Dana Zakat</p>
+                            <h3 class="fw-bold text-emerald mb-0">Rp 120.5M</h3>
+                        </div>
+                        <div class="icon-box bg-success bg-opacity-10 text-success"><i class="bi bi-cash-stack"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card dash-card p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted fw-semibold mb-1">Menunggu Verifikasi</p>
+                            <h3 class="fw-bold text-warning mb-0">15 Transaksi</h3>
+                        </div>
+                        <div class="icon-box bg-warning bg-opacity-10 text-warning"><i class="bi bi-hourglass-split"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card dash-card p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted fw-semibold mb-1">Total Muzakki</p>
+                            <h3 class="fw-bold text-primary mb-0">1,245 Orang</h3>
+                        </div>
+                        <div class="icon-box bg-primary bg-opacity-10 text-primary"><i class="bi bi-people-fill"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="fw-bold mb-3">Transaksi Perlu Verifikasi</h5>
+        <div class="table-custom table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>ID TRX</th>
+                        <th>Nama Muzakki</th>
+                        <th>Jenis Zakat</th>
+                        <th>Nominal</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="fw-bold">#TRX-001</td>
+                        <td>Ahmad Fulan</td>
+                        <td>Zakat Maal</td>
+                        <td class="fw-semibold text-emerald">Rp 2.500.000</td>
+                        <td><span class="badge bg-warning text-dark">Pending</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-success rounded-pill"><i class="bi bi-check-circle"></i> Verifikasi</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">#TRX-002</td>
+                        <td>Siti Aminah</td>
+                        <td>Zakat Fitrah (3 Jiwa)</td>
+                        <td class="fw-semibold text-emerald">Rp 135.000</td>
+                        <td><span class="badge bg-warning text-dark">Pending</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-success rounded-pill"><i class="bi bi-check-circle"></i> Verifikasi</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">#TRX-003</td>
+                        <td>Budi Santoso</td>
+                        <td>Infaq</td>
+                        <td class="fw-semibold text-emerald">Rp 500.000</td>
+                        <td><span class="badge bg-success">Berhasil</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill" disabled>Selesai</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
