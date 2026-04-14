@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sedekah & Donasi - ZakatKu</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #f8f9fa; 
+            padding-top: 76px; 
+        }
+        
+        .text-emerald { color: #059669; }
+        .bg-emerald { background-color: #059669; }
+        
+        .navbar { background-color: #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .navbar-brand { font-size: 1.5rem; }
+        
+        .btn-emerald { 
+            background-color: #059669; color: white; border-radius: 8px; transition: 0.3s; font-weight: 600;
+        }
+        .btn-emerald:hover { background-color: #047857; color: white; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(5, 150, 105, 0.3); }
+
+        .hero-donasi { 
+            background: linear-gradient(rgba(5, 150, 105, 0.85), rgba(5, 150, 105, 0.95)), url('https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=1200&q=80') center/cover fixed; 
+            padding: 100px 0; color: white; text-align: center;
+        }
+
+        .donasi-card {
+            background: white; 
+            border-radius: 20px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            margin-top: -60px; 
+            position: relative; 
+            z-index: 10;
+            overflow: hidden; 
+        }
+
+        /* Modifikasi CSS Gambar agar dinamis */
+        .donasi-img-side {
+            background-position: center;
+            background-size: cover;
+            position: relative;
+            min-height: 100%;
+            transition: background-image 0.5s ease-in-out; /* Animasi saat gambar ganti */
+        }
+        
+        .donasi-img-side::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+        }
+
+        .donasi-img-text {
+            position: absolute; bottom: 30px; left: 30px; right: 30px; z-index: 2; color: white;
+            transition: opacity 0.3s ease-in-out; /* Animasi saat teks ganti */
+        }
+
+        .btn-nominal { border: 1px solid #dee2e6; color: #495057; border-radius: 10px; transition: 0.2s; padding: 12px; }
+        .btn-nominal:hover, .btn-nominal.active { background-color: #059669; color: white; border-color: #059669; }
+        
+        .form-control-lg { border-radius: 12px; border: 2px solid #eee; }
+        .form-control-lg:focus, .form-select-lg:focus { border-color: #059669; box-shadow: none; }
+        
+        footer { background-color: #111827; color: #d1d5db; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-emerald" href="index.html">🌿 ZakatKu</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fw-semibold">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="donasi.html">Layanan Donasi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html#kontak">Hubungi Amil</a></li>
+                </ul>
+                <div class="ms-lg-3">
+                    <a href="auth.html" class="btn btn-emerald px-4">Login / Daftar</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-donasi">
+        <div class="container" data-aos="fade-down" data-aos-duration="1000">
+            <h1 class="display-4 fw-bold mb-3">Satu Sedekah, Sejuta Harapan</h1>
+            <p class="lead w-75 mx-auto">"Perumpamaan orang yang menginfakkan hartanya di jalan Allah seperti sebutir biji yang menumbuhkan tujuh tangkai."</p>
+        </div>
+    </header>
+
+    <section class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10" data-aos="zoom-in" data-aos-duration="1000">
+                <div class="row donasi-card g-0">
+                    
+                    <div class="col-md-5 d-none d-md-block donasi-img-side" id="sideImage" style="background-image: url('https://pro.kutaitimurkab.go.id/wp-content/uploads/2025/06/a59864bd-0917-49ca-a55d-3549fffe2210-1024x684.jpeg');">
+                        <div class="donasi-img-text" id="sideTextContainer">
+                            <h4 class="fw-bold" id="sideTitle">Bangun Istana di Surga</h4>
+                            <p class="small mb-0 text-white-50" id="sideDesc">Pahala tak terputus dengan berpartisipasi dalam pembangunan rumah ibadah dan fasilitas umat.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7 p-4 p-md-5">
+                        <h4 class="fw-bold text-emerald mb-4">Mulai Berbagi Kebaikan</h4>
+                        <form id="donasiForm">
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Pilih Program Donasi</label>
+                                <select class="form-select form-select-lg" id="kategoriDonasi" onchange="ubahTampilan()">
+                                    <option value="jariyah">Sedekah Jariyah (Pembangunan)</option>
+                                    <option value="yatim">Santunan Anak Yatim</option>
+                                    <option value="pangan">Bantuan Pangan & Sembako</option>
+                                    <option value="darurat">Tanggap Darurat Bencana</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Pilih Nominal</label>
+                                <div class="row g-2">
+                                    <div class="col-4"><button type="button" class="btn btn-nominal w-100 fw-bold" onclick="setNominal(50000)">Rp 50.000</button></div>
+                                    <div class="col-4"><button type="button" class="btn btn-nominal w-100 fw-bold" onclick="setNominal(100000)">Rp 100.000</button></div>
+                                    <div class="col-4"><button type="button" class="btn btn-nominal w-100 fw-bold" onclick="setNominal(250000)">Rp 250.000</button></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Atau Masukkan Nominal Lainnya</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0 fw-bold">Rp</span>
+                                    <input type="number" class="form-control form-control-lg bg-light" id="inputNominal" placeholder="0" oninput="cekTombol()">
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Tuliskan Doa (Opsional)</label>
+                                <textarea class="form-control bg-light border-0" rows="3" placeholder="Semoga sedekah ini berkah..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-emerald w-100 py-3 fs-5 rounded-pill shadow-sm" id="btnBayar" disabled onclick="requireLogin(event)">
+                                <i class="bi bi-heart-fill me-2"></i> Lanjut Pembayaran
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-4 text-center mt-5">
+        <div class="container">
+            <h4 class="text-emerald fw-bold mb-3">🌿 ZakatKu</h4>
+            <p class="mb-0 small">© 2026 ZakatKu. Dibuat dengan niat baik untuk umat.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        AOS.init({ duration: 800, once: true });
+
+        // --- DATA GAMBAR & TEKS UNTUK SETIAP PROGRAM ---
+        const dataProgram = {
+            'jariyah': {
+                img: "https://pro.kutaitimurkab.go.id/wp-content/uploads/2025/06/a59864bd-0917-49ca-a55d-3549fffe2210-1024x684.jpeg", // Gambar Masjid
+                title: "Bangun Istana di Surga",
+                desc: "Pahala tak terputus dengan berpartisipasi dalam pembangunan rumah ibadah dan fasilitas umat."
+            },
+            'yatim': {
+                img: "https://ddjabar.org/wp-content/uploads/2023/08/ARN032475-Large-jpg.webp", // Gambar Anak-anak
+                title: "Bantu Mereka Tersenyum",
+                desc: "Donasi Anda hari ini adalah jawaban dari doa anak-anak yatim yang menanti uluran tangan."
+            },
+            'pangan': {
+                img: "https://app.elssipeduli.id/storage/uploads/campaings/okpPt57W6RAEFnV67XBZP0Cl0pzuIpgUJwwq7IBa.jpg", // Gambar Bantuan Pangan
+                title: "Bantu Mereka yang Lapar",
+                desc: "Sebungkus makanan darimu sangat berarti untuk menyambung hidup saudara kita hari ini."
+            },
+            'darurat': {
+                img: "https://akcdn.detik.net.id/visual/2025/11/29/korban-tewas-banjir-di-agam-1764398887713_169.jpeg?w=1200", // Gambar Bencana
+                title: "Bersama Hadapi Bencana",
+                desc: "Ulurkan tangan untuk meringankan beban saudara kita yang sedang tertimpa musibah darurat."
+            }
+        };
+
+        // --- FUNGSI MENGUBAH GAMBAR SECARA DINAMIS ---
+        function ubahTampilan() {
+            // Ambil pilihan dropdown yang sedang aktif
+            const kategori = document.getElementById('kategoriDonasi').value;
+            const info = dataProgram[kategori]; // Ambil data dari objek di atas
+            
+            const sideImage = document.getElementById('sideImage');
+            const sideTextContainer = document.getElementById('sideTextContainer');
+            const sideTitle = document.getElementById('sideTitle');
+            const sideDesc = document.getElementById('sideDesc');
+
+            // 1. Pudarkan teks sebentar agar efek transisinya halus
+            sideTextContainer.style.opacity = 0;
+            
+            // 2. Tunggu 300 milidetik, lalu ganti gambar dan teks
+            setTimeout(() => {
+                sideImage.style.backgroundImage = `url('${info.img}')`;
+                sideTitle.innerText = info.title;
+                sideDesc.innerText = info.desc;
+                
+                // Munculkan kembali teksnya
+                sideTextContainer.style.opacity = 1;
+            }, 300);
+        }
+
+        function setNominal(val) {
+            document.getElementById('inputNominal').value = val;
+            cekTombol();
+        }
+
+        function cekTombol() {
+            const val = document.getElementById('inputNominal').value;
+            if (val > 0) {
+                document.getElementById('btnBayar').disabled = false;
+            } else {
+                document.getElementById('btnBayar').disabled = true;
+            }
+        }
+
+        function requireLogin(event) {
+            event.preventDefault(); 
+            Swal.fire({
+                icon: 'info',
+                title: 'Harap Login Dahulu',
+                text: 'Untuk mencatat riwayat kebaikan Anda, silakan masuk ke akun terlebih dahulu.',
+                showCancelButton: true,
+                confirmButtonText: 'Login / Daftar',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#059669',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) { 
+                    window.location.href = 'auth.html'; 
+                }
+            });
+        }
+    </script>
+</body>
+</html>

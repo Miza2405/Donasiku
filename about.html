@@ -1,106 +1,61 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <!-- SUUD NOFA SETIA MAHDANI -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tentang Kami - ZakatKu</title>
-    
+    <title>Tentang Kami - DonasiKu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
     <style>
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background-color: #f8f9fa; 
-            padding-top: 76px; 
-        }
-        
+        body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; padding-top: 76px; }
         .text-emerald { color: #059669; }
-        .bg-emerald { background-color: #059669; }
-        
         .navbar { background-color: #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .navbar-brand { font-size: 1.5rem; }
-        
-        .btn-emerald { 
-            background-color: #059669; 
-            color: white; 
-            border-radius: 8px; 
-            transition: 0.3s; 
-        }
+        .btn-emerald { background-color: #059669; color: white; border-radius: 8px; transition: 0.3s; }
         .btn-emerald:hover { background-color: #047857; color: white; transform: translateY(-2px); }
-
-        .hero-about { 
-            background: linear-gradient(rgba(5, 150, 105, 0.85), rgba(5, 150, 105, 0.95)), url('https://images.unsplash.com/photo-1593113565694-c6c703b44b82?auto=format&fit=crop&w=1200&q=80') center/cover fixed; 
-            padding: 120px 0; 
-            color: white; 
-            text-align: center;
-        }
-
-        .stat-card { 
-            background: white; 
-            border-radius: 15px; 
-            padding: 40px 20px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05); 
-            text-align: center; 
-            border-bottom: 5px solid #059669;
-            transition: all 0.3s ease;
-        }
-        .stat-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(5, 150, 105, 0.15);
-        }
-
+        .hero-about { background: linear-gradient(rgba(5, 150, 105, 0.85), rgba(5, 150, 105, 0.95)), url('https://images.unsplash.com/photo-1593113565694-c6c703b44b82?auto=format&fit=crop&w=1200&q=80') center/cover fixed; padding: 120px 0; color: white; text-align: center; }
+        .stat-card { background: white; border-radius: 15px; padding: 40px 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: center; border-bottom: 5px solid #059669; transition: all 0.3s ease; }
+        .stat-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(5, 150, 105, 0.15); }
         footer { background-color: #111827; color: #d1d5db; }
     </style>
 </head>
 <body>
-
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold text-emerald" href="index.html">🌿 ZakatKu</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <a class="navbar-brand fw-bold text-emerald" href="index.html">🌿 DonasiKu</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fw-semibold">
                     <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="zakat.html">Layanan Zakat</a></li>
+                    <li class="nav-item"><a class="nav-link" href="donasi.html">Layanan Donasi</a></li>
                     <li class="nav-item"><a class="nav-link active" href="about.html">Tentang Kami</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#kontak">Hubungi Amil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#kontak">Hubungi Kami</a></li>
                 </ul>
-                <div class="ms-lg-3">
-                    <a href="login.html" class="btn btn-emerald px-4">Login / Daftar</a>
-                </div>
+                <div class="ms-lg-3"><a href="auth.html" class="btn btn-emerald px-4">Login / Daftar</a></div>
             </div>
         </div>
     </nav>
 
     <header class="hero-about">
         <div class="container" data-aos="fade-up" data-aos-duration="1000">
-            <h1 class="display-4 fw-bold mb-3">Mengenal ZakatKu</h1>
-            <p class="lead w-75 mx-auto">Platform digital terpercaya untuk menunaikan Zakat, Infaq, dan Sedekah secara transparan, mudah, dan tepat sasaran kepada para mustahik.</p>
+            <h1 class="display-4 fw-bold mb-3">Mengenal DonasiKu</h1>
+            <p class="lead w-75 mx-auto">Platform digital terpercaya untuk menyalurkan Donasi, Sedekah, dan Bantuan Kemanusiaan secara transparan, mudah, dan tepat sasaran kepada para penerima manfaat.</p>
         </div>
     </header>
 
     <section class="container py-5 mt-5">
         <div class="row align-items-center g-5">
-            <div class="col-md-6" data-aos="fade-right" data-aos-duration="1000">
-                <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&w=800&q=80" alt="Tim Kami" class="img-fluid rounded-4 shadow-lg">
-            </div>
-            <div class="col-md-6 px-lg-4" data-aos="fade-left" data-aos-duration="1000">
+            <div class="col-md-6" data-aos="fade-right"><img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&w=800&q=80" class="img-fluid rounded-4 shadow-lg"></div>
+            <div class="col-md-6 px-lg-4" data-aos="fade-left">
                 <h2 class="fw-bold text-emerald mb-4">Visi & Misi Kami</h2>
-                
                 <h5 class="fw-bold"><span class="text-emerald">🎯</span> Visi</h5>
-                <p class="text-muted mb-4">Menjadi pengelola dana ZISWAF berbasis teknologi terdepan yang mengangkat derajat mustahik dan menebar rahmat bagi semesta alam.</p>
-                
+                <p class="text-muted mb-4">Menjadi pengelola dana kemanusiaan berbasis teknologi terdepan yang mengangkat derajat sesama dan menebar rahmat bagi semesta alam.</p>
                 <h5 class="fw-bold"><span class="text-emerald">🚀</span> Misi</h5>
                 <ul class="text-muted mb-0" style="line-height: 2;">
-                    <li>Memfasilitasi kemudahan pembayaran zakat melalui inovasi aplikasi digital.</li>
-                    <li>Menyalurkan dana secara transparan, akuntabel, dan amanah.</li>
-                    <li>Mengadakan program pemberdayaan ekonomi umat secara berkelanjutan.</li>
+                    <li>Memfasilitasi kemudahan berdonasi melalui inovasi aplikasi digital.</li>
+                    <li>Menyalurkan dana bantuan secara transparan, akuntabel, dan amanah.</li>
+                    <li>Mengadakan program pemberdayaan dan bantuan sosial secara berkelanjutan.</li>
                 </ul>
             </div>
         </div>
@@ -113,116 +68,47 @@
                 <p class="text-muted">Alhamdulillah, bersama kita telah menebar banyak manfaat.</p>
             </div>
             <div class="row g-4">
-                <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="stat-card">
-                        <h2 class="fw-bold text-emerald display-5">15.000+</h2>
-                        <p class="text-muted fw-semibold mb-0">Muzakki Bergabung</p>
-                    </div>
-                </div>
-                <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="stat-card">
-                        <h2 class="fw-bold text-emerald display-5">Rp 12 M</h2>
-                        <p class="text-muted fw-semibold mb-0">Dana Tersalurkan</p>
-                    </div>
-                </div>
-                <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
-                    <div class="stat-card">
-                        <h2 class="fw-bold text-emerald display-5">50.000+</h2>
-                        <p class="text-muted fw-semibold mb-0">Mustahik Terbantu</p>
-                    </div>
-                </div>
+                <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100"><div class="stat-card"><h2 class="fw-bold text-emerald display-5">15.000+</h2><p class="text-muted fw-semibold mb-0">Donatur Bergabung</p></div></div>
+                <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200"><div class="stat-card"><h2 class="fw-bold text-emerald display-5">Rp 12 M</h2><p class="text-muted fw-semibold mb-0">Dana Tersalurkan</p></div></div>
+                <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300"><div class="stat-card"><h2 class="fw-bold text-emerald display-5">50.000+</h2><p class="text-muted fw-semibold mb-0">Penerima Manfaat</p></div></div>
             </div>
         </div>
     </section>
 
     <section id="kontak" class="py-5 bg-white">
         <div class="container py-5">
-            <div class="text-center mb-5" data-aos="fade-down">
-                <h2 class="fw-bold text-emerald">Konsultasi & Hubungi Amil</h2>
-                <p class="text-muted">Punya pertanyaan seputar perhitungan nisab atau penyaluran zakat? Kami siap membantu.</p>
-            </div>
-            
+            <div class="text-center mb-5" data-aos="fade-down"><h2 class="fw-bold text-emerald">Hubungi Layanan Kami</h2><p class="text-muted">Punya pertanyaan seputar program penyaluran atau donasi? Kami siap membantu.</p></div>
             <div class="row g-5 align-items-center">
-                <div class="col-lg-5" data-aos="fade-right" data-aos-duration="1000">
+                <div class="col-lg-5" data-aos="fade-right">
                     <div class="card border-0 shadow-sm p-4 h-100" style="border-left: 5px solid #059669; border-radius: 15px;">
                         <h4 class="fw-bold mb-4">Informasi Kontak</h4>
-                        
-                        <div class="d-flex mb-3 align-items-center">
-                            <div class="bg-light p-3 rounded-circle text-emerald me-3">
-                                <i class="bi bi-geo-alt-fill fs-5"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-0">Kantor Pusat ZakatKu</h6>
-                                <p class="text-muted small mb-0">Jl. Kebaikan No. 99, Jakarta Selatan</p>
-                            </div>
-                        </div>
-                        
-                        <div class="d-flex mb-3 align-items-center">
-                            <div class="bg-light p-3 rounded-circle text-emerald me-3">
-                                <i class="bi bi-envelope-fill fs-5"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-0">Email Layanan</h6>
-                                <p class="text-muted small mb-0">layanan@zakatku.org</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex mb-4 align-items-center">
-                            <div class="bg-light p-3 rounded-circle text-emerald me-3">
-                                <i class="bi bi-telephone-fill fs-5"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-0">Call Center</h6>
-                                <p class="text-muted small mb-0">021-888-9999 (Senin - Jumat)</p>
-                            </div>
-                        </div>
-
-                        <a href="https://wa.me/6289604221616?text=Halo%20Amil%20ZakatKu,%20saya%20ingin%20berkonsultasi%20mengenai%20zakat." target="_blank" class="btn btn-success w-100 py-3 rounded-pill fw-bold shadow-sm" style="transition: 0.3s;">
-                            <i class="bi bi-whatsapp me-2"></i> Chat Amil via WhatsApp
-                        </a>
+                        <div class="d-flex mb-3 align-items-center"><div class="bg-light p-3 rounded-circle text-emerald me-3"><i class="bi bi-geo-alt-fill fs-5"></i></div><div><h6 class="fw-bold mb-0">Kantor Pusat DonasiKu</h6><p class="text-muted small mb-0">Jl. Kebaikan No. 99, Jakarta</p></div></div>
+                        <div class="d-flex mb-3 align-items-center"><div class="bg-light p-3 rounded-circle text-emerald me-3"><i class="bi bi-envelope-fill fs-5"></i></div><div><h6 class="fw-bold mb-0">Email Layanan</h6><p class="text-muted small mb-0">layanan@donasiku.org</p></div></div>
+                        <div class="d-flex mb-4 align-items-center"><div class="bg-light p-3 rounded-circle text-emerald me-3"><i class="bi bi-telephone-fill fs-5"></i></div><div><h6 class="fw-bold mb-0">Call Center</h6><p class="text-muted small mb-0">021-888-9999 (Senin - Jumat)</p></div></div>
+                        <a href="https://wa.me/6289604221616?text=Halo%20Admin%20DonasiKu,%20saya%20ingin%20bertanya." target="_blank" class="btn btn-success w-100 py-3 rounded-pill fw-bold shadow-sm"><i class="bi bi-whatsapp me-2"></i> Chat Admin via WhatsApp</a>
                     </div>
                 </div>
-
-                <div class="col-lg-7" data-aos="fade-left" data-aos-duration="1000">
+                <div class="col-lg-7" data-aos="fade-left">
                     <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 15px;">
                         <h4 class="fw-bold mb-4">Kirim Pesan Langsung</h4>
                         <form>
                             <div class="row g-3">
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="namaPengirim" placeholder="Nama Anda" required>
-                                        <label for="namaPengirim">Nama Lengkap</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="email" class="form-control" id="emailPengirim" placeholder="name@example.com" required>
-                                        <label for="emailPengirim">Alamat Email</label>
-                                    </div>
-                                </div>
+                                <div class="col-md-6"><div class="form-floating"><input type="text" class="form-control" id="namaPengirim" placeholder="Nama Anda" required><label>Nama Lengkap</label></div></div>
+                                <div class="col-md-6"><div class="form-floating"><input type="email" class="form-control" id="emailPengirim" placeholder="name@example.com" required><label>Alamat Email</label></div></div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                        <select class="form-select" id="kategoriPesan" aria-label="Kategori Pesan">
+                                        <select class="form-select" id="kategoriPesan">
                                             <option selected disabled>Pilih Kategori...</option>
-                                            <option value="1">Konsultasi Zakat Maal</option>
+                                            <option value="1">Konsultasi Program Donasi</option>
                                             <option value="2">Konfirmasi Pembayaran</option>
-                                            <option value="3">Kendala Teknis (Website)</option>
+                                            <option value="3">Kendala Teknis Aplikasi</option>
                                             <option value="4">Lainnya</option>
                                         </select>
-                                        <label for="kategoriPesan">Kategori Pesan</label>
+                                        <label>Kategori Pesan</label>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <textarea class="form-control" placeholder="Tulis pesan Anda di sini" id="isiPesan" style="height: 150px" required></textarea>
-                                        <label for="isiPesan">Tuliskan pesan atau pertanyaan Anda...</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 mt-4">
-                                    <button type="submit" class="btn btn-emerald w-100 py-3 rounded-pill fw-bold">
-                                        <i class="bi bi-send-fill me-2"></i> Kirim Pesan Sekarang
-                                    </button>
-                                </div>
+                                <div class="col-12"><div class="form-floating"><textarea class="form-control" placeholder="Tulis pesan" style="height: 150px" required></textarea><label>Tuliskan pesan Anda...</label></div></div>
+                                <div class="col-12 mt-4"><button type="submit" class="btn btn-emerald w-100 py-3 rounded-pill fw-bold"><i class="bi bi-send-fill me-2"></i> Kirim Pesan Sekarang</button></div>
                             </div>
                         </form>
                     </div>
@@ -231,21 +117,9 @@
         </div>
     </section>
 
-    <footer class="py-4 text-center">
-        <div class="container">
-            <h5 class="text-emerald fw-bold mb-2">🌿 ZakatKu</h5>
-            <p class="mb-0 small">© 2026 ZakatKu. Dibuat dengan niat baik untuk umat.</p>
-        </div>
-    </footer>
-
+    <footer class="py-4 text-center"><div class="container"><h5 class="text-emerald fw-bold mb-2">🌿 DonasiKu</h5><p class="mb-0 small">© 2026 DonasiKu. Dibuat dengan niat baik untuk sesama.</p></div></footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({
-            duration: 800, 
-            once: true,
-            offset: 50
-        });
-    </script>
+    <script>AOS.init({ duration: 800, once: true });</script>
 </body>
 </html>
