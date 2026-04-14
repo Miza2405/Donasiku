@@ -10,72 +10,215 @@
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f4f7f6; overflow-x: hidden; }
         .text-emerald { color: #059669; } .bg-emerald { background-color: #059669; }
-        .wrapper { display: flex; width: 100%; align-items: stretch; }
-        #sidebar { min-width: 250px; max-width: 250px; background: #ffffff; box-shadow: 2px 0 10px rgba(0,0,0,0.05); min-height: 100vh; }
+        
+        .wrapper { display: flex; width: 100%; align-items: stretch; min-height: 100vh;}
+        
+        #sidebar { min-width: 250px; max-width: 250px; background: #ffffff; box-shadow: 2px 0 10px rgba(0,0,0,0.05); z-index: 100; }
         #sidebar .sidebar-header { padding: 20px; background: #059669; color: white; text-align: center; }
         #sidebar ul.components { padding: 20px 0; }
-        #sidebar ul li a { padding: 12px 20px; font-size: 1em; display: block; color: #555; text-decoration: none; font-weight: 600; transition: 0.2s; }
+        #sidebar ul li a { padding: 12px 20px; font-size: 1em; display: block; color: #555; text-decoration: none; font-weight: 600; transition: 0.2s; cursor: pointer;}
         #sidebar ul li a:hover, #sidebar ul li.active > a { color: #059669; background: #eef2f0; border-right: 4px solid #059669; }
+        
         #content { width: 100%; padding: 20px; }
-        .top-navbar { background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); padding: 10px 20px; margin-bottom: 20px; }
+        .top-navbar { background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); padding: 10px 20px; margin-bottom: 30px; }
+        
         .dash-card { border: none; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: 0.3s; }
         .icon-box { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        
         .table-custom { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
         .table-custom th, .table-custom td { padding: 15px; vertical-align: middle; }
+
+        /* CSS untuk menyembunyikan halaman SPA */
+        .content-section { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .content-section.active-section { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Style Foto Profil Edit */
+        .profile-edit-img { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 4px solid #059669; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
 <div class="wrapper">
     <nav id="sidebar" class="d-none d-md-block">
         <div class="sidebar-header"><h3 class="fw-bold mb-0">🌿 DonasiKu</h3><small>Panel Donatur</small></div>
-        <ul class="list-unstyled components">
-            <li class="active"><a href="#"><i class="bi bi-house-door-fill me-2"></i> Dashboard Saya</a></li>
+        <ul class="list-unstyled components" id="menu-list">
+            <li class="active" id="menu-dashboard"><a onclick="switchMenu('dashboard', 'Dashboard Saya')"><i class="bi bi-house-door-fill me-2"></i> Dashboard Saya</a></li>
             <li><a href="donasi.html"><i class="bi bi-heart-fill me-2"></i> Mulai Donasi</a></li>
             <li><a href="#"><i class="bi bi-clock-history me-2"></i> Riwayat Transaksi</a></li>
-            <li><a href="#"><i class="bi bi-person-fill me-2"></i> Profil Akun</a></li>
+            <li id="menu-profil"><a onclick="switchMenu('profil', 'Profil Akun')"><i class="bi bi-person-fill me-2"></i> Profil Akun</a></li>
         </ul>
-        <div class="p-3 mt-5"><a href="index.html" class="btn btn-danger w-100 rounded-pill"><i class="bi bi-box-arrow-left me-2"></i> Keluar</a></div>
+        <div class="p-3 mt-5"><a href="#" onclick="logout()" class="btn btn-danger w-100 rounded-pill"><i class="bi bi-box-arrow-left me-2"></i> Keluar</a></div>
     </nav>
 
     <div id="content">
+        
         <div class="top-navbar d-flex justify-content-between align-items-center">
-            <div><h5 class="fw-bold mb-0 text-emerald">Dashboard Donatur</h5></div>
-            <div class="d-flex align-items-center"><span class="me-3 fw-semibold text-muted">Assalamu'alaikum, Kyosei</span><img src="https://cdn.discordapp.com/attachments/1493093694201663509/1493522989986353243/IMG_20260408_155958_689.jpg?ex=69df472d&is=69ddf5ad&hm=b83295801bc72d3fb54afe731a410d61ad6952a7d51b2a7ca4d2104e9e5c00b3&" class="rounded-circle border border-2 border-success" width="40"></div>
-        </div>
+            <div><h5 class="fw-bold mb-0 text-emerald" id="top-title">Dashboard Saya</h5></div>
+            <div class="d-flex align-items-center">
+                <span class="me-3 fw-semibold text-muted" id="dash-nama">Assalamu'alaikum, Pengguna</span>
+                <img id="dash-avatar" src="" style="object-fit: cover;" class="rounded-circle border border-2 border-success shadow-sm" width="40" height="40" alt="Avatar">
+            </div>
+        </div> 
 
-        <div class="row g-4 mb-4">
-            <div class="col-md-6">
-                <div class="card dash-card p-4 bg-emerald text-white">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div><p class="fw-semibold text-white-50 mb-1">Total Donasi Saya</p><h3 class="fw-bold mb-0">Rp 2.635.000</h3></div>
-                        <div class="icon-box bg-white bg-opacity-25 text-white"><i class="bi bi-award-fill"></i></div>
+        <div id="sec-dashboard" class="content-section active-section">
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <div class="card dash-card p-4 bg-emerald text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div><p class="fw-semibold text-white-50 mb-1">Total Donasi Saya</p><h3 class="fw-bold mb-0">Rp 2.635.000</h3></div>
+                            <div class="icon-box bg-white bg-opacity-25 text-white"><i class="bi bi-award-fill"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card dash-card p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div><p class="text-muted fw-semibold mb-1">Total Program Dibantu</p><h3 class="fw-bold text-emerald mb-0">12 Program</h3></div>
+                            <div class="icon-box bg-success bg-opacity-10 text-success"><i class="bi bi-heart-fill"></i></div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card dash-card p-4">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div><p class="text-muted fw-semibold mb-1">Total Program Dibantu</p><h3 class="fw-bold text-emerald mb-0">12 Program</h3></div>
-                        <div class="icon-box bg-success bg-opacity-10 text-success"><i class="bi bi-heart-fill"></i></div>
+
+            <div class="mb-4"><a href="donasi.html" class="btn btn-emerald px-4 py-2 rounded-pill shadow-sm"><i class="bi bi-plus-circle me-2"></i> Buat Donasi Baru</a></div>
+
+            <h5 class="fw-bold mb-3">Riwayat Transaksi Saya</h5>
+            <div class="table-custom table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead><tr><th>Tanggal</th><th>Program Layanan</th><th>Nominal</th><th>Status</th><th>Kwitansi</th></tr></thead>
+                    <tbody>
+                        <tr><td class="text-muted">26 Mar 2026</td><td class="fw-semibold">Sedekah Jariyah</td><td class="fw-bold text-emerald">Rp 2.500.000</td><td><span class="badge bg-success">Berhasil</span></td><td><button class="btn btn-sm btn-outline-success rounded-pill"><i class="bi bi-printer"></i> Cetak</button></td></tr>
+                        <tr><td class="text-muted">25 Mar 2026</td><td class="fw-semibold">Donasi Kemanusiaan</td><td class="fw-bold text-emerald">Rp 135.000</td><td><span class="badge bg-warning text-dark">Pending</span></td><td><button class="btn btn-sm btn-outline-secondary rounded-pill" disabled><i class="bi bi-printer"></i> Cetak</button></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="sec-profil" class="content-section">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card dash-card p-4 p-md-5">
+                        <h4 class="fw-bold text-emerald mb-4 border-bottom pb-3">Pengaturan Profil</h4>
+                        
+                        <form id="formProfil">
+                            <div class="text-center mb-4">
+                                <img id="preview-avatar" src="" class="profile-edit-img mb-3" alt="Preview Profil">
+                                <div>
+                                    <input type="file" id="uploadFoto" accept="image/*" class="form-control d-none">
+                                    <button type="button" class="btn btn-outline-success rounded-pill px-4 fw-semibold" onclick="document.getElementById('uploadFoto').click()">
+                                        <i class="bi bi-camera-fill me-2"></i> Ganti Foto Profil
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Nama Lengkap</label>
+                                <input type="text" id="inputNama" class="form-control" required>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Alamat Email</label>
+                                <input type="email" class="form-control bg-light" value="user@email.com" readonly>
+                                <small class="text-muted">Email tidak dapat diubah karena terhubung dengan data transaksi.</small>
+                            </div>
+
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-emerald px-5 rounded-pill fw-bold"><i class="bi bi-save me-2"></i> Simpan Perubahan</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="mb-4"><a href="donasi.html" class="btn btn-emerald px-4 py-2 rounded-pill shadow-sm"><i class="bi bi-plus-circle me-2"></i> Buat Donasi Baru</a></div>
+    </div> </div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        <h5 class="fw-bold mb-3">Riwayat Transaksi Saya</h5>
-        <div class="table-custom table-responsive">
-            <table class="table table-hover mb-0">
-                <thead><tr><th>Tanggal</th><th>Program Layanan</th><th>Nominal</th><th>Status</th><th>Kwitansi</th></tr></thead>
-                <tbody>
-                    <tr><td class="text-muted">26 Mar 2026</td><td class="fw-semibold">Sedekah Jariyah</td><td class="fw-bold text-emerald">Rp 2.500.000</td><td><span class="badge bg-success">Berhasil</span></td><td><button class="btn btn-sm btn-outline-success rounded-pill"><i class="bi bi-printer"></i> Cetak</button></td></tr>
-                    <tr><td class="text-muted">25 Mar 2026</td><td class="fw-semibold">Donasi Kemanusiaan</td><td class="fw-bold text-emerald">Rp 135.000</td><td><span class="badge bg-warning text-dark">Menunggu Verifikasi</span></td><td><button class="btn btn-sm btn-outline-secondary rounded-pill" disabled><i class="bi bi-printer"></i> Cetak</button></td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // 1. Fungsi Ganti Halaman SPA
+    function switchMenu(targetId, title) {
+        document.querySelectorAll('#menu-list li').forEach(item => item.classList.remove('active'));
+        document.getElementById('menu-' + targetId).classList.add('active');
+        document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active-section'));
+        document.getElementById('sec-' + targetId).classList.add('active-section');
+        document.getElementById('top-title').innerText = title;
+    }
+
+    // 2. Load Data Saat Halaman Dibuka
+    document.addEventListener("DOMContentLoaded", function() {
+        let storedName = localStorage.getItem("userName");
+        let storedAvatar = localStorage.getItem("avatarUrl");
+
+        // Set nama di navbar dan input form
+        if (storedName) {
+            document.getElementById("dash-nama").innerText = "Assalamu'alaikum, " + storedName.split(' ')[0];
+            document.getElementById("inputNama").value = storedName;
+        }
+        
+        // Set foto di navbar dan preview form
+        let avatarSrc = storedAvatar ? storedAvatar : `https://ui-avatars.com/api/?name=${storedName}&background=059669&color=fff`;
+        document.getElementById("dash-avatar").src = avatarSrc;
+        document.getElementById("preview-avatar").src = avatarSrc;
+    });
+
+    // 3. Logika Upload Foto (FileReader)
+    let fileGambarBaru = null;
+
+    document.getElementById("uploadFoto").addEventListener("change", function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Tampilkan di lingkaran preview
+                document.getElementById("preview-avatar").src = e.target.result;
+                // Simpan data base64 sementera ke variabel
+                fileGambarBaru = e.target.result;
+            }
+            reader.readAsDataURL(file); // Ubah file jadi teks
+        }
+    });
+
+    // 4. Logika Simpan Profil
+    document.getElementById("formProfil").addEventListener("submit", function(event) {
+        event.preventDefault();
+        
+        // Ambil nama baru
+        let namaBaru = document.getElementById("inputNama").value;
+        localStorage.setItem("userName", namaBaru);
+        
+        // Jika ada foto baru yang diupload, simpan ke localStorage
+        if (fileGambarBaru) {
+            localStorage.setItem("avatarUrl", fileGambarBaru);
+        }
+
+        // Update tampilan Navbar langsung tanpa reload
+        document.getElementById("dash-nama").innerText = "Assalamu'alaikum, " + namaBaru.split(' ')[0];
+        if(fileGambarBaru) {
+            document.getElementById("dash-avatar").src = fileGambarBaru;
+        }
+
+        Swal.fire({
+            icon: 'success', title: 'Profil Diperbarui!', text: 'Perubahan telah disimpan.',
+            confirmButtonColor: '#059669', timer: 2000
+        });
+    });
+
+    // 5. Logika Logout
+    function logout() {
+        Swal.fire({
+            icon: 'question', title: 'Keluar Akun?', text: 'Anda yakin ingin keluar?',
+            showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Keluar', cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem("isLoggedIn");
+                localStorage.removeItem("userRole");
+                localStorage.removeItem("userName");
+                localStorage.removeItem("avatarUrl");
+                window.location.href = 'index.html'; 
+            }
+        });
+    }
+</script>
 </body>
 </html>

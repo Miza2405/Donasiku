@@ -244,25 +244,114 @@
         });
 
         // FUNGSI BARU: Cegah Akses dan Minta Login
+        // FUNGSI BARU: Mengecek Status Login dari Browser
         function requireLogin(event) {
-            event.preventDefault(); // Mencegah pindah halaman
+            event.preventDefault(); 
             
+            // Cek memori browser
+            let statusLogin = localStorage.getItem("isLoggedIn");
+
+            if (statusLogin === "true") {
+                // Jika SUDAH LOGIN, langsung arahkan ke halaman donasi
+                window.location.href = 'donasi.html';
+            } else {
+                // Jika BELUM LOGIN, munculkan popup
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Harap Login Dahulu',
+                    text: 'Untuk mengakses layanan donasi dan melihat detail program, Anda wajib masuk menggunakan akun yang terdaftar.',
+                    showCancelButton: true,
+                    confirmButtonColor: '#059669',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Login / Daftar Sekarang',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'auth.html';
+                    }
+                });
+            }
+        }
+
+        // FUNGSI BONUS UX: Mengubah tombol Login menjadi Ikon Profil (Sinkron dengan Dashboard)
+        document.addEventListener("DOMContentLoaded", function() {
+            let statusLogin = localStorage.getItem("isLoggedIn");
+            let userRole = localStorage.getItem("userRole");
+            let storedName = localStorage.getItem("userName"); 
+            let storedAvatar = localStorage.getItem("avatarUrl"); // Ambil link foto dari memori
+            
+            if (statusLogin === "true") {
+                let dashboardLink = (userRole === "admin") ? "admin-dashboard.html" : "user-dashboard.html";
+                let displayName = storedName ? storedName : "Pengguna"; 
+                
+                // Jika ada foto di memori, pakai itu. Jika tidak, buat avatar huruf otomatis.
+                let avatarSrc = storedAvatar ? storedAvatar : `https://ui-avatars.com/api/?name=${displayName}&background=059669&color=fff`;
+                
+                let authContainer = document.querySelector('.ms-lg-3');
+                
+                if (authContainer) {
+                    authContainer.innerHTML = `
+                        <div class="dropdown">
+                            <a class="text-decoration-none d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                                <img src="${avatarSrc}" style="object-fit: cover;" alt="Profile" class="rounded-circle border border-2 border-success shadow-sm" width="40" height="40">
+                                <span class="fw-bold text-dark ms-2 d-none d-lg-block">Halo, ${displayName.split(' ')[0]}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 mt-3" style="border-radius: 12px; min-width: 200px;">
+                                <li><a class="dropdown-item py-2 fw-semibold" href="${dashboardLink}"><i class="bi bi-grid-1x2-fill me-2 text-emerald"></i> Dashboard</a></li>
+                                <li><a class="dropdown-item py-2 fw-semibold" href="${dashboardLink}"><i class="bi bi-person-fill me-2 text-emerald"></i> Profil Saya</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item py-2 fw-bold text-danger" href="#" onclick="logoutDariNavbar(event)"><i class="bi bi-box-arrow-right me-2"></i> Keluar</a></li>
+                            </ul>
+                        </div>
+                    `;
+                }
+            }
+        });
+
+        function logoutDariNavbar(event) {
+            event.preventDefault();
             Swal.fire({
-                icon: 'warning',
-                title: 'Harap Login Dahulu',
-                text: 'Untuk mengakses layanan donasi, bersedekah, dan melihat detail program, Anda wajib masuk menggunakan akun yang terdaftar.',
-                showCancelButton: true,
-                confirmButtonColor: '#059669',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Login / Daftar Sekarang',
-                cancelButtonText: 'Batal',
-                reverseButtons: true
+                icon: 'question', title: 'Keluar Akun?', text: 'Anda yakin ingin keluar?',
+                showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Keluar', cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = 'login.html';
+                    // Hapus semua memori profil saat logout
+                    localStorage.removeItem("isLoggedIn");
+                    localStorage.removeItem("userRole");
+                    localStorage.removeItem("userName");
+                    localStorage.removeItem("avatarUrl");
+                    window.location.reload(); 
                 }
             });
         }
+
+        // FUNGSI BARU: Untuk Logout langsung dari Navbar
+        function logoutDariNavbar(event) {
+            event.preventDefault();
+            
+            Swal.fire({
+                icon: 'question',
+                title: 'Keluar Akun?',
+                text: 'Anda yakin ingin keluar dari sesi ini?',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Keluar',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Hapus memori login
+                    localStorage.removeItem("isLoggedIn");
+                    localStorage.removeItem("userRole");
+                    
+                    // Muat ulang halaman agar kembali menjadi tombol "Login / Daftar"
+                    window.location.reload(); 
+                }
+            });
+        }
+        
     </script>
 </body>
 </html>
