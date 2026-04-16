@@ -58,10 +58,31 @@
             <div class="table-custom table-responsive">
                 <table class="table table-hover mb-0">
                     <thead><tr><th>ID TRX</th><th>Nama Donatur</th><th>Program Donasi</th><th>Nominal</th><th>Status</th><th>Aksi</th></tr></thead>
-                    <tbody>
-                        <tr><td class="fw-bold">#TRX-001</td><td><a href="#" class="text-emerald text-decoration-none fw-bold" onclick="bukaInvoice('TRX-001', 'Suud Nofa ', 'Sedekah Jariyah', 'Rp 2.500.000', '20 Mar 2026', 'Bank BCA')">Suud Nofa </a></td><td>Sedekah Jariyah</td><td class="fw-semibold text-emerald">Rp 2.500.000</td><td><span class="badge bg-warning text-dark">Pending</span></td><td><button class="btn btn-sm btn-success rounded-pill"><i class="bi bi-check-circle"></i> Verifikasi</button></td></tr>
-                        <tr><td class="fw-bold">#TRX-002</td><td><a href="#" class="text-emerald text-decoration-none fw-bold" onclick="bukaInvoice('TRX-002', 'Adrinedo Dean Nugroho', 'Donasi Bencana', 'Rp 135.000', '21 Mar 2026', 'QRIS')">Adrinedo Dean Nugroho</a></td><td>Donasi Bencana</td><td class="fw-semibold text-emerald">Rp 135.000</td><td><span class="badge bg-warning text-dark">Pending</span></td><td><button class="btn btn-sm btn-success rounded-pill"><i class="bi bi-check-circle"></i> Verifikasi</button></td></tr>
+                    
+                        <tbody>
+                        <tr>
+                            <td class="fw-bold">#TRX-001</td>
+                            <td><a href="#" class="text-emerald text-decoration-none fw-bold" onclick="bukaInvoice('TRX-001', 'Suud nofa', 'Sedekah Jariyah', 'Rp 2.500.000', '20 Mar 2026', 'Bank BCA')">Suud nofa</a></td>
+                            <td>Sedekah Jariyah</td>
+                            <td class="fw-semibold text-emerald">Rp 2.500.000</td>
+                            <td><span id="badge-TRX-001" class="badge bg-warning text-dark">Pending</span></td>
+                            <td id="aksi-TRX-001">
+                                <button class="btn btn-sm btn-success rounded-pill" onclick="bukaInvoice('TRX-001', 'Suud nofa', 'Sedekah Jariyah', 'Rp 2.500.000', '20 Mar 2026', 'Bank BCA')"><i class="bi bi-check-circle"></i> Verifikasi</button>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="fw-bold">#TRX-002</td>
+                            <td><a href="#" class="text-emerald text-decoration-none fw-bold" onclick="bukaInvoice('TRX-002', 'Adrinedo Dean Nugroho', 'Donasi Bencana', 'Rp 135.000', '21 Mar 2026', 'QRIS')">Adrinedo Dean Nugroho</a></td>
+                            <td>Donasi Bencana</td>
+                            <td class="fw-semibold text-emerald">Rp 135.000</td>
+                            <td><span id="badge-TRX-002" class="badge bg-warning text-dark">Pending</span></td>
+                            <td id="aksi-TRX-002">
+                                <button class="btn btn-sm btn-success rounded-pill" onclick="bukaInvoice('TRX-002', 'Adrinedo Dean Nugroho', 'Donasi Bencana', 'Rp 135.000', '21 Mar 2026', 'QRIS')"><i class="bi bi-check-circle"></i> Verifikasi</button>
+                            </td>
+                        </tr>
                     </tbody>
+                    
                 </table>
             </div>
         </div>
@@ -126,12 +147,70 @@
         
         window.location.href = 'index.html'; 
     }
+    // Variabel Global untuk mengingat Transaksi mana yang sedang dibuka
+    let currentTrxId = ""; 
+
     function bukaInvoice(id, name, type, nominal, date, method) {
-        document.getElementById('inv-id').innerText = '#' + id; document.getElementById('inv-name').innerText = name; document.getElementById('inv-type').innerText = type; document.getElementById('inv-nominal').innerText = nominal; document.getElementById('inv-date').innerText = date; document.getElementById('inv-method').innerText = method;
+        // Simpan ID ke memori sementara
+        currentTrxId = id; 
+
+        document.getElementById('inv-id').innerText = '#' + id; 
+        document.getElementById('inv-name').innerText = name; 
+        document.getElementById('inv-type').innerText = type; 
+        document.getElementById('inv-nominal').innerText = nominal; 
+        document.getElementById('inv-date').innerText = date; 
+        document.getElementById('inv-method').innerText = method;
+        
         new bootstrap.Modal(document.getElementById('invoiceModal')).show();
     }
-    function aksiVerifikasi() { bootstrap.Modal.getInstance(document.getElementById('invoiceModal')).hide(); Swal.fire({icon: 'success', title: 'Transaksi Diverifikasi!', confirmButtonColor: '#059669'}); }
-    function aksiTolak() { bootstrap.Modal.getInstance(document.getElementById('invoiceModal')).hide(); Swal.fire({icon: 'info', title: 'Ditolak', text: 'Transaksi dibatalkan.', confirmButtonColor: '#059669'}); }
+
+    function aksiVerifikasi() { 
+        bootstrap.Modal.getInstance(document.getElementById('invoiceModal')).hide(); 
+        
+        Swal.fire({
+            icon: 'success', 
+            title: 'Transaksi Diverifikasi!', 
+            text: 'Dana telah tercatat ke dalam sistem.',
+            confirmButtonColor: '#059669'
+        }).then(() => {
+            // UBAH TAMPILAN BADGE MENJADI BERHASIL (HIJAU)
+            let badge = document.getElementById('badge-' + currentTrxId);
+            if (badge) {
+                badge.className = 'badge bg-success';
+                badge.innerText = 'Berhasil';
+            }
+
+            // HILANGKAN TOMBOL VERIFIKASI (Agar tidak diklik 2x)
+            let aksiTd = document.getElementById('aksi-' + currentTrxId);
+            if (aksiTd) {
+                aksiTd.innerHTML = '<span class="text-muted small fw-bold"><i class="bi bi-check2-all text-success"></i> Selesai</span>';
+            }
+        }); 
+    }
+
+    function aksiTolak() { 
+        bootstrap.Modal.getInstance(document.getElementById('invoiceModal')).hide(); 
+        
+        Swal.fire({
+            icon: 'error', 
+            title: 'Transaksi Ditolak', 
+            text: 'Transaksi telah dibatalkan.', 
+            confirmButtonColor: '#d33'
+        }).then(() => {
+            // UBAH TAMPILAN BADGE MENJADI DITOLAK (MERAH)
+            let badge = document.getElementById('badge-' + currentTrxId);
+            if (badge) {
+                badge.className = 'badge bg-danger';
+                badge.innerText = 'Ditolak';
+            }
+
+            // HILANGKAN TOMBOL VERIFIKASI
+            let aksiTd = document.getElementById('aksi-' + currentTrxId);
+            if (aksiTd) {
+                aksiTd.innerHTML = '<span class="text-muted small fw-bold"><i class="bi bi-x-circle text-danger"></i> Dibatalkan</span>';
+            }
+        }); 
+    }
 </script>
 </body>
 </html>
