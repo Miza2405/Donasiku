@@ -81,6 +81,7 @@
         /* Menghilangkan panah atas/bawah pada input number (Firefox) */
         input[type=number] {
             -moz-appearance: textfield;
+            appearance: textfield;
         }
 
         .btn-emerald { 
@@ -112,12 +113,12 @@
 
                 <form id="otpForm">
                     <div class="otp-container">
-                        <input type="number" class="otp-input" maxlength="1" required autofocus>
-                        <input type="number" class="otp-input" maxlength="1" required>
-                        <input type="number" class="otp-input" maxlength="1" required>
-                        <input type="number" class="otp-input" maxlength="1" required>
-                        <input type="number" class="otp-input" maxlength="1" required>
-                        <input type="number" class="otp-input" maxlength="1" required>
+                        <input type="number" class="otp-input" maxlength="1" required autofocus aria-label="OTP digit 1">
+                        <input type="number" class="otp-input" maxlength="1" required aria-label="OTP digit 2">
+                        <input type="number" class="otp-input" maxlength="1" required aria-label="OTP digit 3">
+                        <input type="number" class="otp-input" maxlength="1" required aria-label="OTP digit 4">
+                        <input type="number" class="otp-input" maxlength="1" required aria-label="OTP digit 5">
+                        <input type="number" class="otp-input" maxlength="1" required aria-label="OTP digit 6">
                     </div>
                     
                     <button type="submit" class="btn btn-emerald w-100 py-3 mb-4">

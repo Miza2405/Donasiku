@@ -26,12 +26,13 @@
         .content-section { display: none; animation: fadeIn 0.4s ease-in-out; }
         .content-section.active-section { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-content-custom { border-radius: 15px; }
     </style>
 </head>
 <body>
 <div class="wrapper">
     <nav id="sidebar" class="d-none d-md-block">
-        <div class="sidebar-header"><h3 class="fw-bold mb-0">🌿 DonasiKu</h3><small>Panel Admin</small></div>
+        <div class="sidebar-header"><h3 class="fw-bold mb-0">💚 DonasiKu</h3><small>Panel Admin</small></div>
         <ul class="list-unstyled components" id="menu-list">
             <li class="active" id="menu-dashboard"><a onclick="switchMenu('dashboard', 'Dashboard Utama')"><i class="bi bi-grid-1x2-fill me-2"></i> Dashboard</a></li>
             <li id="menu-donatur"><a onclick="switchMenu('donatur', 'Data Donatur')"><i class="bi bi-people-fill me-2"></i> Data Donatur</a></li>
@@ -45,7 +46,7 @@
     <div id="content">
         <div class="top-navbar d-flex justify-content-between align-items-center">
             <div><h5 class="fw-bold mb-0 text-emerald" id="top-title">Dashboard Utama</h5></div>
-            <div class="d-flex align-items-center"><span class="me-3 fw-semibold text-muted">Halo, Kevin</span><img src="https://ui-avatars.com/api/?name=Admin&background=059669&color=fff" class="rounded-circle" width="40"></div>
+            <div class="d-flex align-items-center"><span class="me-3 fw-semibold text-muted">Halo, Kevin</span><img src="https://ui-avatars.com/api/?name=Admin&background=059669&color=fff" alt="Avatar Admin" class="rounded-circle" width="40"></div>
         </div>
 
         <div id="sec-dashboard" class="content-section active-section">
@@ -114,7 +115,7 @@
 
 <div class="modal fade" id="invoiceModal" tabindex="-1" aria-labelledby="invoiceModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
+        <div class="modal-content border-0 shadow-lg modal-content-custom">
             <div class="modal-header bg-emerald text-white border-0"><h5 class="modal-title fw-bold" id="invoiceModalLabel"><i class="bi bi-receipt me-2"></i> Detail Transaksi <span id="inv-id">#TRX-000</span></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
             <div class="modal-body p-4 bg-light">
                 <div class="bg-white p-3 rounded-3 shadow-sm border mb-3">

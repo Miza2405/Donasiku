@@ -4,21 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Donatur - DonasiKu</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f4f7f6; overflow-x: hidden; }
         .text-emerald { color: #059669; } .bg-emerald { background-color: #059669; }
         
-        .wrapper { display: flex; width: 100%; align-items: stretch; min-height: 100vh;}
+        .wrapper { display: flex; width: 100%; align-items: stretch; min-height: 100vh; }
         
+        /* Sidebar Styling */
         #sidebar { min-width: 250px; max-width: 250px; background: #ffffff; box-shadow: 2px 0 10px rgba(0,0,0,0.05); z-index: 100; }
         #sidebar .sidebar-header { padding: 20px; background: #059669; color: white; text-align: center; }
         #sidebar ul.components { padding: 20px 0; }
-        #sidebar ul li a { padding: 12px 20px; font-size: 1em; display: block; color: #555; text-decoration: none; font-weight: 600; transition: 0.2s; cursor: pointer;}
+        #sidebar ul li a { padding: 12px 20px; font-size: 1em; display: block; color: #555; text-decoration: none; font-weight: 600; transition: 0.2s; cursor: pointer; }
         #sidebar ul li a:hover, #sidebar ul li.active > a { color: #059669; background: #eef2f0; border-right: 4px solid #059669; }
         
+        /* Content Styling */
         #content { width: 100%; padding: 20px; }
         .top-navbar { background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); padding: 10px 20px; margin-bottom: 30px; }
         
@@ -28,26 +32,33 @@
         .table-custom { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
         .table-custom th, .table-custom td { padding: 15px; vertical-align: middle; }
 
-        /* CSS untuk menyembunyikan halaman SPA */
+        /* SPA Halaman Dinamis */
         .content-section { display: none; animation: fadeIn 0.4s ease-in-out; }
         .content-section.active-section { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Style Foto Profil Edit */
+        /* Foto Profil Edit */
         .profile-edit-img { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 4px solid #059669; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .dash-avatar { object-fit: cover; }
     </style>
 </head>
 <body>
 <div class="wrapper">
+    
     <nav id="sidebar" class="d-none d-md-block">
-        <div class="sidebar-header"><h3 class="fw-bold mb-0">🌿 DonasiKu</h3><small>Panel Donatur</small></div>
+        <div class="sidebar-header">
+            <h3 class="fw-bold mb-0">💚 DonasiKu</h3>
+            <small>Panel Donatur</small>
+        </div>
         <ul class="list-unstyled components" id="menu-list">
             <li class="active" id="menu-dashboard"><a onclick="switchMenu('dashboard', 'Dashboard Saya')"><i class="bi bi-house-door-fill me-2"></i> Dashboard Saya</a></li>
             <li><a href="donasi.html"><i class="bi bi-heart-fill me-2"></i> Mulai Donasi</a></li>
-            <li><a href="#"><i class="bi bi-clock-history me-2"></i> Riwayat Transaksi</a></li>
+            <li id="menu-riwayat"><a onclick="switchMenu('riwayat', 'Riwayat Transaksi')"><i class="bi bi-clock-history me-2"></i> Riwayat Transaksi</a></li>
             <li id="menu-profil"><a onclick="switchMenu('profil', 'Profil Akun')"><i class="bi bi-person-fill me-2"></i> Profil Akun</a></li>
         </ul>
-        <div class="p-3 mt-5"><a href="#" onclick="logout()" class="btn btn-danger w-100 rounded-pill"><i class="bi bi-box-arrow-left me-2"></i> Keluar</a></div>
+        <div class="p-3 mt-5">
+            <a href="#" onclick="logout()" class="btn btn-danger w-100 rounded-pill"><i class="bi bi-box-arrow-left me-2"></i> Keluar</a>
+        </div>
     </nav>
 
     <div id="content">
@@ -56,7 +67,7 @@
             <div><h5 class="fw-bold mb-0 text-emerald" id="top-title">Dashboard Saya</h5></div>
             <div class="d-flex align-items-center">
                 <span class="me-3 fw-semibold text-muted" id="dash-nama">Assalamu'alaikum, Pengguna</span>
-                <img id="dash-avatar" src="" style="object-fit: cover;" class="rounded-circle border border-2 border-success shadow-sm" width="40" height="40" alt="Avatar">
+                <img id="dash-avatar" src="" class="dash-avatar rounded-circle border border-2 border-success shadow-sm" width="40" height="40" alt="Avatar">
             </div>
         </div> 
 
@@ -65,7 +76,10 @@
                 <div class="col-md-6">
                     <div class="card dash-card p-4 bg-emerald text-white">
                         <div class="d-flex justify-content-between align-items-center">
-                            <div><p class="fw-semibold text-white-50 mb-1">Total Donasi Saya</p><h3 class="fw-bold mb-0">Rp 2.635.000</h3></div>
+                            <div>
+                                <p class="fw-semibold text-white-50 mb-1">Total Donasi Saya</p>
+                                <h3 class="fw-bold mb-0" id="stat-total-donasi">Rp 0</h3>
+                            </div>
                             <div class="icon-box bg-white bg-opacity-25 text-white"><i class="bi bi-award-fill"></i></div>
                         </div>
                     </div>
@@ -73,23 +87,40 @@
                 <div class="col-md-6">
                     <div class="card dash-card p-4">
                         <div class="d-flex justify-content-between align-items-center">
-                            <div><p class="text-muted fw-semibold mb-1">Total Program Dibantu</p><h3 class="fw-bold text-emerald mb-0">12 Program</h3></div>
+                            <div>
+                                <p class="text-muted fw-semibold mb-1">Total Program Dibantu</p>
+                                <h3 class="fw-bold text-emerald mb-0" id="stat-total-program">0 Program</h3>
+                            </div>
                             <div class="icon-box bg-success bg-opacity-10 text-success"><i class="bi bi-heart-fill"></i></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="mb-4"><a href="donasi.html" class="btn btn-emerald px-4 py-2 rounded-pill shadow-sm"><i class="bi bi-plus-circle me-2"></i> Buat Donasi Baru</a></div>
+            <div class="mb-4">
+                <a href="donasi.html" class="btn btn-emerald px-4 py-2 rounded-pill shadow-sm"><i class="bi bi-plus-circle me-2"></i> Buat Donasi Baru</a>
+            </div>
 
-            <h5 class="fw-bold mb-3">Riwayat Transaksi Saya</h5>
+            <h5 class="fw-bold mb-3">Transaksi Terbaru</h5>
             <div class="table-custom table-responsive">
                 <table class="table table-hover mb-0">
-                    <thead><tr><th>Tanggal</th><th>Program Layanan</th><th>Nominal</th><th>Status</th><th>Kwitansi</th></tr></thead>
-                    <tbody>
-                        <tr><td class="text-muted">26 Mar 2026</td><td class="fw-semibold">Sedekah Jariyah</td><td class="fw-bold text-emerald">Rp 2.500.000</td><td><span class="badge bg-success">Berhasil</span></td><td><button class="btn btn-sm btn-outline-success rounded-pill"><i class="bi bi-printer"></i> Cetak</button></td></tr>
-                        <tr><td class="text-muted">25 Mar 2026</td><td class="fw-semibold">Donasi Kemanusiaan</td><td class="fw-bold text-emerald">Rp 135.000</td><td><span class="badge bg-warning text-dark">Pending</span></td><td><button class="btn btn-sm btn-outline-secondary rounded-pill" disabled><i class="bi bi-printer"></i> Cetak</button></td></tr>
-                    </tbody>
+                    <thead><tr><th>Tanggal</th><th>Program Layanan</th><th>Nominal</th><th>Status</th></tr></thead>
+                    <tbody id="tabel-dashboard-singkat">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="sec-riwayat" class="content-section">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0">Semua Riwayat Transaksi</h5>
+                <a href="donasi.html" class="btn btn-sm btn-outline-success rounded-pill"><i class="bi bi-heart"></i> Donasi Lagi</a>
+            </div>
+            <div class="table-custom table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead><tr><th>Tanggal</th><th>Program Layanan</th><th>Nominal</th><th>Status</th><th>Aksi</th></tr></thead>
+                    <tbody id="tabel-riwayat-full">
+                        </tbody>
                 </table>
             </div>
         </div>
@@ -118,8 +149,8 @@
                             
                             <div class="mb-4">
                                 <label class="form-label fw-semibold">Alamat Email</label>
-                                <input type="email" class="form-control bg-light" value="Kyosei@email.com" readonly>
-                                <small class="text-muted">Email tidak dapat diubah karena terhubung dengan data transaksi.</small>
+                                <input type="email" class="form-control bg-light" value="user@email.com" readonly>
+                                <small class="text-muted">Email tidak dapat diubah karena terhubung dengan riwayat transaksi Anda.</small>
                             </div>
 
                             <div class="text-end">
@@ -131,11 +162,14 @@
             </div>
         </div>
 
-    </div> </div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    // 1. Fungsi Ganti Halaman SPA
+    // 1. FUNGSI GANTI HALAMAN SPA
     function switchMenu(targetId, title) {
         document.querySelectorAll('#menu-list li').forEach(item => item.classList.remove('active'));
         document.getElementById('menu-' + targetId).classList.add('active');
@@ -144,24 +178,79 @@
         document.getElementById('top-title').innerText = title;
     }
 
-    // 2. Load Data Saat Halaman Dibuka
+    // 2. LOAD DATA SAAT HALAMAN DIBUKA (PROFIL & RIWAYAT)
     document.addEventListener("DOMContentLoaded", function() {
+        
+        // --- A. Load Profil ---
         let storedName = localStorage.getItem("userName");
         let storedAvatar = localStorage.getItem("avatarUrl");
 
-        // Set nama di navbar dan input form
         if (storedName) {
             document.getElementById("dash-nama").innerText = "Assalamu'alaikum, " + storedName.split(' ')[0];
             document.getElementById("inputNama").value = storedName;
         }
         
-        // Set foto di navbar dan preview form
         let avatarSrc = storedAvatar ? storedAvatar : `https://ui-avatars.com/api/?name=${storedName}&background=059669&color=fff`;
         document.getElementById("dash-avatar").src = avatarSrc;
         document.getElementById("preview-avatar").src = avatarSrc;
+
+        // --- B. Load Riwayat Transaksi ---
+        let riwayat = JSON.parse(localStorage.getItem("riwayatTransaksi")) || [];
+        let tabelDash = document.getElementById("tabel-dashboard-singkat");
+        let tabelFull = document.getElementById("tabel-riwayat-full");
+        
+        let totalDonasi = 0;
+        let programUnik = new Set(); // Untuk menghitung program yang berbeda
+
+        if (riwayat.length === 0) {
+            let msg = "<tr><td colspan='5' class='text-center text-muted py-4'>Belum ada transaksi. Ayo mulai berbagi kebaikan hari ini!</td></tr>";
+            tabelDash.innerHTML = msg;
+            tabelFull.innerHTML = msg;
+        } else {
+            riwayat.forEach((trx, index) => {
+                // Menghitung Total (Bersihkan teks Rp dan titik)
+                let nominalAngka = parseInt(trx.nominal.replace(/[^0-9]/g, ''));
+                if (trx.status !== 'Ditolak') { // Hanya hitung yang bukan ditolak
+                    totalDonasi += nominalAngka;
+                    programUnik.add(trx.program);
+                }
+
+                // Tampilan Badge
+                let badgeColor = trx.status === "Pending" ? "bg-warning text-dark" : (trx.status === "Berhasil" ? "bg-success" : "bg-danger");
+                let cetakBtn = trx.status === "Berhasil" ? `<button class="btn btn-sm btn-outline-success rounded-pill" onclick="cetakKwitansi()"><i class="bi bi-printer"></i> Cetak</button>` : `<button class="btn btn-sm btn-outline-secondary rounded-pill" disabled><i class="bi bi-printer"></i> Cetak</button>`;
+                
+                // Row untuk tabel Full
+                let rowHTML = `
+                    <tr>
+                        <td class="text-muted">${trx.tanggal}</td>
+                        <td class="fw-semibold">${trx.program} <br><small class="text-muted">#${trx.id}</small></td>
+                        <td class="fw-bold text-emerald">${trx.nominal}</td>
+                        <td><span class="badge ${badgeColor}">${trx.status}</span></td>
+                        <td>${cetakBtn}</td>
+                    </tr>
+                `;
+                tabelFull.innerHTML += rowHTML;
+
+                // Row untuk tabel Dashboard Singkat (Hanya tampilkan 3 terbaru)
+                if (index < 3) {
+                    tabelDash.innerHTML += `
+                        <tr>
+                            <td class="text-muted">${trx.tanggal}</td>
+                            <td class="fw-semibold">${trx.program}</td>
+                            <td class="fw-bold text-emerald">${trx.nominal}</td>
+                            <td><span class="badge ${badgeColor}">${trx.status}</span></td>
+                        </tr>
+                    `;
+                }
+            });
+        }
+
+        // --- C. Update Angka Statistik ---
+        document.getElementById("stat-total-donasi").innerText = "Rp " + new Intl.NumberFormat('id-ID').format(totalDonasi);
+        document.getElementById("stat-total-program").innerText = programUnik.size + " Program";
     });
 
-    // 3. Logika Upload Foto (FileReader)
+    // 3. LOGIKA UPLOAD & SIMPAN FOTO PROFIL
     let fileGambarBaru = null;
 
     document.getElementById("uploadFoto").addEventListener("change", function(event) {
@@ -169,52 +258,51 @@
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                // Tampilkan di lingkaran preview
                 document.getElementById("preview-avatar").src = e.target.result;
-                // Simpan data base64 sementera ke variabel
                 fileGambarBaru = e.target.result;
             }
-            reader.readAsDataURL(file); // Ubah file jadi teks
+            reader.readAsDataURL(file);
         }
     });
 
-    // 4. Logika Simpan Profil
     document.getElementById("formProfil").addEventListener("submit", function(event) {
         event.preventDefault();
         
-        // Ambil nama baru
         let namaBaru = document.getElementById("inputNama").value;
         localStorage.setItem("userName", namaBaru);
         
-        // Jika ada foto baru yang diupload, simpan ke localStorage
         if (fileGambarBaru) {
             localStorage.setItem("avatarUrl", fileGambarBaru);
         }
 
-        // Update tampilan Navbar langsung tanpa reload
         document.getElementById("dash-nama").innerText = "Assalamu'alaikum, " + namaBaru.split(' ')[0];
-        if(fileGambarBaru) {
-            document.getElementById("dash-avatar").src = fileGambarBaru;
-        }
+        if(fileGambarBaru) document.getElementById("dash-avatar").src = fileGambarBaru;
 
         Swal.fire({
             icon: 'success', title: 'Profil Diperbarui!', text: 'Perubahan telah disimpan.',
-            confirmButtonColor: '#059669', timer: 2000
+            confirmButtonColor: '#059669', timer: 2000, showConfirmButton: false
         });
     });
 
-    // 5. Logika Logout
+    // 4. LOGIKA CETAK KWITANSI (Simulasi)
+    function cetakKwitansi() {
+        Swal.fire({
+            icon: 'info', title: 'Mencetak...', text: 'Mengunduh kwitansi digital Anda dalam bentuk PDF.',
+            confirmButtonColor: '#059669', timer: 2000, showConfirmButton: false
+        });
+    }
+
+    // 5. LOGIKA LOGOUT
     function logout() {
         Swal.fire({
-            icon: 'question', title: 'Keluar Akun?', text: 'Anda yakin ingin keluar?',
+            icon: 'question', title: 'Keluar Akun?', text: 'Anda yakin ingin keluar dari halaman donatur?',
             showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: '#6c757d',
             confirmButtonText: 'Ya, Keluar', cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
                 localStorage.removeItem("isLoggedIn");
                 localStorage.removeItem("userRole");
-                localStorage.removeItem("userName");
-                localStorage.removeItem("avatarUrl");
+                // Catatan: riwayatTransaksi tidak dihapus agar bisa dicek kembali saat login ulang
                 window.location.href = 'index.html'; 
             }
         });
@@ -222,4 +310,3 @@
 </script>
 </body>
 </html>
- 
