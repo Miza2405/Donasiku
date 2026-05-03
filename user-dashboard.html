@@ -40,11 +40,22 @@
         /* Foto Profil Edit */
         .profile-edit-img { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 4px solid #059669; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .dash-avatar { object-fit: cover; }
+
+        /* Filter Riwayat Desain Baru ala Gambar */
+        .filter-container { background: #ffffff; border-radius: 12px; padding: 6px; display: flex; box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin-bottom: 20px; width: 100%; max-width: 600px; border: 1px solid #eef2f5; }
+        .filter-btn-riwayat { border-radius: 8px; border: none; background: transparent; color: #64748b; font-weight: 600; flex: 1; padding: 12px 0; transition: 0.3s; font-size: 0.95rem; }
+        .filter-btn-riwayat:hover { color: #059669; }
+        .filter-btn-riwayat.active { background: #059669; color: white; box-shadow: 0 2px 5px rgba(5,150,105,0.2); }
+
+        /* Badge Status Khusus Tabel Riwayat */
+        .badge-status-berhasil { background-color: #059669; color: white; border-radius: 6px; padding: 6px 12px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; }
+        .badge-status-pending { background-color: #facc15; color: #854d0e; border-radius: 6px; padding: 6px 12px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 <div class="wrapper">
     
+    <!-- SIDEBAR NAVIGASI -->
     <nav id="sidebar" class="d-none d-md-block">
         <div class="sidebar-header">
             <h3 class="fw-bold mb-0">💚 DonasiKu</h3>
@@ -61,8 +72,10 @@
         </div>
     </nav>
 
+    <!-- KONTEN UTAMA -->
     <div id="content">
         
+        <!-- NAVBAR ATAS -->
         <div class="top-navbar d-flex justify-content-between align-items-center">
             <div><h5 class="fw-bold mb-0 text-emerald" id="top-title">Dashboard Saya</h5></div>
             <div class="d-flex align-items-center">
@@ -71,6 +84,7 @@
             </div>
         </div> 
 
+        <!-- 1. HALAMAN DASHBOARD -->
         <div id="sec-dashboard" class="content-section active-section">
             <div class="row g-4 mb-4">
                 <div class="col-md-6">
@@ -104,64 +118,143 @@
             <h5 class="fw-bold mb-3">Transaksi Terbaru</h5>
             <div class="table-custom table-responsive">
                 <table class="table table-hover mb-0">
-                    <thead><tr><th>Tanggal</th><th>Program Layanan</th><th>Nominal</th><th>Status</th></tr></thead>
+                    <thead class="table-light"><tr><th>ID Transaksi</th><th>Tanggal</th><th>Program</th><th>Metode</th><th>Nominal</th><th>Status</th></tr></thead>
                     <tbody id="tabel-dashboard-singkat">
-                        </tbody>
+                        <!-- Data diisi via JS -->
+                    </tbody>
                 </table>
             </div>
         </div>
 
+        <!-- 2. HALAMAN RIWAYAT TRANSAKSI -->
         <div id="sec-riwayat" class="content-section">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h5 class="fw-bold mb-0">Semua Riwayat Transaksi</h5>
-                <a href="donasi.html" class="btn btn-sm btn-outline-success rounded-pill"><i class="bi bi-heart"></i> Donasi Lagi</a>
+            
+            <!-- FILTER BUTTONS -->
+            <div class="filter-container">
+                <button class="filter-btn-riwayat active" onclick="filterRiwayat('Semua', this)">Semua</button>
+                <button class="filter-btn-riwayat" onclick="filterRiwayat('E-Wallet', this)">E-Wallet</button>
+                <button class="filter-btn-riwayat" onclick="filterRiwayat('Transfer Bank', this)">Transfer Bank</button>
             </div>
+
             <div class="table-custom table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead><tr><th>Tanggal</th><th>Program Layanan</th><th>Nominal</th><th>Status</th><th>Aksi</th></tr></thead>
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID Transaksi</th>
+                            <th>Tanggal</th>
+                            <th>Program</th>
+                            <th>Metode</th>
+                            <th>Nominal</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
                     <tbody id="tabel-riwayat-full">
-                        </tbody>
+                        <!-- Data diisi via JS -->
+                    </tbody>
                 </table>
             </div>
         </div>
 
+       <!-- 3. HALAMAN PROFIL (Versi Dinamis: Gamifikasi & Privasi) -->
         <div id="sec-profil" class="content-section">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="card dash-card p-4 p-md-5">
-                        <h4 class="fw-bold text-emerald mb-4 border-bottom pb-3">Pengaturan Profil</h4>
+            <div class="row g-4">
+                
+                <!-- KOLOM KIRI: Lencana & Foto -->
+                <div class="col-lg-4">
+                    <div class="card dash-card p-4 text-center">
+                        <div class="position-relative d-inline-block mx-auto mb-3">
+                            <img id="preview-avatar" src="" class="profile-edit-img" alt="Preview Profil">
+                            <button class="btn btn-sm btn-emerald position-absolute bottom-0 end-0 rounded-circle shadow" onclick="document.getElementById('uploadFoto').click()">
+                                <i class="bi bi-camera"></i>
+                            </button>
+                            <input type="file" id="uploadFoto" accept="image/*" class="form-control d-none">
+                        </div>
+                        <h5 class="fw-bold mb-1" id="profil-nama-display">Memuat Nama...</h5>
+                        <p class="text-muted small mb-3">Donatur Sejak Mar 2026</p>
                         
+                        <hr>
+                        
+                        <!-- POIN 1: LENCANA KEBAIKAN (Gamifikasi) -->
+                        <div class="p-3 bg-light rounded-4 border border-dashed">
+                            <h6 class="fw-bold mb-2 small text-uppercase text-muted" style="letter-spacing: 1px;">Lencana Saya</h6>
+                            <div class="d-flex justify-content-center gap-2 mb-2">
+                                <span class="badge rounded-pill bg-emerald p-2" title="Donatur Pertama"><i class="bi bi-award fs-5"></i></span>
+                                <span class="badge rounded-pill bg-info p-2" title="Pejuang Masjid"><i class="bi bi-building fs-5"></i></span>
+                                <span class="badge rounded-pill bg-secondary p-2 opacity-50" title="Pahlawan Pendidikan (Belum Tercapai)"><i class="bi bi-mortarboard fs-5"></i></span>
+                            </div>
+                            <div class="progress mb-1" style="height: 6px; border-radius: 10px;">
+                                <div class="progress-bar bg-emerald" style="width: 75%"></div>
+                            </div>
+                            <small class="text-muted" style="font-size: 0.7rem;">Donasi <b>Rp 150.000</b> lagi untuk naik level!</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KOLOM KANAN: Form & Pengaturan Notifikasi -->
+                <div class="col-lg-8">
+                    <div class="card dash-card p-4 mb-4">
+                        <h6 class="fw-bold mb-4"><i class="bi bi-person-gear me-2"></i> Data Pribadi</h6>
                         <form id="formProfil">
-                            <div class="text-center mb-4">
-                                <img id="preview-avatar" src="" class="profile-edit-img mb-3" alt="Preview Profil">
-                                <div>
-                                    <input type="file" id="uploadFoto" accept="image/*" class="form-control d-none">
-                                    <button type="button" class="btn btn-outline-success rounded-pill px-4 fw-semibold" onclick="document.getElementById('uploadFoto').click()">
-                                        <i class="bi bi-camera-fill me-2"></i> Ganti Foto Profil
-                                    </button>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Nama Lengkap</label>
+                                    <input type="text" id="inputNama" class="form-control" placeholder="Nama Anda" required>
                                 </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Nama Lengkap</label>
-                                <input type="text" id="inputNama" class="form-control" required>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <label class="form-label fw-semibold">Alamat Email</label>
-                                <input type="email" class="form-control bg-light" value="user@email.com" readonly>
-                                <small class="text-muted">Email tidak dapat diubah karena terhubung dengan riwayat transaksi Anda.</small>
-                            </div>
-
-                            <div class="text-end">
-                                <button type="submit" class="btn btn-emerald px-5 rounded-pill fw-bold"><i class="bi bi-save me-2"></i> Simpan Perubahan</button>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Nomor WhatsApp</label>
+                                    <input type="text" class="form-control" value="0812345678xx" placeholder="08xxxx">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold">Alamat Email</label>
+                                    <input type="email" class="form-control bg-light" value="Kyosei@email.com" readonly>
+                                </div>
+                                <div class="col-12 text-end">
+                                    <button type="submit" class="btn btn-emerald px-4 rounded-pill fw-bold">Simpan Profil</button>
+                                </div>
                             </div>
                         </form>
                     </div>
+
+                    <!-- POIN 3: PRIVASI & NOTIFIKASI -->
+                    <div class="card dash-card p-4">
+                        <h6 class="fw-bold mb-4"><i class="bi bi-bell-fill me-2"></i> Privasi & Notifikasi</h6>
+                        <div class="list-group list-group-flush">
+                            <!-- Toggle Mode Anonim -->
+                            <div class="list-group-item px-0 d-flex justify-content-between align-items-center border-0 mb-2">
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Mode Anonim (Hamba Allah)</h6>
+                                    <small class="text-muted">Sembunyikan nama saya dari daftar donatur publik.</small>
+                                </div>
+                                <div class="form-check form-switch fs-4">
+                                    <input class="form-check-input" type="checkbox" id="modeAnonim" onchange="updatePrivasi('Mode Anonim Berhasil Diubah!')">
+                                </div>
+                            </div>
+                            <!-- Toggle Email Notifikasi -->
+                            <div class="list-group-item px-0 d-flex justify-content-between align-items-center border-0 mb-2">
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Laporan Penyaluran Dana</h6>
+                                    <small class="text-muted">Kirim laporan penggunaan dana donasi saya via Email.</small>
+                                </div>
+                                <div class="form-check form-switch fs-4">
+                                    <input class="form-check-input" type="checkbox" checked onchange="updatePrivasi('Preferensi Notifikasi Diperbarui!')">
+                                </div>
+                            </div>
+                            <!-- Toggle WA Notifikasi -->
+                            <div class="list-group-item px-0 d-flex justify-content-between align-items-center border-0 mb-0">
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Update Program via WhatsApp</h6>
+                                    <small class="text-muted">Terima info program mendesak melalui pesan WhatsApp.</small>
+                                </div>
+                                <div class="form-check form-switch fs-4">
+                                    <input class="form-check-input" type="checkbox" onchange="updatePrivasi('Preferensi WhatsApp Diperbarui!')">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
-
     </div>
 </div>
 
@@ -169,7 +262,17 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    // 1. FUNGSI GANTI HALAMAN SPA
+    // 4 DATA DUMMY BARU
+    const dummyRiwayat = [
+        { id: "#DK-90421", tanggal: "26 Mar 2026", program: "Pembangunan Masjid Pelosok Desa", metode: "Mandiri", tipe: "Transfer Bank", nominal: "Rp 2.500.000", status: "Berhasil" },
+        { id: "#DK-88210", tanggal: "25 Mar 2026", program: "Indonesia Darurat Bencana: Longsor & Banjir", metode: "Dana", tipe: "E-Wallet", nominal: "Rp 135.000", status: "Pending" },
+        { id: "#DK-87112", tanggal: "22 Mar 2026", program: "Berbagi Paket Sembako Untuk Keluarga Dhuafa", metode: "OVO", tipe: "E-Wallet", nominal: "Rp 45.000", status: "Berhasil" },
+        { id: "#DK-86001", tanggal: "20 Mar 2026", program: "Beasiswa Pendidikan Santri Penghafal Quran", metode: "BCA", tipe: "Transfer Bank", nominal: "Rp 500.000", status: "Berhasil" }
+    ];
+
+    let semuaRiwayat = [];
+
+    // FUNGSI GANTI HALAMAN SPA
     function switchMenu(targetId, title) {
         document.querySelectorAll('#menu-list li').forEach(item => item.classList.remove('active'));
         document.getElementById('menu-' + targetId).classList.add('active');
@@ -178,9 +281,8 @@
         document.getElementById('top-title').innerText = title;
     }
 
-    // 2. LOAD DATA SAAT HALAMAN DIBUKA (PROFIL & RIWAYAT)
+    // LOAD DATA SAAT HALAMAN DIBUKA
     document.addEventListener("DOMContentLoaded", function() {
-        
         // --- A. Load Profil ---
         let storedName = localStorage.getItem("userName");
         let storedAvatar = localStorage.getItem("avatarUrl");
@@ -194,65 +296,115 @@
         document.getElementById("dash-avatar").src = avatarSrc;
         document.getElementById("preview-avatar").src = avatarSrc;
 
-        // --- B. Load Riwayat Transaksi ---
-        let riwayat = JSON.parse(localStorage.getItem("riwayatTransaksi")) || [];
-        let tabelDash = document.getElementById("tabel-dashboard-singkat");
-        let tabelFull = document.getElementById("tabel-riwayat-full");
+        // =========================================================================
+        // KODE PEMBERSIH & RESET DATA: Menghapus total data lama agar bersih
+        // =========================================================================
+        let statusReset = localStorage.getItem("resetDataDonasiKuV3");
         
-        let totalDonasi = 0;
-        let programUnik = new Set(); // Untuk menghitung program yang berbeda
+        if (!statusReset) {
+            // Hapus paksa riwayat transaksi lama yang bermasalah di browser
+            localStorage.removeItem("riwayatTransaksi");
+            
+            // Masukkan 4 data dummy baru yang sangat bersih
+            localStorage.setItem("riwayatTransaksi", JSON.stringify(dummyRiwayat));
+            
+            // Beri tanda bahwa browser ini sudah dibersihkan, 
+            // agar ke depannya jika donatur buat transaksi baru tidak terhapus
+            localStorage.setItem("resetDataDonasiKuV3", "true");
+        }
 
-        if (riwayat.length === 0) {
-            let msg = "<tr><td colspan='5' class='text-center text-muted py-4'>Belum ada transaksi. Ayo mulai berbagi kebaikan hari ini!</td></tr>";
-            tabelDash.innerHTML = msg;
-            tabelFull.innerHTML = msg;
+        // --- B. Baca Data yang Sudah Pasti Bersih ---
+        semuaRiwayat = JSON.parse(localStorage.getItem("riwayatTransaksi")) || [];
+        
+        // Render tabel & statistik
+        renderTabelRiwayat("Semua");
+        renderTabelDashboard(semuaRiwayat);
+        hitungStatistik(semuaRiwayat);
+    });
+
+    // FUNGSI RENDER TABEL UTAMA (DENGAN FILTER CERDAS)
+    function renderTabelRiwayat(filterTipe) {
+        let tabelFull = document.getElementById("tabel-riwayat-full");
+        tabelFull.innerHTML = ""; // Bersihkan tabel
+
+        let dataTampil = semuaRiwayat;
+
+        // Proses Filter berdasarkan properti 'tipe' (Transfer Bank / E-Wallet)
+        if (filterTipe !== "Semua") {
+            dataTampil = semuaRiwayat.filter(trx => trx.tipe === filterTipe);
+        }
+
+        if (dataTampil.length === 0) {
+            tabelFull.innerHTML = `<tr><td colspan='6' class='text-center text-muted py-4'>Tidak ada transaksi ditemukan untuk filter <b>${filterTipe}</b>.</td></tr>`;
         } else {
-            riwayat.forEach((trx, index) => {
-                // Menghitung Total (Bersihkan teks Rp dan titik)
-                let nominalAngka = parseInt(trx.nominal.replace(/[^0-9]/g, ''));
-                if (trx.status !== 'Ditolak') { // Hanya hitung yang bukan ditolak
-                    totalDonasi += nominalAngka;
-                    programUnik.add(trx.program);
-                }
-
-                // Tampilan Badge
-                let badgeColor = trx.status === "Pending" ? "bg-warning text-dark" : (trx.status === "Berhasil" ? "bg-success" : "bg-danger");
-                let cetakBtn = trx.status === "Berhasil" ? `<button class="btn btn-sm btn-outline-success rounded-pill" onclick="cetakKwitansi()"><i class="bi bi-printer"></i> Cetak</button>` : `<button class="btn btn-sm btn-outline-secondary rounded-pill" disabled><i class="bi bi-printer"></i> Cetak</button>`;
+            dataTampil.forEach(trx => {
+                let badgeClass = trx.status.toLowerCase() === "berhasil" ? "badge-status-berhasil" : "badge-status-pending";
                 
-                // Row untuk tabel Full
                 let rowHTML = `
                     <tr>
+                        <td class="fw-bold text-dark">${trx.id}</td>
                         <td class="text-muted">${trx.tanggal}</td>
-                        <td class="fw-semibold">${trx.program} <br><small class="text-muted">#${trx.id}</small></td>
-                        <td class="fw-bold text-emerald">${trx.nominal}</td>
-                        <td><span class="badge ${badgeColor}">${trx.status}</span></td>
-                        <td>${cetakBtn}</td>
+                        <td class="fw-bold">${trx.program}</td>
+                        <td class="text-muted">${trx.metode}</td>
+                        <td class="fw-bold text-dark">${trx.nominal}</td>
+                        <td><span class="${badgeClass}">${trx.status}</span></td>
                     </tr>
                 `;
                 tabelFull.innerHTML += rowHTML;
-
-                // Row untuk tabel Dashboard Singkat (Hanya tampilkan 3 terbaru)
-                if (index < 3) {
-                    tabelDash.innerHTML += `
-                        <tr>
-                            <td class="text-muted">${trx.tanggal}</td>
-                            <td class="fw-semibold">${trx.program}</td>
-                            <td class="fw-bold text-emerald">${trx.nominal}</td>
-                            <td><span class="badge ${badgeColor}">${trx.status}</span></td>
-                        </tr>
-                    `;
-                }
             });
         }
+    }
 
-        // --- C. Update Angka Statistik ---
+    // LOGIKA TOMBOL FILTER DI KLIK
+    function filterRiwayat(tipeFilter, elemenTombol) {
+        // Pindahkan warna background aktif ke tombol yang diklik
+        document.querySelectorAll('.filter-btn-riwayat').forEach(btn => btn.classList.remove('active'));
+        elemenTombol.classList.add('active');
+
+        // Panggil fungsi render ulang
+        renderTabelRiwayat(tipeFilter);
+    }
+
+    // RENDER TABEL DASHBOARD SINGKAT (Hanya 4 Teratas)
+    function renderTabelDashboard(data) {
+        let tabelDash = document.getElementById("tabel-dashboard-singkat");
+        tabelDash.innerHTML = "";
+        
+        data.slice(0, 4).forEach(trx => {
+            let badgeClass = trx.status.toLowerCase() === "berhasil" ? "badge-status-berhasil" : "badge-status-pending";
+
+            tabelDash.innerHTML += `
+                <tr>
+                    <td class="fw-bold text-dark">${trx.id}</td>
+                    <td class="text-muted">${trx.tanggal}</td>
+                    <td class="fw-bold">${trx.program}</td>
+                    <td class="text-muted">${trx.metode}</td>
+                    <td class="fw-bold text-dark">${trx.nominal}</td>
+                    <td><span class="${badgeClass}">${trx.status}</span></td>
+                </tr>
+            `;
+        });
+    }
+
+    // HITUNG STATISTIK KARTU ATAS
+    function hitungStatistik(data) {
+        let totalDonasi = 0;
+        let programUnik = new Set(); 
+
+        data.forEach(trx => {
+            let nominalAngka = parseInt(trx.nominal.replace(/[^0-9]/g, ''));
+            if (trx.status.toLowerCase() !== 'ditolak') { 
+                totalDonasi += nominalAngka;
+                programUnik.add(trx.program);
+            }
+        });
+
         document.getElementById("stat-total-donasi").innerText = "Rp " + new Intl.NumberFormat('id-ID').format(totalDonasi);
         document.getElementById("stat-total-program").innerText = programUnik.size + " Program";
-    });
+    }
 
-    // 3. LOGIKA UPLOAD & SIMPAN FOTO PROFIL
+    // LOGIKA UPLOAD FOTO PROFIL
     let fileGambarBaru = null;
-
     document.getElementById("uploadFoto").addEventListener("change", function(event) {
         const file = event.target.files[0];
         if (file) {
@@ -267,13 +419,9 @@
 
     document.getElementById("formProfil").addEventListener("submit", function(event) {
         event.preventDefault();
-        
         let namaBaru = document.getElementById("inputNama").value;
         localStorage.setItem("userName", namaBaru);
-        
-        if (fileGambarBaru) {
-            localStorage.setItem("avatarUrl", fileGambarBaru);
-        }
+        if (fileGambarBaru) { localStorage.setItem("avatarUrl", fileGambarBaru); }
 
         document.getElementById("dash-nama").innerText = "Assalamu'alaikum, " + namaBaru.split(' ')[0];
         if(fileGambarBaru) document.getElementById("dash-avatar").src = fileGambarBaru;
@@ -284,15 +432,7 @@
         });
     });
 
-    // 4. LOGIKA CETAK KWITANSI (Simulasi)
-    function cetakKwitansi() {
-        Swal.fire({
-            icon: 'info', title: 'Mencetak...', text: 'Mengunduh kwitansi digital Anda dalam bentuk PDF.',
-            confirmButtonColor: '#059669', timer: 2000, showConfirmButton: false
-        });
-    }
-
-    // 5. LOGIKA LOGOUT
+    // LOGIKA LOGOUT
     function logout() {
         Swal.fire({
             icon: 'question', title: 'Keluar Akun?', text: 'Anda yakin ingin keluar dari halaman donatur?',
@@ -302,11 +442,35 @@
             if (result.isConfirmed) {
                 localStorage.removeItem("isLoggedIn");
                 localStorage.removeItem("userRole");
-                // Catatan: riwayatTransaksi tidak dihapus agar bisa dicek kembali saat login ulang
                 window.location.href = 'index.html'; 
             }
         });
     }
+
+    // Fungsi untuk notifikasi perubahan privasi/notifikasi
+    function updatePrivasi(pesan) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        Toast.fire({
+            icon: 'success',
+            title: pesan
+        });
+    }
+
+    // Update tampilan nama di card profil saat form diisi
+    document.getElementById("inputNama").addEventListener("input", function() {
+        document.getElementById("profil-nama-display").innerText = this.value || "Nama Anda";
+    });
 </script>
 </body>
 </html>
