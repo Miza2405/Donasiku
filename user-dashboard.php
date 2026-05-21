@@ -38,8 +38,28 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         /* Foto Profil Edit */
+        /* Foto Profil Edit */
         .profile-edit-img { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 4px solid #059669; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .dash-avatar { object-fit: cover; }
+
+        /* DEFINISI BTN EMERALD & TOMBOL KAMERA PROFIL */
+        .btn-emerald { background-color: #059669; color: white; font-weight: 600; transition: all 0.3s ease; }
+        .btn-emerald:hover { background-color: #047857; color: white; }
+
+        .btn-camera-profile {
+            background-color: #059669 !important;
+            color: white !important;
+            border: 3px solid #ffffff !important; /* Lingkaran putih tebal di sekitar ikon */
+            position: absolute;
+            bottom: 5px;  /* Menggeser sedikit ke dalam agar pas di lengkungan foto */
+            right: 5px;   /* Menggeser sedikit ke dalam agar pas di lengkungan foto */
+            z-index: 10;  /* Memastikan berada di layer paling atas */
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
         /* Filter Riwayat Desain Baru ala Gambar */
         .filter-container { background: #ffffff; border-radius: 12px; padding: 6px; display: flex; box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin-bottom: 20px; width: 100%; max-width: 600px; border: 1px solid #eef2f5; }
@@ -58,12 +78,12 @@
     <!-- SIDEBAR NAVIGASI -->
     <nav id="sidebar" class="d-none d-md-block">
         <div class="sidebar-header">
-            <h3 class="fw-bold mb-0">💚 DonasiKu</h3>
+            <h3 class="fw-bold mb-0">🎁 DonasiKu</h3>
             <small>Panel Donatur</small>
         </div>
         <ul class="list-unstyled components" id="menu-list">
             <li class="active" id="menu-dashboard"><a onclick="switchMenu('dashboard', 'Dashboard Saya')"><i class="bi bi-house-door-fill me-2"></i> Dashboard Saya</a></li>
-            <li><a href="donasi.html"><i class="bi bi-heart-fill me-2"></i> Mulai Donasi</a></li>
+            <li><a href="donasi.php"><i class="bi bi-heart-fill me-2"></i> Mulai Donasi</a></li>
             <li id="menu-riwayat"><a onclick="switchMenu('riwayat', 'Riwayat Transaksi')"><i class="bi bi-clock-history me-2"></i> Riwayat Transaksi</a></li>
             <li id="menu-profil"><a onclick="switchMenu('profil', 'Profil Akun')"><i class="bi bi-person-fill me-2"></i> Profil Akun</a></li>
         </ul>
@@ -112,7 +132,7 @@
             </div>
 
             <div class="mb-4">
-                <a href="donasi.html" class="btn btn-emerald px-4 py-2 rounded-pill shadow-sm"><i class="bi bi-plus-circle me-2"></i> Buat Donasi Baru</a>
+                <a href="donasi.php" class="btn btn-emerald px-4 py-2 rounded-pill shadow-sm"><i class="bi bi-plus-circle me-2"></i> Buat Donasi Baru</a>
             </div>
 
             <h5 class="fw-bold mb-3">Transaksi Terbaru</h5>
@@ -164,7 +184,7 @@
                     <div class="card dash-card p-4 text-center">
                         <div class="position-relative d-inline-block mx-auto mb-3">
                             <img id="preview-avatar" src="" class="profile-edit-img" alt="Preview Profil">
-                            <button class="btn btn-sm btn-emerald position-absolute bottom-0 end-0 rounded-circle shadow" onclick="document.getElementById('uploadFoto').click()">
+                            <button class="btn btn-camera-profile rounded-circle shadow" onclick="document.getElementById('uploadFoto').click()">
                                 <i class="bi bi-camera"></i>
                             </button>
                             <input type="file" id="uploadFoto" accept="image/*" class="form-control d-none">
@@ -442,7 +462,7 @@
             if (result.isConfirmed) {
                 localStorage.removeItem("isLoggedIn");
                 localStorage.removeItem("userRole");
-                window.location.href = 'index.html'; 
+                window.location.href = 'index.php'; 
             }
         });
     }

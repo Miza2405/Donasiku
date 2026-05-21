@@ -224,7 +224,7 @@
                     confirmButtonText: 'Menuju Halaman Login'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "login.html"; // Arahkan kembali ke halaman login
+                        window.location.href = "login.php"; // Arahkan kembali ke halaman login
                     }
                 });
             }, 1500);

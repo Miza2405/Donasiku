@@ -30,8 +30,8 @@
 
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold text-emerald" href="index.html">💚 DonasiKu</a>
-            <a href="donasi.html" class="btn btn-outline-secondary btn-sm rounded-pill"><i class="bi bi-arrow-left me-1"></i> Kembali</a>
+            <a class="navbar-brand fw-bold text-emerald" href="index.php">💚 DonasiKu</a>
+            <a href="donasi.php" class="btn btn-outline-secondary btn-sm rounded-pill"><i class="bi bi-arrow-left me-1"></i> Kembali</a>
         </div>
     </nav>
 
@@ -125,7 +125,7 @@
             let target = parseInt(sessionStorage.getItem("detail_target"));
             let kategori = sessionStorage.getItem("detail_kategori");
 
-            if(!judul) { window.location.href = "donasi.html"; return; }
+            if(!judul) { window.location.href = "donasi.php"; return; }
 
             let persentase = (terkumpul / target) * 100;
             if(persentase > 100) persentase = 100;
@@ -197,7 +197,7 @@
                     icon: 'warning', title: 'Harap Login Dahulu', text: 'Untuk melanjutkan transaksi, Anda harus masuk ke akun.',
                     showCancelButton: true, confirmButtonText: 'Login / Daftar', cancelButtonText: 'Batal', confirmButtonColor: '#059669'
                 }).then((result) => {
-                    if (result.isConfirmed) { window.location.href = 'auth.html'; }
+                    if (result.isConfirmed) { window.location.href = 'login.php'; }
                 });
                 return;
             }
@@ -210,7 +210,7 @@
             sessionStorage.setItem("checkout_nominal", nominal);
             sessionStorage.setItem("checkout_doa", doa);
 
-            window.location.href = "pembayaran.html";
+            window.location.href = "pembayaran.php";
         });
     </script>
 </body>

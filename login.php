@@ -8,7 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
     <style>
         body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #059669 0%, #34d399 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .text-emerald { color: #059669; }
@@ -32,7 +33,7 @@
                 <div class="col-md-5 d-none d-md-block illustration-bg"></div>
                 <div class="col-md-7 p-sm-5 p-4">
                     <div class="text-center mb-4">
-                        <a href="index.html" class="text-decoration-none"><h2 class="fw-bold text-emerald">💚 DonasiKu</h2></a>
+                        <a href="index.php" class="text-decoration-none"><h2 class="fw-bold text-emerald">💚 DonasiKu</h2></a>
                         <p class="text-muted">Selamat datang kembali, pahlawan kebaikan!</p>
                     </div>
                     
@@ -56,13 +57,15 @@
                                     <label class="form-label fw-semibold">Email</label>
                                     <input type="email" id="emailLogin" class="form-control" placeholder="Contoh: user@email.com" required>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label fw-semibold">Password</label>
-                                    <input type="password" id="passwordLogin" class="form-control" placeholder="Masukkan 12345" required>
+                                <div class="input-group mb-3">
+                                <input type="password" class="form-control" id="passwordLogin" placeholder="Password" required>
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="bi bi-eye" id="eyeIcon"></i>
+                                </button>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <div class="form-check"><input type="checkbox" class="form-check-input" id="rememberMe"><label class="form-check-label text-muted small" for="rememberMe">Ingat Saya</label></div>
-                                    <a href="resetpw.html" class="text-emerald text-decoration-none small fw-semibold">Lupa Password?</a>
+                                    <a href="resetpw.php" class="text-emerald text-decoration-none small fw-semibold">Lupa Password?</a>
                                 </div>
                                 <button type="submit" class="btn btn-emerald w-100 py-2">Masuk Sekarang</button>
                             </form>
@@ -78,7 +81,7 @@
                         </div>
 
                     </div>
-                    <div class="text-center mt-4"><a href="index.html" class="text-muted text-decoration-none small">← Kembali ke Beranda</a></div>
+                    <div class="text-center mt-4"><a href="index.php" class="text-muted text-decoration-none small">← Kembali ke Beranda</a></div>
                 </div>
             </div>
         </div>
@@ -97,7 +100,7 @@
         if (localStorage.getItem("isLoggedIn") === "true") {
             let role = localStorage.getItem("userRole");
             // Langsung lempar ke dashboard masing-masing
-            window.location.href = (role === "admin") ? "admin-dashboard.html" : "user-dashboard.html";
+            window.location.href = (role === "admin") ? "admin-dashboard.php" : "user-dashboard.php";
         }
     });
 
@@ -147,9 +150,9 @@
             timer: 1500 
         }).then(() => {
             if (role === "admin") { 
-                window.location.href = "admin-dashboard.html"; 
+                window.location.href = "admin-dashboard.php"; 
             } else { 
-                window.location.href = "user-dashboard.html"; 
+                window.location.href = "user-dashboard.php"; 
             }
         });
     }
@@ -163,8 +166,23 @@
             showConfirmButton: false, 
             timer: 1500 
         }).then(() => {
-            window.location.href = "verify-otp.html";
+            window.location.href = "verify-otp.php";
         });
+    });
+</script>
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#passwordLogin'); 
+    const eyeIcon = document.querySelector('#eyeIcon');
+
+    togglePassword.addEventListener('click', function (e) {
+        // Cek tipe input, jika password maka ubah jadi text, sebaliknya
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        
+        // Ganti ikon mata terbuka atau tertutup
+        eyeIcon.classList.toggle('bi-eye');
+        eyeIcon.classList.toggle('bi-eye-slash');
     });
 </script>
 </body>

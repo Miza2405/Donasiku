@@ -56,7 +56,7 @@
 <div class="wrapper">
     <!-- SIDEBAR NAVIGASI -->
     <nav id="sidebar" class="d-none d-md-block">
-        <div class="sidebar-header"><h3 class="fw-bold mb-0">💚 DonasiKu</h3><small>Panel Admin</small></div>
+        <div class="sidebar-header"><h3 class="fw-bold mb-0">🎁 DonasiKu</h3><small>Panel Admin</small></div>
         <ul class="list-unstyled components" id="menu-list">
             <li class="active" id="menu-dashboard"><a onclick="switchMenu('dashboard', 'Dashboard Utama')"><i class="bi bi-grid-1x2-fill me-2"></i> Dashboard</a></li>
             <li id="menu-program"><a onclick="switchMenu('program', 'Manajemen Program')"><i class="bi bi-box2-heart-fill me-2"></i> Program Donasi</a></li>
@@ -663,7 +663,7 @@
     function logout() {
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("userRole");
-        window.location.href = 'index.html'; 
+        window.location.href = 'index.php'; 
     }
 
     // FUNGSI INVOICE

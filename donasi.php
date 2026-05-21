@@ -1,83 +1,33 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Program Donasi - DonasiKu</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<?php include 'component/header.php'; ?>
 
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; padding-top: 76px; }
-        .text-emerald { color: #059669; } .bg-emerald { background-color: #059669; }
-        .navbar { background-color: #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .btn-emerald { background-color: #059669; color: white; border-radius: 8px; font-weight: 600; transition: 0.3s; }
-        .btn-emerald:hover { background-color: #047857; color: white; transform: translateY(-2px); }
-        
         .hero-catalog {
-
-    background: linear-gradient(
-        rgba(5, 150, 105, 0.7), 
-        rgba(5, 150, 105, 0.85)
-    ), 
-    url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1200&q=80'); 
-    
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    padding: 80px 0;
-    color: white;
-    text-align: center;
-}
+            background: linear-gradient(
+                rgba(5, 150, 105, 0.7), 
+                rgba(5, 150, 105, 0.85)
+            ), 
+            url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1200&q=80'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 80px 0;
+            color: white;
+            text-align: center;
+        }
+        
         /* Filter Tabs */
-        .nav-pills .nav-link { color: #64748b; font-weight: 600; border-radius: 50px; padding: 8px 20px; margin: 5px; transition: all 0.3s ease; border: 1px solid transparent; cursor: pointer; background-color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.02);}
+        .nav-pills .nav-link { 
+            color: #64748b; font-weight: 600; border-radius: 50px; padding: 8px 20px; margin: 5px; 
+            transition: all 0.3s ease; border: 1px solid transparent; cursor: pointer; 
+            background-color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
         .nav-pills .nav-link:hover { color: #059669; border-color: #059669; }
         .nav-pills .nav-link.active { background-color: #059669; color: white; border-color: #059669; box-shadow: 0 4px 10px rgba(5,150,105,0.2); }
-
-        /* Style Kartu Adara */
-        .adara-card { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #ffffff; transition: all 0.3s ease; cursor: pointer; text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%; text-align: left; }
-        .adara-card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); border-color: #059669; }
-        .adara-img-wrapper { position: relative; width: 100%; padding-top: 56.25%; overflow: hidden; background-color: #f1f5f9; }
-        .adara-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-        .adara-category-badge { position: absolute; top: 12px; left: 12px; background: rgba(255, 255, 255, 0.95); color: #ef4444; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .adara-body { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
-        .adara-title { font-size: 1.05rem; font-weight: 700; line-height: 1.4; margin-bottom: 10px; color: #1e293b; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .adara-creator { font-size: 0.8rem; color: #64748b; margin-bottom: 18px; display: flex; align-items: center; }
-        .adara-creator i { color: #0ea5e9; margin-right: 6px; font-size: 0.9rem; }
-        .adara-progress { height: 6px; border-radius: 10px; background-color: #f1f5f9; margin-bottom: 12px; }
-        .adara-progress .progress-bar { background-color: #ef4444; border-radius: 10px; } 
-        .adara-footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; }
-        .adara-amount-label { font-size: 0.75rem; color: #64748b; display: block; margin-bottom: 2px; }
-        .adara-amount { font-size: 1rem; font-weight: 700; color: #059669; }
-        .adara-days { font-size: 0.8rem; font-weight: 600; color: #ef4444; background: #fef2f2; border: 1px solid #fecaca; padding: 4px 10px; border-radius: 6px; }
 
         /* Efek Animasi Saat Filter Ditekan */
         .program-item { animation: fadeInScale 0.4s ease-in-out; }
         @keyframes fadeInScale { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
-
-        footer { background-color: #111827; color: #d1d5db; }
     </style>
-</head>
-<body>
-
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold text-emerald" href="index.html">💚 DonasiKu</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fw-semibold">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="donasi.html">Layanan Donasi</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">Tentang Kami</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html#kontak">Hubungi Kami</a></li>
-                </ul>
-                <div class="ms-lg-3" id="nav-auth-btn"><a href="auth.html" class="btn btn-emerald px-4 rounded-pill">Login / Daftar</a></div>
-            </div>
-        </div>
-    </nav>
 
     <header class="hero-catalog mb-4">
         <div class="container" data-aos="fade-down">
@@ -88,7 +38,6 @@
 
     <div class="container mb-5">
         
-        <!-- Filter Kategori -->
         <div class="d-flex justify-content-center flex-wrap mb-5" data-aos="fade-up" id="filter-container">
             <ul class="nav nav-pills justify-content-center">
                 <li class="nav-item"><button class="nav-link active filter-btn" data-filter="all">Semua Program</button></li>
@@ -103,7 +52,6 @@
 
         <div class="row g-4" id="program-list">
             
-            <!-- PROGRAM 1: Bencana -->
             <div class="col-md-4 col-sm-6 program-item" data-category="bencana">
                 <div class="adara-card" onclick="bukaDetail(event, 'Indonesia Darurat Bencana: Longsor & Banjir', 'https://akcdn.detik.net.id/visual/2025/11/27/longsor-di-malalak-timur-agam-1764227249858_169.jpeg?w=1200', '35076524', '100000000', 'Bencana Alam')">
                     <div class="adara-img-wrapper">
@@ -124,7 +72,6 @@
                 </div>
             </div>
 
-            <!-- PROGRAM 2: Pangan -->
             <div class="col-md-4 col-sm-6 program-item" data-category="pangan">
                 <div class="adara-card" onclick="bukaDetail(event, 'Berbagi Paket Sembako Untuk Keluarga Dhuafa', 'https://www.lead.co.id/wp-content/uploads/2020/04/IMG-20200404-WA0187.jpg', '18500000', '30000000', 'Pangan & Sembako')">
                     <div class="adara-img-wrapper">
@@ -145,7 +92,6 @@
                 </div>
             </div>
 
-            <!-- PROGRAM 3: Kesehatan -->
             <div class="col-md-4 col-sm-6 program-item" data-category="kesehatan">
                 <div class="adara-card" onclick="bukaDetail(event, 'Bantuan Medis Darurat & Kemanusiaan', 'https://images.unsplash.com/photo-1593113630400-ea4288922497?auto=format&fit=crop&w=800&q=80', '54560000', '100000000', 'Kesehatan')">
                     <div class="adara-img-wrapper">
@@ -166,7 +112,6 @@
                 </div>
             </div>
 
-            <!-- PROGRAM 4: Pangan -->
             <div class="col-md-4 col-sm-6 program-item" data-category="pangan">
                 <div class="adara-card" onclick="bukaDetail(event, 'Bantu Pangan dan Air Bersih Untuk Palestina', 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=600&q=80', '27066258', '200000000', 'Krisis Pangan')">
                     <div class="adara-img-wrapper">
@@ -187,7 +132,6 @@
                 </div>
             </div>
 
-            <!-- PROGRAM 5: Pendidikan -->
             <div class="col-md-4 col-sm-6 program-item" data-category="pendidikan">
                 <div class="adara-card" onclick="bukaDetail(event, 'Santunan Anak Yatim Pelosok Negeri', 'https://pantiyatim.or.id/wp-content/uploads/2020/11/anak-yatim.jpeg', '12400000', '50000000', 'Pendidikan')">
                     <div class="adara-img-wrapper">
@@ -208,7 +152,6 @@
                 </div>
             </div>
 
-            <!-- PROGRAM 6: Pemberdayaan -->
             <div class="col-md-4 col-sm-6 program-item" data-category="pemberdayaan">
                 <div class="adara-card" onclick="bukaDetail(event, 'Bantuan Modal Usaha Untuk Ibu Tangguh', 'https://cdn0-production-images-kly.akamaized.net/gzchwijL4F4IEVmk-0wP9C21_Js=/0x96:999x659/500x281/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3512811/original/005192600_1626421965-shutterstock_2004727295.jpg', '8000000', '20000000', 'Pemberdayaan')">
                     <div class="adara-img-wrapper">
@@ -229,7 +172,6 @@
                 </div>
             </div>
 
-            <!-- PROGRAM 7: Pembangunan -->
             <div class="col-md-4 col-sm-6 program-item" data-category="pembangunan">
                 <div class="adara-card" onclick="bukaDetail(event, 'Pembangunan Masjid Pelosok Desa', 'https://pro.kutaitimurkab.go.id/wp-content/uploads/2025/06/a59864bd-0917-49ca-a55d-3549fffe2210-1024x684.jpeg', '250000000', '500000000', 'Pembangunan')">
                     <div class="adara-img-wrapper">
@@ -250,7 +192,6 @@
                 </div>
             </div>
 
-            <!-- PROGRAM 8: Pendidikan -->
             <div class="col-md-4 col-sm-6 program-item" data-category="pendidikan">
                 <div class="adara-card" onclick="bukaDetail(event, 'Beasiswa Santri Penghafal Quran', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwWyWUtVCOybBsE-XXfPNVywMlvGP5NSTdPw&s', '45000000', '150000000', 'Pendidikan')">
                     <div class="adara-img-wrapper">
@@ -271,7 +212,6 @@
                 </div>
             </div>
 
-            <!-- PROGRAM 9: Pangan -->
             <div class="col-md-4 col-sm-6 program-item" data-category="pangan">
                 <div class="adara-card" onclick="bukaDetail(event, 'Sedekah Makanan Untuk Pekerja Jalanan', 'https://d1jvl8fx4qy5cj.cloudfront.net/wp-content/uploads/2020/05/Pemulung_89206118_1589299356.jpg', '5200000', '10000000', 'Pangan & Sembako')">
                     <div class="adara-img-wrapper">
@@ -295,106 +235,4 @@
         </div>
     </div>
 
-    <!-- FOOTER GLOBAL -->
-    <footer class="py-4 text-center mt-auto">
-        <div class="container">
-            <h4 class="text-emerald fw-bold mb-3">💚 DonasiKu</h4>
-            <p class="mb-0">© 2026 DonasiKu. Dibuat dengan niat baik untuk sesama.</p>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        AOS.init({ once: true, offset: 50 });
-
-        // NAVBAR LOGIN CHECK & DROPDOWN PROFIL
-        document.addEventListener("DOMContentLoaded", function() {
-            let statusLogin = localStorage.getItem("isLoggedIn");
-            if (statusLogin === "true") {
-                let name = localStorage.getItem("userName") || "User";
-                let avatar = localStorage.getItem("avatarUrl") || `https://ui-avatars.com/api/?name=${name}&background=059669&color=fff`;
-                let userRole = localStorage.getItem("userRole");
-                let dashboardLink = (userRole === "admin") ? "admin-dashboard.html" : "user-dashboard.html";
-
-                document.getElementById('nav-auth-btn').innerHTML = `
-                    <div class="dropdown">
-                        <a class="text-decoration-none d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="${avatar}" style="object-fit:cover;" class="rounded-circle border border-2 border-success shadow-sm" width="40" height="40">
-                            <span class="fw-bold text-dark ms-2 d-none d-lg-block">Halo, ${name.split(' ')[0]}</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 mt-3" style="border-radius: 12px; min-width: 200px;">
-                            <li><a class="dropdown-item py-2 fw-semibold" href="${dashboardLink}"><i class="bi bi-grid-1x2-fill me-2 text-emerald"></i> Dashboard</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item py-2 fw-bold text-danger" href="#" onclick="logoutDariNavbar(event)"><i class="bi bi-box-arrow-right me-2"></i> Keluar</a></li>
-                        </ul>
-                    </div>`;
-            }
-
-            // FUNGSI LOGIKA FILTER TAB
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            const programItems = document.querySelectorAll('.program-item');
-
-            filterButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-
-                    const filterValue = this.getAttribute('data-filter');
-
-                    programItems.forEach(item => {
-                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
-                            item.style.display = 'block'; 
-                        } else {
-                            item.style.display = 'none'; 
-                        }
-                    });
-                });
-            });
-        });
-
-        // FUNGSI CEK LOGIN SEBELUM BUKA DETAIL
-        function bukaDetail(event, judul, gambar, terkumpul, target, kategori) {
-            event.preventDefault();
-            let statusLogin = localStorage.getItem("isLoggedIn");
-
-            if (statusLogin === "true") {
-                sessionStorage.setItem("detail_judul", judul);
-                sessionStorage.setItem("detail_gambar", gambar);
-                sessionStorage.setItem("detail_terkumpul", terkumpul);
-                sessionStorage.setItem("detail_target", target);
-                sessionStorage.setItem("detail_kategori", kategori);
-                window.location.href = "detail-donasi.html";
-            } else {
-                Swal.fire({
-                    icon: 'warning', title: 'Harap Login Dahulu', 
-                    text: 'Untuk melihat detail program dan berdonasi, Anda wajib masuk menggunakan akun yang terdaftar.',
-                    showCancelButton: true, confirmButtonColor: '#059669', cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Login / Daftar Sekarang', cancelButtonText: 'Batal', reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) { window.location.href = 'auth.html'; }
-                });
-            }
-        }
-
-        // FUNGSI LOGOUT
-        function logoutDariNavbar(event) {
-            event.preventDefault();
-            Swal.fire({
-                icon: 'question', title: 'Keluar Akun?', text: 'Anda yakin ingin keluar dari sesi ini?',
-                showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, Keluar', cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    localStorage.removeItem("isLoggedIn");
-                    localStorage.removeItem("userRole");
-                    localStorage.removeItem("userName");
-                    localStorage.removeItem("avatarUrl");
-                    window.location.reload(); 
-                }
-            });
-        }
-    </script>
-</body>
-</html>
+<?php include 'component/footer.php'; ?>

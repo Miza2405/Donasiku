@@ -23,7 +23,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container d-flex justify-content-center">
-            <a class="navbar-brand fw-bold text-emerald fs-4" href="index.html">💚 DonasiKu <span class="text-muted fs-6 fw-normal">| Checkout Aman</span></a>
+            <a class="navbar-brand fw-bold text-emerald fs-4" href="index.php">💚 DonasiKu <span class="text-muted fs-6 fw-normal">| Checkout Aman</span></a>
         </div>
     </nav>
 
@@ -32,7 +32,7 @@
             <div class="col-lg-8">
                 <div class="checkout-card p-4 p-md-5">
                     
-                    <a href="donasi.html" class="text-decoration-none text-muted mb-4 d-block"><i class="bi bi-arrow-left me-2"></i>Kembali ke Program</a>
+                    <a href="donasi.php" class="text-decoration-none text-muted mb-4 d-block"><i class="bi bi-arrow-left me-2"></i>Kembali ke Program</a>
                     
                     <h4 class="fw-bold mb-4 border-bottom pb-3">Rincian Donasi Anda</h4>
                     
@@ -102,7 +102,7 @@
             let nominal = sessionStorage.getItem("checkout_nominal");
             
             if (!program || !nominal) {
-                window.location.href = "donasi.html";
+                window.location.href = "donasi.php";
                 return;
             }
 
@@ -158,7 +158,7 @@
                 showConfirmButton: false,
                 timer: 2500
             }).then(() => {
-                window.location.href = "user-dashboard.html";
+                window.location.href = "user-dashboard.php";
             });
         }
     </script>

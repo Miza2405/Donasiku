@@ -88,7 +88,7 @@
                 </form>
 
                 <div class="mt-2">
-                    <a href="login.html" class="text-emerald text-decoration-none fw-semibold">
+                    <a href="login.php" class="text-emerald text-decoration-none fw-semibold">
                         <i class="bi bi-arrow-left me-1"></i> Kembali ke Halaman Login
                     </a>
                 </div>
@@ -128,7 +128,7 @@
                 confirmButtonText: 'Kembali ke Login'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = "login.html";
+                    window.location.href = "login.php";
                 }
             });
         }, 1500);
