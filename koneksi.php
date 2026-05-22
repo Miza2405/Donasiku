@@ -1,9 +1,10 @@
 <?php
 
-$koneksi = mysqli_connect('localhost', 'root','','dbdonasiku' )
+$koneksi = mysqli_connect('localhost', 'root','','dbdonasiku' );
+
 if ($koneksi) {
     echo "Koneksi bershasil";
-} else ($koneksi) {
+} else {
     echo "Koneksi gagal";
 }
 ?>
