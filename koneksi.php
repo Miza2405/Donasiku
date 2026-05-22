@@ -1,6 +1,6 @@
 <?php
 
-$koneksi = mysqli_connect('localhost', 'root','','nama_database' )
+$koneksi = mysqli_connect('localhost', 'root','','dbdonasiku' )
 if ($koneksi) {
     echo "Koneksi bershasil";
 } else ($koneksi) {
