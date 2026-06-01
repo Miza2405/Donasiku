@@ -1,0 +1,29 @@
+[
+    {
+        "id": "m6a1d8176bef2c",
+        "type": "qris",
+        "name": "QRIS SEMUA PEMBAYARAN",
+        "account": "SCAN QRIS",
+        "owner": "kiweng",
+        "image": "qris/QRIS.jpg",
+        "active": true
+    },
+    {
+        "id": "m6a1d81c3ae491",
+        "type": "bank",
+        "name": "BNI",
+        "account": "12345678",
+        "owner": "Donasiku",
+        "image": null,
+        "active": true
+    },
+    {
+        "id": "m6a1d81d800157",
+        "type": "ewallet",
+        "name": "Gopay",
+        "account": "0897654321",
+        "owner": "Yayasan Donasiku",
+        "image": null,
+        "active": true
+    }
+]

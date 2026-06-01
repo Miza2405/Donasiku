@@ -1,238 +1,356 @@
 <?php include 'component/header.php'; ?>
 
-    <style>
-        .hero-catalog {
-            background: linear-gradient(
-                rgba(5, 150, 105, 0.7), 
-                rgba(5, 150, 105, 0.85)
-            ), 
-            url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1200&q=80'); 
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            padding: 80px 0;
-            color: white;
-            text-align: center;
-        }
-        
-        /* Filter Tabs */
-        .nav-pills .nav-link { 
-            color: #64748b; font-weight: 600; border-radius: 50px; padding: 8px 20px; margin: 5px; 
-            transition: all 0.3s ease; border: 1px solid transparent; cursor: pointer; 
-            background-color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        }
-        .nav-pills .nav-link:hover { color: #059669; border-color: #059669; }
-        .nav-pills .nav-link.active { background-color: #059669; color: white; border-color: #059669; box-shadow: 0 4px 10px rgba(5,150,105,0.2); }
+<style>
+    .hero-catalog {
+        background:
+            linear-gradient(rgba(5, 150, 105, 0.7), rgba(5, 150, 105, 0.85)),
+            url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1200&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        padding: 80px 0;
+        color: white;
+        text-align: center;
+    }
 
-        /* Efek Animasi Saat Filter Ditekan */
-        .program-item { animation: fadeInScale 0.4s ease-in-out; }
-        @keyframes fadeInScale { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
-    </style>
+    .nav-pills .nav-link {
+        color: #64748b;
+        font-weight: 600;
+        border-radius: 50px;
+        padding: 8px 20px;
+        margin: 5px;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+        cursor: pointer;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+    }
 
-    <header class="hero-catalog mb-4">
-        <div class="container" data-aos="fade-down">
-            <h2 class="fw-bold mb-2">Pilih Program Kebaikan</h2>
-            <p class="lead mb-0">Temukan kampanye donasi yang ingin Anda bantu hari ini.</p>
-        </div>
-    </header>
+    .nav-pills .nav-link:hover {
+        color: #059669;
+        border-color: #059669;
+    }
 
-    <div class="container mb-5">
-        
-        <div class="d-flex justify-content-center flex-wrap mb-5" data-aos="fade-up" id="filter-container">
-            <ul class="nav nav-pills justify-content-center">
-                <li class="nav-item"><button class="nav-link active filter-btn" data-filter="all">Semua Program</button></li>
-                <li class="nav-item"><button class="nav-link filter-btn" data-filter="bencana">Bencana Alam</button></li>
-                <li class="nav-item"><button class="nav-link filter-btn" data-filter="pangan">Pangan & Sembako</button></li>
-                <li class="nav-item"><button class="nav-link filter-btn" data-filter="kesehatan">Kesehatan</button></li>
-                <li class="nav-item"><button class="nav-link filter-btn" data-filter="pendidikan">Pendidikan</button></li>
-                <li class="nav-item"><button class="nav-link filter-btn" data-filter="pembangunan">Pembangunan</button></li>
-                <li class="nav-item"><button class="nav-link filter-btn" data-filter="pemberdayaan">Pemberdayaan</button></li>
-            </ul>
-        </div>
+    .nav-pills .nav-link.active {
+        background-color: #059669;
+        color: white;
+        border-color: #059669;
+        box-shadow: 0 4px 10px rgba(5, 150, 105, 0.2);
+    }
 
-        <div class="row g-4" id="program-list">
-            
-            <div class="col-md-4 col-sm-6 program-item" data-category="bencana">
-                <div class="adara-card" onclick="bukaDetail(event, 'Indonesia Darurat Bencana: Longsor & Banjir', 'https://akcdn.detik.net.id/visual/2025/11/27/longsor-di-malalak-timur-agam-1764227249858_169.jpeg?w=1200', '35076524', '100000000', 'Bencana Alam')">
-                    <div class="adara-img-wrapper">
-                        <img src="https://akcdn.detik.net.id/visual/2025/11/27/longsor-di-malalak-timur-agam-1764227249858_169.jpeg?w=1200" class="adara-img" alt="Bencana">
-                        <span class="adara-category-badge"><i class="bi bi-tsunami"></i> Bencana Alam</span>
-                    </div>
-                    <div class="adara-body">
-                        <h3 class="adara-title">Indonesia Darurat Bencana: Longsor & Banjir</h3>
-                        <div class="adara-creator"><i class="bi bi-patch-check-fill"></i> Yayasan DonasiKu Nasional</div>
-                        <div class="mt-auto">
-                            <div class="progress adara-progress"><div class="progress-bar" style="width: 78%"></div></div>
-                            <div class="adara-footer">
-                                <div><span class="adara-amount-label">Terkumpul</span><span class="adara-amount">Rp 35.076.524</span></div>
-                                <div class="adara-days">7 Hari Lagi</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    .program-card {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        border: none;
+    }
 
-            <div class="col-md-4 col-sm-6 program-item" data-category="pangan">
-                <div class="adara-card" onclick="bukaDetail(event, 'Berbagi Paket Sembako Untuk Keluarga Dhuafa', 'https://www.lead.co.id/wp-content/uploads/2020/04/IMG-20200404-WA0187.jpg', '18500000', '30000000', 'Pangan & Sembako')">
-                    <div class="adara-img-wrapper">
-                        <img src="https://www.lead.co.id/wp-content/uploads/2020/04/IMG-20200404-WA0187.jpg" class="adara-img" alt="Sembako">
-                        <span class="adara-category-badge" style="color: #f59e0b;"><i class="bi bi-bag-heart-fill"></i> Pangan & Sembako</span>
-                    </div>
-                    <div class="adara-body">
-                        <h3 class="adara-title">Berbagi Paket Sembako Untuk Keluarga Dhuafa</h3>
-                        <div class="adara-creator"><i class="bi bi-patch-check-fill"></i> Yayasan DonasiKu Nasional</div>
-                        <div class="mt-auto">
-                            <div class="progress adara-progress"><div class="progress-bar" style="width: 61%; background-color: #f59e0b;"></div></div>
-                            <div class="adara-footer">
-                                <div><span class="adara-amount-label">Terkumpul</span><span class="adara-amount">Rp 18.500.000</span></div>
-                                <div class="adara-days" style="color: #d97706; background: #fffbeb; border-color: #fde68a;">20 Hari Lagi</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    .program-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
 
-            <div class="col-md-4 col-sm-6 program-item" data-category="kesehatan">
-                <div class="adara-card" onclick="bukaDetail(event, 'Bantuan Medis Darurat & Kemanusiaan', 'https://images.unsplash.com/photo-1593113630400-ea4288922497?auto=format&fit=crop&w=800&q=80', '54560000', '100000000', 'Kesehatan')">
-                    <div class="adara-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1593113630400-ea4288922497?auto=format&fit=crop&w=800&q=80" class="adara-img" alt="Bantuan Medis">
-                        <span class="adara-category-badge"><i class="bi bi-heart-pulse-fill"></i> Kesehatan</span>
-                    </div>
-                    <div class="adara-body">
-                        <h3 class="adara-title">Bantuan Medis Darurat & Kemanusiaan</h3>
-                        <div class="adara-creator"><i class="bi bi-patch-check-fill"></i> Yayasan DonasiKu Nasional</div>
-                        <div class="mt-auto">
-                            <div class="progress adara-progress"><div class="progress-bar" style="width: 54%"></div></div>
-                            <div class="adara-footer">
-                                <div><span class="adara-amount-label">Terkumpul</span><span class="adara-amount">Rp 54.560.000</span></div>
-                                <div class="adara-days">12 Hari Lagi</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    .program-image {
+        height: 200px;
+        object-fit: cover;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
 
-            <div class="col-md-4 col-sm-6 program-item" data-category="pangan">
-                <div class="adara-card" onclick="bukaDetail(event, 'Bantu Pangan dan Air Bersih Untuk Palestina', 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=600&q=80', '27066258', '200000000', 'Krisis Pangan')">
-                    <div class="adara-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=600&q=80" class="adara-img" alt="Pangan Palestina">
-                        <span class="adara-category-badge"><i class="bi bi-basket-fill"></i> Krisis Pangan</span>
-                    </div>
-                    <div class="adara-body">
-                        <h3 class="adara-title">Bantu Pangan dan Air Bersih Untuk Palestina</h3>
-                        <div class="adara-creator"><i class="bi bi-patch-check-fill"></i> Yayasan DonasiKu Nasional</div>
-                        <div class="mt-auto">
-                            <div class="progress adara-progress"><div class="progress-bar" style="width: 45%"></div></div>
-                            <div class="adara-footer">
-                                <div><span class="adara-amount-label">Terkumpul</span><span class="adara-amount">Rp 27.066.258</span></div>
-                                <div class="adara-days">Tanpa Batas</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    .progress-container {
+        padding: 15px;
+    }
 
-            <div class="col-md-4 col-sm-6 program-item" data-category="pendidikan">
-                <div class="adara-card" onclick="bukaDetail(event, 'Santunan Anak Yatim Pelosok Negeri', 'https://pantiyatim.or.id/wp-content/uploads/2020/11/anak-yatim.jpeg', '12400000', '50000000', 'Pendidikan')">
-                    <div class="adara-img-wrapper">
-                        <img src="https://pantiyatim.or.id/wp-content/uploads/2020/11/anak-yatim.jpeg" class="adara-img" alt="Santunan Yatim">
-                        <span class="adara-category-badge" style="color: #0ea5e9;"><i class="bi bi-book-fill"></i> Pendidikan</span>
-                    </div>
-                    <div class="adara-body">
-                        <h3 class="adara-title">Santunan Anak Yatim Pelosok Negeri</h3>
-                        <div class="adara-creator"><i class="bi bi-patch-check-fill"></i> Yayasan DonasiKu Nasional</div>
-                        <div class="mt-auto">
-                            <div class="progress adara-progress"><div class="progress-bar" style="width: 25%; background-color: #0ea5e9;"></div></div>
-                            <div class="adara-footer">
-                                <div><span class="adara-amount-label">Terkumpul</span><span class="adara-amount">Rp 12.400.000</span></div>
-                                <div class="adara-days" style="color: #0ea5e9; background: #f0f9ff; border-color: #bae6fd;">Tanpa Batas</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    .progress-bar {
+        background-color: #059669;
+    }
 
-            <div class="col-md-4 col-sm-6 program-item" data-category="pemberdayaan">
-                <div class="adara-card" onclick="bukaDetail(event, 'Bantuan Modal Usaha Untuk Ibu Tangguh', 'https://cdn0-production-images-kly.akamaized.net/gzchwijL4F4IEVmk-0wP9C21_Js=/0x96:999x659/500x281/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3512811/original/005192600_1626421965-shutterstock_2004727295.jpg', '8000000', '20000000', 'Pemberdayaan')">
-                    <div class="adara-img-wrapper">
-                        <img src="https://cdn0-production-images-kly.akamaized.net/gzchwijL4F4IEVmk-0wP9C21_Js=/0x96:999x659/500x281/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3512811/original/005192600_1626421965-shutterstock_2004727295.jpg" class="adara-img" alt="Modal Usaha">
-                        <span class="adara-category-badge" style="color: #8b5cf6;"><i class="bi bi-shop"></i> Pemberdayaan</span>
-                    </div>
-                    <div class="adara-body">
-                        <h3 class="adara-title">Bantuan Modal Usaha Untuk Ibu Tangguh</h3>
-                        <div class="adara-creator"><i class="bi bi-patch-check-fill"></i> Yayasan DonasiKu Nasional</div>
-                        <div class="mt-auto">
-                            <div class="progress adara-progress"><div class="progress-bar" style="width: 40%; background-color: #8b5cf6;"></div></div>
-                            <div class="adara-footer">
-                                <div><span class="adara-amount-label">Terkumpul</span><span class="adara-amount">Rp 8.000.000</span></div>
-                                <div class="adara-days" style="color: #8b5cf6; background: #f5f3ff; border-color: #ddd6fe;">15 Hari Lagi</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    .category-badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
 
-            <div class="col-md-4 col-sm-6 program-item" data-category="pembangunan">
-                <div class="adara-card" onclick="bukaDetail(event, 'Pembangunan Masjid Pelosok Desa', 'https://pro.kutaitimurkab.go.id/wp-content/uploads/2025/06/a59864bd-0917-49ca-a55d-3549fffe2210-1024x684.jpeg', '250000000', '500000000', 'Pembangunan')">
-                    <div class="adara-img-wrapper">
-                        <img src="https://pro.kutaitimurkab.go.id/wp-content/uploads/2025/06/a59864bd-0917-49ca-a55d-3549fffe2210-1024x684.jpeg" class="adara-img" alt="Pembangunan Masjid">
-                        <span class="adara-category-badge" style="color: #059669;"><i class="bi bi-bricks"></i> Pembangunan</span>
-                    </div>
-                    <div class="adara-body">
-                        <h3 class="adara-title">Pembangunan Masjid Pelosok Desa</h3>
-                        <div class="adara-creator"><i class="bi bi-patch-check-fill"></i> Yayasan DonasiKu Nasional</div>
-                        <div class="mt-auto">
-                            <div class="progress adara-progress"><div class="progress-bar" style="width: 50%; background-color: #059669;"></div></div>
-                            <div class="adara-footer">
-                                <div><span class="adara-amount-label">Terkumpul</span><span class="adara-amount">Rp 250.000.000</span></div>
-                                <div class="adara-days" style="color: #059669; background: #f0fdf4; border-color: #a7f3d0;">45 Hari Lagi</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    /* Style untuk Badge Timer Real-time */
+    .timer-badge {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        border: 1px solid #ffeeba;
+    }
+    .timer-badge.danger {
+        background-color: #f8d7da;
+        color: #842029;
+        border-color: #f5c2c7;
+    }
 
-            <div class="col-md-4 col-sm-6 program-item" data-category="pendidikan">
-                <div class="adara-card" onclick="bukaDetail(event, 'Beasiswa Santri Penghafal Quran', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwWyWUtVCOybBsE-XXfPNVywMlvGP5NSTdPw&s', '45000000', '150000000', 'Pendidikan')">
-                    <div class="adara-img-wrapper">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwWyWUtVCOybBsE-XXfPNVywMlvGP5NSTdPw&s=10" class="adara-img" alt="Beasiswa Santri">
-                        <span class="adara-category-badge" style="color: #0ea5e9;"><i class="bi bi-mortarboard-fill"></i> Pendidikan</span>
-                    </div>
-                    <div class="adara-body">
-                        <h3 class="adara-title">Beasiswa Pendidikan Santri Penghafal Quran</h3>
-                        <div class="adara-creator"><i class="bi bi-patch-check-fill"></i> Yayasan DonasiKu Nasional</div>
-                        <div class="mt-auto">
-                            <div class="progress adara-progress"><div class="progress-bar" style="width: 30%; background-color: #0ea5e9;"></div></div>
-                            <div class="adara-footer">
-                                <div><span class="adara-amount-label">Terkumpul</span><span class="adara-amount">Rp 45.000.000</span></div>
-                                <div class="adara-days" style="color: #0ea5e9; background: #f0f9ff; border-color: #bae6fd;">30 Hari Lagi</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    .category-jariyah { background: #e0f2fe; color: #0369a1; }
+    .category-yatim { background: #fef3c7; color: #b45309; }
+    .category-pangan { background: #dcfce7; color: #15803d; }
+    .category-darurat { background: #fee2e2; color: #b91c1c; }
 
-            <div class="col-md-4 col-sm-6 program-item" data-category="pangan">
-                <div class="adara-card" onclick="bukaDetail(event, 'Sedekah Makanan Untuk Pekerja Jalanan', 'https://d1jvl8fx4qy5cj.cloudfront.net/wp-content/uploads/2020/05/Pemulung_89206118_1589299356.jpg', '5200000', '10000000', 'Pangan & Sembako')">
-                    <div class="adara-img-wrapper">
-                        <img src="https://d1jvl8fx4qy5cj.cloudfront.net/wp-content/uploads/2020/05/Pemulung_89206118_1589299356.jpg" class="adara-img" alt="Makanan">
-                        <span class="adara-category-badge" style="color: #f59e0b;"><i class="bi bi-cup-hot-fill"></i> Pangan & Sembako</span>
-                    </div>
-                    <div class="adara-body">
-                        <h3 class="adara-title">Sedekah Makanan Hangat Untuk Pekerja Jalanan</h3>
-                        <div class="adara-creator"><i class="bi bi-patch-check-fill"></i> Yayasan DonasiKu Nasional</div>
-                        <div class="mt-auto">
-                            <div class="progress adara-progress"><div class="progress-bar" style="width: 52%; background-color: #f59e0b;"></div></div>
-                            <div class="adara-footer">
-                                <div><span class="adara-amount-label">Terkumpul</span><span class="adara-amount">Rp 5.200.000</span></div>
-                                <div class="adara-days" style="color: #d97706; background: #fffbeb; border-color: #fde68a;">Setiap Jumat</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    @keyframes fadeInScale {
+        0% { opacity: 0; transform: scale(0.95); }
+        100% { opacity: 1; transform: scale(1); }
+    }
 
-        </div>
+    .program-item {
+        animation: fadeInScale 0.4s ease-in-out;
+    }
+
+    .loading-spinner {
+        text-align: center;
+        padding: 40px;
+    }
+</style>
+
+<!-- Tambahkan CDN Bootstrap Icon jika belum ada di header -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<header class="hero-catalog mb-4">
+    <div class="container" data-aos="fade-down">
+        <h2 class="fw-bold mb-2">Pilih Program Kebaikan</h2>
+        <p class="lead mb-0">Temukan kampanye donasi yang ingin Anda bantu hari ini.</p>
+    </div>
+</header>
+
+<div class="container mb-5">
+    <!-- Filter Navigasi -->
+    <div class="d-flex justify-content-center flex-wrap mb-5" data-aos="fade-up" id="filter-container">
+        <ul class="nav nav-pills justify-content-center">
+            <li class="nav-item">
+                <button class="nav-link active filter-btn" data-filter="all">Semua Program</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link filter-btn" data-filter="jariyah">Sedekah Jariyah</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link filter-btn" data-filter="yatim">Anak Yatim</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link filter-btn" data-filter="pangan">Pangan</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link filter-btn" data-filter="darurat">Darurat</button>
+            </li>
+        </ul>
     </div>
 
+    <!-- Status Loading -->
+    <div id="loading" class="loading-spinner" style="display: none;">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2 text-muted">Memuat program donasi...</p>
+    </div>
+
+    <!-- Status Jika Kosong -->
+    <div id="empty-state" class="text-center py-5" style="display: none;">
+        <i class="bi bi-inbox fs-1 text-muted"></i>
+        <h5 class="mt-3 text-muted">Belum ada program donasi.</h5>
+    </div>
+
+    <!-- Container Program -->
+    <div class="row" id="programs-container">
+        <!-- Programs dirender di sini -->
+    </div>
+</div>
+
 <?php include 'component/footer.php'; ?>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    let allPrograms = []; 
+    let timerInterval; // Variabel penampung interval timer
+
+    function formatCurrency(value) {
+        return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
+    }
+
+    function getCategoryClass(category) {
+        return 'category-' + (category || 'jariyah');
+    }
+
+    function getCategoryLabel(category) {
+        const labels = {
+            jariyah: 'Sedekah Jariyah',
+            yatim: 'Anak Yatim',
+            pangan: 'Pangan',
+            darurat: 'Darurat'
+        };
+        return labels[category] || category || 'Lainnya';
+    }
+
+    // Fungsi Render HTML Kartu Donasi
+    function createProgramCard(program) {
+        const progress = program.target_amount > 0 
+            ? Math.min(100, Math.round((program.collected_amount / program.target_amount) * 100))
+            : 0;
+            
+        const imageUrl = program.image_url ? program.image_url : 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=600&q=80';
+        
+        // Ambil end_date dari database. Jika tidak ada, default +30 hari dari sekarang agar fitur timer tetap bisa didemonstrasikan.
+        const fallbackDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+        const targetDate = program.end_date ? program.end_date : fallbackDate;
+
+        return (
+            '<div class="col-lg-4 col-md-6 mb-4 program-item">' +
+                '<div class="card program-card h-100">' +
+                    '<img src="' + imageUrl + '" class="card-img-top program-image" alt="' + program.title + '">' +
+                    '<div class="card-body d-flex flex-column">' +
+                        
+                        // Bagian Badge Kategori & Timer
+                        '<div class="d-flex justify-content-between align-items-start mb-2">' +
+                            '<span class="category-badge ' + getCategoryClass(program.category) + '">' +
+                                getCategoryLabel(program.category) +
+                            '</span>' +
+                            '<div class="timer-badge" data-enddate="' + targetDate + '">' +
+                                '<i class="bi bi-clock"></i> <span class="time-text">Menghitung...</span>' +
+                            '</div>' +
+                        '</div>' +
+
+                        '<h5 class="card-title fw-bold mt-1">' + program.title + '</h5>' +
+                        '<p class="card-text text-muted small flex-grow-1">' +
+                            (program.description ? program.description.substring(0, 100) + '...' : 'Program donasi untuk kebaikan bersama.') +
+                        '</p>' +
+                        '<div class="mt-auto">' +
+                            '<div class="d-flex justify-content-between small mb-1">' +
+                                '<span class="text-muted">Terkumpul</span>' +
+                                '<span class="fw-bold text-success">' + progress + '%</span>' +
+                            '</div>' +
+                            '<div class="progress mb-2" style="height: 8px;">' +
+                                '<div class="progress-bar" role="progressbar" style="width: ' + progress + '%"></div>' +
+                            '</div>' +
+                            '<div class="d-flex justify-content-between">' +
+                                '<small class="fw-bold">' + formatCurrency(program.collected_amount || 0) + '</small>' +
+                                '<small class="text-muted">Target: ' + formatCurrency(program.target_amount || 0) + '</small>' +
+                            '</div>' +
+                            
+                            '<a href="detail-donasi.php?id=' + program.id + '" class="btn btn-success w-100 mt-3 fw-bold d-block text-center text-decoration-none">' +
+                                'Berikan Donasi' +
+                            '</a>' +
+
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>'
+        );
+    }
+
+    // Fungsi Update Countdown Secara Real-time
+    function startCountdown() {
+        if (timerInterval) clearInterval(timerInterval);
+
+        timerInterval = setInterval(() => {
+            const timerElements = document.querySelectorAll('.timer-badge');
+            
+            timerElements.forEach(badge => {
+                const endDateStr = badge.getAttribute('data-enddate');
+                const timeText = badge.querySelector('.time-text');
+                
+                const countDownDate = new Date(endDateStr).getTime();
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+
+                // Jika waktu sudah habis
+                if (distance < 0) {
+                    timeText.innerHTML = "Berakhir";
+                    badge.classList.add('danger'); // Mengubah warna jadi merah
+                    return;
+                }
+
+                // Kalkulasi waktu
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Format tampilan teks
+                if (days > 0) {
+                    timeText.innerHTML = days + " Hari " + hours + " Jam";
+                } else if (hours > 0) {
+                    timeText.innerHTML = hours + " Jam " + minutes + " Mnt";
+                } else {
+                    timeText.innerHTML = minutes + " Mnt " + seconds + " Dtk";
+                    badge.classList.add('danger'); // Ubah merah jika sisa waktu < 1 jam
+                }
+            });
+        }, 1000); // Update setiap 1 detik (1000 ms)
+    }
+
+    // Tampilkan Program ke HTML
+    function displayPrograms(programs) {
+        const container = document.getElementById('programs-container');
+        const emptyState = document.getElementById('empty-state');
+        
+        if (programs.length === 0) {
+            container.innerHTML = '';
+            emptyState.style.display = 'block';
+            return;
+        }
+        
+        emptyState.style.display = 'none';
+        container.innerHTML = programs.map(createProgramCard).join('');
+        
+        // Memulai hitung mundur setiap kali kartu selesai dicetak
+        startCountdown();
+    }
+
+    function showError(message) {
+        document.getElementById('loading').style.display = 'none';
+        Swal.fire({ icon: 'error', title: 'Gagal Memuat Data', text: message });
+    }
+
+    async function loadPrograms() {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('programs-container').innerHTML = '';
+        
+        try {
+            const response = await fetch('./api/programs.php?action=list');
+            const result = await response.json();
+            
+            document.getElementById('loading').style.display = 'none';
+            
+            if (response.ok && result.success) {
+                allPrograms = result.data || [];
+                displayPrograms(allPrograms); 
+            } else {
+                showError(result.message || 'Gagal mengambil data program.');
+            }
+        } catch (error) {
+            console.error('Error fetching programs:', error);
+            showError('Terjadi kesalahan koneksi saat memuat data dari server.');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadPrograms(); 
+        
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filterValue = this.getAttribute('data-filter');
+                
+                if (filterValue === 'all') {
+                    displayPrograms(allPrograms);
+                } else {
+                    const filteredPrograms = allPrograms.filter(p => p.category === filterValue);
+                    displayPrograms(filteredPrograms);
+                }
+            });
+        });
+    });
+</script>

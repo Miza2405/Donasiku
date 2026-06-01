@@ -1,10 +1,19 @@
 <?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "db_donasiku";
 
-$koneksi = mysqli_connect('localhost', 'root','','dbdonasiku' );
+    $koneksi = new mysqli($servername, $username, $password, $database);
 
-if ($koneksi) {
-    echo "Koneksi bershasil";
-} else {
-    echo "Koneksi gagal";
-}
+    if ($koneksi->connect_error) {
+        die("Gagal: " . $koneksi->connect_error);
+    }
+
+    // Tampilkan pesan hanya saat file diakses langsung
+    if (basename($_SERVER['PHP_SELF']) == 'koneksi.php') {
+        echo "Berhasil terhubung ke database donasiku";
+    }
+
+    $koneksi->set_charset("utf8mb4");
 ?>

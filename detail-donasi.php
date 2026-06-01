@@ -84,17 +84,17 @@
                     <form id="formCheckout">
                         <h6 class="fw-bold mb-3">Pilih Nominal Donasi</h6>
                         <div class="row g-2 mb-3">
-                            <div class="col-6"><button type="button" class="btn btn-nominal w-100 fw-bold" onclick="setNominal(50000)">Rp 50.000</button></div>
-                            <div class="col-6"><button type="button" class="btn btn-nominal w-100 fw-bold" onclick="setNominal(100000)">Rp 100.000</button></div>
-                            <div class="col-6"><button type="button" class="btn btn-nominal w-100 fw-bold" onclick="setNominal(250000)">Rp 250.000</button></div>
-                            <div class="col-6"><button type="button" class="btn btn-nominal w-100 fw-bold" onclick="setNominal(500000)">Rp 500.000</button></div>
+                            <div class="col-6"><button type="button" class="btn btn-nominal w-100 fw-bold" onclick="setNominal(event, 50000)">Rp 50.000</button></div>
+                            <div class="col-6"><button type="button" class="btn btn-nominal w-100 fw-bold" onclick="setNominal(event, 100000)">Rp 100.000</button></div>
+                            <div class="col-6"><button type="button" class="btn btn-nominal w-100 fw-bold" onclick="setNominal(event, 250000)">Rp 250.000</button></div>
+                            <div class="col-6"><button type="button" class="btn btn-nominal w-100 fw-bold" onclick="setNominal(event, 500000)">Rp 500.000</button></div>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label small fw-semibold">Nominal Lainnya</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-0 fw-bold">Rp</span>
-                                <input type="number" class="form-control bg-light border-0" id="inputNominal" placeholder="0" required>
+                                <input type="text" inputmode="numeric" class="form-control bg-light border-0" id="inputNominal" placeholder="0" required>
                             </div>
                         </div>
 
@@ -117,76 +117,127 @@
 
    <script>
         const kisahDefault = "Assalamu'alaikum #OrangBaik. Bantuan Anda sangat berarti bagi mereka. Donasi yang terkumpul akan langsung disalurkan kepada para penerima manfaat sesuai dengan kategori program yang Anda pilih. Mari bersama-sama kita ringankan beban saudara kita.";
+        let currentProgramId = null;
+        let currentProgramData = null;
 
-        document.addEventListener("DOMContentLoaded", function() {
-            let judul = sessionStorage.getItem("detail_judul");
-            let gambar = sessionStorage.getItem("detail_gambar");
-            let terkumpul = parseInt(sessionStorage.getItem("detail_terkumpul"));
-            let target = parseInt(sessionStorage.getItem("detail_target"));
-            let kategori = sessionStorage.getItem("detail_kategori");
+        document.addEventListener("DOMContentLoaded", async function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const programId = parseInt(urlParams.get('id') || '0', 10);
 
-            if(!judul) { window.location.href = "donasi.php"; return; }
-
-            let persentase = (terkumpul / target) * 100;
-            if(persentase > 100) persentase = 100;
-
-            let badgeClass = "bg-success";
-            let progColor = "#059669";
-            
-            if(kategori.includes("Bencana") || kategori.includes("Kesehatan") || kategori.includes("Pangan")) {
-                badgeClass = "bg-danger"; progColor = "#ef4444";
-            } else if (kategori.includes("Pendidikan")) {
-                badgeClass = "bg-info text-dark"; progColor = "#0ea5e9";
-            } else if (kategori.includes("Sembako")) {
-                badgeClass = "bg-warning text-dark"; progColor = "#f59e0b";
-            } else if (kategori.includes("Pemberdayaan")) {
-                badgeClass = "bg-secondary"; progColor = "#8b5cf6";
+            if (!programId) {
+                window.location.href = "donasi.php";
+                return;
             }
 
-            // KISAH PROGRAM PINTAR (Mendeteksi Kata Kunci)
-            let teksCerita = kisahDefault;
-            let judulLower = judul.toLowerCase();
+            currentProgramId = programId;
 
-            if (judulLower.includes("bencana") || judulLower.includes("longsor")) {
-                teksCerita = "Bencana alam telah meluluhlantakkan rumah dan harapan saudara-saudara kita. Ribuan warga kini terpaksa mengungsi dengan fasilitas seadanya. Mari ulurkan tangan kita untuk menyediakan tenda darurat, selimut, obat-obatan, dan makanan siap saji bagi mereka yang terdampak.";
-            } else if (judulLower.includes("sembako")) {
-                teksCerita = "Masih banyak keluarga dhuafa di sekitar kita yang kesulitan sekadar untuk makan esok hari. Kenaikan harga bahan pokok semakin mencekik mereka. Melalui program ini, kita akan mendistribusikan paket sembako bergizi (beras, minyak, lauk pauk) agar dapur mereka tetap mengepul.";
-            } else if (judulLower.includes("medis") || judulLower.includes("kesehatan")) {
-                teksCerita = "Banyak pasien dari kalangan tidak mampu yang terpaksa menghentikan pengobatan karena terbentur biaya rumah sakit dan tebusan obat yang mahal. Donasi Anda akan disalurkan untuk melunasi tunggakan pengobatan, membelikan alat bantu medis, dan biaya pendampingan pasien kritis.";
-            } else if (judulLower.includes("palestina")) {
-                teksCerita = "Saudara kita di Palestina terus menghadapi krisis kemanusiaan parah. Akses air bersih dan bahan pangan sangat terbatas. Bantuan dari Anda akan disalurkan langsung melalui mitra terpercaya untuk mendirikan dapur umum darurat dan mendistribusikan tangki air bersih di camp pengungsian.";
-            } else if (judulLower.includes("yatim")) {
-                teksCerita = "Anak-anak yatim di pelosok negeri seringkali harus putus sekolah dan bekerja di usia dini demi membantu ibu mereka bertahan hidup. Program ini bertujuan untuk memberikan santunan bulanan, perlengkapan sekolah, serta biaya pendidikan agar mereka bisa meraih cita-citanya layaknya anak-anak lain.";
-            } else if (judulLower.includes("modal") || judulLower.includes("ibu tangguh")) {
-                teksCerita = "Banyak ibu tunggal (janda) yang harus menjadi tulang punggung keluarga namun tidak memiliki modal untuk memulai usaha mikro. Program pemberdayaan ini akan memberikan bantuan modal berupa alat kerja, gerobak, atau uang tunai, disertai pendampingan agar mereka bisa mandiri secara finansial.";
-            } else if (judulLower.includes("masjid")) {
-                teksCerita = "Di sebuah desa terpelosok, warga harus berjalan berkilo-kilometer untuk melaksanakan shalat berjamaah karena tidak ada masjid terdekat. Pembangunan rumah Allah ini terhenti di tengah jalan karena kurangnya dana patungan warga. Mari berinvestasi pahala jariyah dengan membelikan material bangunan untuk masjid ini.";
-            } else if (judulLower.includes("beasiswa") || judulLower.includes("santri")) {
-                teksCerita = "Generasi penghafal Al-Quran adalah aset bangsa dan agama. Namun, banyak dari para santri berprestasi ini berasal dari keluarga pra-sejahtera. Beasiswa ini akan menjamin kebutuhan hidup, kitab, dan biaya asrama mereka, sehingga mereka bisa fokus menuntaskan hafalan 30 Juz.";
-            } else if (judulLower.includes("makanan") || judulLower.includes("pekerja")) {
-                teksCerita = "Pekerja jalanan seperti pemulung, tukang becak, dan penyapu jalan bekerja keras dari pagi buta hingga malam hari, seringkali tanpa sempat makan yang layak. Program Sedekah ini akan rutin membagikan ratusan porsi makanan hangat bergizi sebagai sumber tenaga mereka mengais rezeki yang halal.";
+            try {
+                const response = await fetch(`./api/programs.php?action=detail&id=${programId}`);
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    throw new Error(result.message || 'Program tidak ditemukan');
+                }
+
+                const program = result.data;
+                currentProgramData = program;
+
+                const judul = program.title || 'Program Donasi';
+                const gambar = program.image_url || 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=600&q=80';
+                const terkumpul = Number(program.collected_amount || 0);
+                const target = Number(program.target_amount || 0);
+                const kategori = program.category || 'Lainnya';
+
+                let persentase = target > 0 ? (terkumpul / target) * 100 : 0;
+                if (persentase > 100) persentase = 100;
+
+                let badgeClass = "bg-success";
+                let progColor = "#059669";
+                
+                if (kategori.toLowerCase().includes("bencana") || kategori.toLowerCase().includes("kesehatan") || kategori.toLowerCase().includes("pangan")) {
+                    badgeClass = "bg-danger"; progColor = "#ef4444";
+                } else if (kategori.toLowerCase().includes("pendidikan")) {
+                    badgeClass = "bg-info text-dark"; progColor = "#0ea5e9";
+                } else if (kategori.toLowerCase().includes("sembako")) {
+                    badgeClass = "bg-warning text-dark"; progColor = "#f59e0b";
+                } else if (kategori.toLowerCase().includes("pemberdayaan")) {
+                    badgeClass = "bg-secondary"; progColor = "#8b5cf6";
+                }
+
+                let teksCerita = kisahDefault;
+                let judulLower = judul.toLowerCase();
+
+                if (judulLower.includes("bencana") || judulLower.includes("longsor")) {
+                    teksCerita = "Bencana alam telah meluluhlantakkan rumah dan harapan saudara-saudara kita. Ribuan warga kini terpaksa mengungsi dengan fasilitas seadanya. Mari ulurkan tangan kita untuk menyediakan tenda darurat, selimut, obat-obatan, dan makanan siap saji bagi mereka yang terdampak.";
+                } else if (judulLower.includes("sembako")) {
+                    teksCerita = "Masih banyak keluarga dhuafa di sekitar kita yang kesulitan sekadar untuk makan esok hari. Kenaikan harga bahan pokok semakin mencekik mereka. Melalui program ini, kita akan mendistribusikan paket sembako bergizi (beras, minyak, lauk pauk) agar dapur mereka tetap mengepul.";
+                } else if (judulLower.includes("medis") || judulLower.includes("kesehatan")) {
+                    teksCerita = "Banyak pasien dari kalangan tidak mampu yang terpaksa menghentikan pengobatan karena terbentur biaya rumah sakit dan tebusan obat yang mahal. Donasi Anda akan disalurkan untuk melunasi tunggakan pengobatan, membelikan alat bantu medis, dan biaya pendampingan pasien kritis.";
+                } else if (judulLower.includes("palestina")) {
+                    teksCerita = "Saudara kita di Palestina terus menghadapi krisis kemanusiaan parah. Akses air bersih dan bahan pangan sangat terbatas. Bantuan dari Anda akan disalurkan langsung melalui mitra terpercaya untuk mendirikan dapur umum darurat dan mendistribusikan tangki air bersih di camp pengungsian.";
+                } else if (judulLower.includes("yatim")) {
+                    teksCerita = "Anak-anak yatim di pelosok negeri seringkali harus putus sekolah dan bekerja di usia dini demi membantu ibu mereka bertahan hidup. Program ini bertujuan untuk memberikan santunan bulanan, perlengkapan sekolah, serta biaya pendidikan agar mereka bisa meraih cita-citanya layaknya anak-anak lain.";
+                } else if (judulLower.includes("modal") || judulLower.includes("ibu tangguh")) {
+                    teksCerita = "Banyak ibu tunggal (janda) yang harus menjadi tulang punggung keluarga namun tidak memiliki modal untuk memulai usaha mikro. Program pemberdayaan ini akan memberikan bantuan modal berupa alat kerja, gerobak, atau uang tunai, disertai pendampingan agar mereka bisa mandiri secara finansial.";
+                } else if (judulLower.includes("masjid")) {
+                    teksCerita = "Di sebuah desa terpelosok, warga harus berjalan berkilo-kilometer untuk melaksanakan shalat berjamaah karena tidak ada masjid terdekat. Pembangunan rumah Allah ini terhenti di tengah jalan karena kurangnya dana patungan warga. Mari berinvestasi pahala jariyah dengan membelikan material bangunan untuk masjid ini.";
+                } else if (judulLower.includes("beasiswa") || judulLower.includes("santri")) {
+                    teksCerita = "Generasi penghafal Al-Quran adalah aset bangsa dan agama. Namun, banyak dari para santri berprestasi ini berasal dari keluarga pra-sejahtera. Beasiswa ini akan menjamin kebutuhan hidup, kitab, dan biaya asrama mereka, sehingga mereka bisa fokus menuntaskan hafalan 30 Juz.";
+                } else if (judulLower.includes("makanan") || judulLower.includes("pekerja")) {
+                    teksCerita = "Pekerja jalanan seperti pemulung, tukang becak, dan penyapu jalan bekerja keras dari pagi buta hingga malam hari, seringkali tanpa sempat makan yang layak. Program Sedekah ini akan rutin membagikan ratusan porsi makanan hangat bergizi sebagai sumber tenaga mereka mengais rezeki yang halal.";
+                }
+
+                document.getElementById("viewJudul").innerText = judul;
+                document.getElementById("viewGambar").src = gambar;
+                
+                const badgeKategori = document.getElementById("viewKategori");
+                badgeKategori.innerText = kategori;
+                badgeKategori.className = `badge ${badgeClass} mb-2 px-3 py-2 rounded-pill shadow-sm`;
+                
+                const progressBar = document.getElementById("viewProgress");
+                progressBar.style.width = persentase + "%";
+                progressBar.style.backgroundColor = progColor;
+
+                document.getElementById("viewKisah").innerText = teksCerita;
+                document.getElementById("viewTerkumpul").innerText = "Rp " + new Intl.NumberFormat('id-ID').format(terkumpul);
+                document.getElementById("viewTarget").innerText = "Rp " + new Intl.NumberFormat('id-ID').format(target);
+            } catch (error) {
+                console.error(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Memuat Program',
+                    text: error.message || 'Tidak dapat menampilkan data program.',
+                    confirmButtonColor: '#059669'
+                }).then(() => {
+                    window.location.href = 'donasi.php';
+                });
             }
-
-            document.getElementById("viewJudul").innerText = judul;
-            document.getElementById("viewGambar").src = gambar;
-            
-            let badgeKategori = document.getElementById("viewKategori");
-            badgeKategori.innerText = kategori;
-            badgeKategori.className = `badge ${badgeClass} mb-2 px-3 py-2 rounded-pill shadow-sm`;
-            
-            let progressBar = document.getElementById("viewProgress");
-            progressBar.style.width = persentase + "%";
-            progressBar.style.backgroundColor = progColor;
-
-            document.getElementById("viewKisah").innerText = teksCerita;
-            document.getElementById("viewTerkumpul").innerText = "Rp " + new Intl.NumberFormat('id-ID').format(terkumpul);
-            document.getElementById("viewTarget").innerText = "Rp " + new Intl.NumberFormat('id-ID').format(target);
         });
 
-        function setNominal(val) {
-            document.getElementById('inputNominal').value = val;
+        function formatInputToRupiah(value) {
+            const onlyDigits = String(value).replace(/\D/g, '');
+            return onlyDigits ? new Intl.NumberFormat('id-ID').format(onlyDigits) : '';
+        }
+
+        function parseFormattedNumber(value) {
+            return Number(String(value).replace(/\D/g, '') || 0);
+        }
+
+        function setNominal(event, val) {
+            document.getElementById('inputNominal').value = formatInputToRupiah(val);
             document.querySelectorAll('.btn-nominal').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            const button = event.currentTarget;
+            if (button && button.classList.contains('btn-nominal')) {
+                button.classList.add('active');
+            }
+        }
+
+        const inputNominalEl = document.getElementById('inputNominal');
+        if (inputNominalEl) {
+            inputNominalEl.addEventListener('input', function () {
+                const formatted = formatInputToRupiah(this.value);
+                this.value = formatted;
+            });
         }
 
         document.getElementById('formCheckout').addEventListener('submit', function(event) {
@@ -202,11 +253,17 @@
                 return;
             }
 
-            let judulProgram = sessionStorage.getItem("detail_judul"); 
-            let nominal = document.getElementById('inputNominal').value;
-            let doa = document.getElementById('inputDoa').value;
+            if (!currentProgramId) {
+                Swal.fire({ icon: 'error', title: 'Program Invalid', text: 'Tidak ada program donasi yang dipilih.', confirmButtonColor: '#059669' });
+                return;
+            }
+
+            const judulProgram = currentProgramData?.title || sessionStorage.getItem("detail_judul");
+            const nominal = parseFormattedNumber(document.getElementById('inputNominal').value);
+            const doa = document.getElementById('inputDoa').value;
 
             sessionStorage.setItem("checkout_program", judulProgram);
+            sessionStorage.setItem("checkout_program_id", currentProgramId);
             sessionStorage.setItem("checkout_nominal", nominal);
             sessionStorage.setItem("checkout_doa", doa);
 

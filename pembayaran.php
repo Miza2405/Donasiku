@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/protect.php'; ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -53,31 +54,8 @@
                     </div>
 
                     <h5 class="fw-bold mb-3 mt-5">Pilih Metode Pembayaran</h5>
-                    <div class="row g-3 mb-5">
-                        <div class="col-md-6">
-                            <div class="payment-method selected" onclick="pilihMetode(this, 'BCA Virtual Account')">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="fw-bold">BCA Virtual Account</span>
-                                    <i class="bi bi-bank text-primary fs-4"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="payment-method" onclick="pilihMetode(this, 'QRIS (Gopay/OVO/Dana)')">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="fw-bold">QRIS Semua E-Wallet</span>
-                                    <i class="bi bi-qr-code-scan text-success fs-4"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="payment-method" onclick="pilihMetode(this, 'Mandiri Virtual Account')">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="fw-bold">Mandiri Virtual Account</span>
-                                    <i class="bi bi-bank2 text-warning fs-4"></i>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="row g-3 mb-5" id="paymentMethodsContainer">
+                        <!-- Methods will be loaded dynamically -->
                     </div>
 
                     <button class="btn btn-emerald w-100 py-3 fs-5 shadow" onclick="prosesBayar()">
@@ -95,13 +73,15 @@
     <script>
         let metodePilihan = "BCA Virtual Account"; // Default
         let formatNominal = "";
+        let checkoutProgramId = null;
 
         document.addEventListener("DOMContentLoaded", function() {
             // Cek apakah ada data tagihan. Jika tidak ada (user iseng buka link langsung), tendang balik.
             let program = sessionStorage.getItem("checkout_program");
             let nominal = sessionStorage.getItem("checkout_nominal");
+            checkoutProgramId = Number(sessionStorage.getItem("checkout_program_id") || 0);
             
-            if (!program || !nominal) {
+            if (!program || !nominal || !checkoutProgramId) {
                 window.location.href = "donasi.php";
                 return;
             }
@@ -113,53 +93,154 @@
             document.getElementById("detail-program").innerText = program;
             document.getElementById("detail-nominal").innerText = "Rp " + formatNominal;
             document.getElementById("detail-nama").innerText = localStorage.getItem("userName") || "Hamba Allah";
+            loadPaymentMethods();
         });
 
-        // Fungsi efek klik pilihan pembayaran
-        function pilihMetode(element, namaMetode) {
+        // Fungsi efek klik pilihan pembayaran (dinamis)
+        let paymentMethodsList = [];
+        let selectedMethod = null;
+
+        function pilihMetode(element, methodId) {
             document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
-            metodePilihan = namaMetode;
+            selectedMethod = paymentMethodsList.find(m => m.id === methodId) || null;
         }
 
-        // Fungsi Simulasikan Pembayaran & Rekam Transaksi
-        function prosesBayar() {
-            // Membuat ID Transaksi unik acak (Contoh: TRX-7492)
-            let idTrx = "TRX-" + Math.floor(Math.random() * 9000 + 1000);
-            
-            // Menyusun objek data transaksi baru
-            let transaksiBaru = {
-                id: idTrx,
-                tanggal: new Date().toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' }),
-                program: sessionStorage.getItem("checkout_program"),
-                nominal: "Rp " + formatNominal,
-                metode: metodePilihan,
-                status: "Pending" // Otomatis pending nunggu admin
-            };
+        async function loadPaymentMethods() {
+            try {
+                const res = await fetch('./api/payment-methods.php');
+                const json = await res.json();
+                if (!res.ok || !json.success) throw new Error(json.message || 'Gagal memuat metode pembayaran');
+                paymentMethodsList = json.data || [];
+                renderPaymentMethods();
+            } catch (err) {
+                console.error('Load payment methods error:', err);
+            }
+        }
 
-            // Ambil riwayat transaksi lama dari localStorage (jika ada)
-            let riwayat = JSON.parse(localStorage.getItem("riwayatTransaksi")) || [];
-            
-            // Masukkan transaksi baru ke baris paling atas
-            riwayat.unshift(transaksiBaru);
-            
-            // Simpan kembali ke localStorage
-            localStorage.setItem("riwayatTransaksi", JSON.stringify(riwayat));
+        function renderPaymentMethods() {
+            const container = document.getElementById('paymentMethodsContainer');
+            container.innerHTML = '';
+            if (!Array.isArray(paymentMethodsList) || paymentMethodsList.length === 0) {
+                container.innerHTML = '<div class="col-12 text-muted">Belum ada metode pembayaran.</div>';
+                return;
+            }
 
-            // Bersihkan keranjang sementara
-            sessionStorage.removeItem("checkout_program");
-            sessionStorage.removeItem("checkout_nominal");
-
-            // Tampilkan sukses
-            Swal.fire({
-                icon: 'success',
-                title: 'Alhamdulillah!',
-                text: 'Instruksi pembayaran telah dikirim. Mengarahkan ke Dashboard Anda...',
-                showConfirmButton: false,
-                timer: 2500
-            }).then(() => {
-                window.location.href = "user-dashboard.php";
+            paymentMethodsList.forEach(function(m, idx) {
+                if (!m.active) return;
+                const icon = m.type === 'qris' ? 'bi-qr-code-scan text-success' : 'bi-bank2 text-primary';
+                const col = document.createElement('div');
+                col.className = 'col-md-6';
+                col.innerHTML = `<div class="payment-method ${idx===0? 'selected':''}" onclick="pilihMetode(this, '${m.id}')">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div><span class="fw-bold">${m.name}</span><div class="small text-muted">${m.account}</div></div>
+                        <div><i class="bi ${icon} fs-4"></i></div>
+                    </div>
+                </div>`;
+                container.appendChild(col);
+                if (idx===0 && !selectedMethod) {
+                    // auto-select first
+                    const el = col.querySelector('.payment-method');
+                    if (el) pilihMetode(el, m.id);
+                }
             });
+        }
+
+        // Fungsi pembayaran menggunakan API backend
+        async function prosesBayar() {
+            if (!checkoutProgramId) {
+                Swal.fire({ icon: 'error', title: 'Data Program Hilang', text: 'Silakan kembali ke halaman donasi dan pilih program lagi.', confirmButtonColor: '#059669' });
+                return;
+            }
+
+            const nominal = Number(sessionStorage.getItem("checkout_nominal") || 0);
+            const doa = sessionStorage.getItem("checkout_doa") || '';
+
+            if (!nominal || nominal <= 0) {
+                Swal.fire({ icon: 'warning', title: 'Nominal Tidak Valid', text: 'Masukkan nominal donasi yang benar.', confirmButtonColor: '#059669' });
+                return;
+            }
+
+            const method = selectedMethod;
+            if (!method) {
+                Swal.fire({ icon: 'warning', title: 'Pilih Metode', text: 'Silakan pilih metode pembayaran terlebih dahulu.', confirmButtonColor: '#059669' });
+                return;
+            }
+
+            const qrisImageHtml = method.image ? `<div class="text-center mb-3"><img src="${method.image}" alt="QR" class="img-fluid rounded-3" style="max-height:220px; object-fit:contain;"></div>` : '';
+
+            const detailHtml = `
+                <div class="text-start">
+                    <p><strong>Metode:</strong> ${method.name}</p>
+                    <p><strong>No. Rekening / Instruksi:</strong><br><span class="fw-bold">${method.account}</span></p>
+                    <p><strong>Atas Nama:</strong> ${method.owner || '-'} </p>
+                    ${qrisImageHtml}
+                    <p>Silakan lakukan transfer sesuai total tagihan, lalu tekan tombol <strong>Sudah bayar</strong>.</p>
+                    <div class="border rounded-3 p-3 bg-light mt-3">
+                        <div class="fw-semibold">Total yang harus ditransfer</div>
+                        <div class="fs-5 text-emerald fw-bold">Rp ${formatNominal}</div>
+                    </div>
+                </div>
+            `;
+
+            const result = await Swal.fire({
+                title: 'Instruksi Pembayaran',
+                html: detailHtml,
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Sudah bayar',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#059669',
+                width: 600,
+                allowOutsideClick: false
+            });
+
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            try {
+                Swal.fire({ title: 'Mencatat Pembayaran...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+                const response = await fetch('api/create-donasi.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        program_id: checkoutProgramId,
+                        amount: nominal,
+                        payment_method: method.name,
+                        payment_method_id: method.id,
+                        message: doa
+                    })
+                });
+
+                const createResult = await response.json();
+
+                if (!response.ok || !createResult.success) {
+                    throw new Error(createResult.message || 'Gagal membuat donasi');
+                }
+
+                sessionStorage.removeItem("checkout_program");
+                sessionStorage.removeItem("checkout_program_id");
+                sessionStorage.removeItem("checkout_nominal");
+                sessionStorage.removeItem("checkout_doa");
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Terima Kasih atas Donasinya',
+                    text: 'Harap menunggu validasi pembayaran. Donasi Anda akan segera diverifikasi oleh tim kami.',
+                    confirmButtonColor: '#059669'
+                }).then(() => {
+                    window.location.href = 'user-dashboard.php';
+                });
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Memproses Donasi',
+                    text: error.message || 'Terjadi kesalahan saat membuat donasi.',
+                    confirmButtonColor: '#d33'
+                });
+            }
         }
     </script>
 </body>

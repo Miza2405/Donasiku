@@ -73,9 +73,9 @@
 
                         <div class="tab-pane fade" id="pills-register">
                             <form id="registerForm">
-                                <div class="mb-3"><label class="form-label fw-semibold">Nama Lengkap</label><input type="text" class="form-control" placeholder="Masukkan nama lengkap" required></div>
-                                <div class="mb-3"><label class="form-label fw-semibold">Email</label><input type="email" class="form-control" placeholder="nama@email.com" required></div>
-                                <div class="mb-4"><label class="form-label fw-semibold">Password</label><input type="password" class="form-control" placeholder="Buat password yang kuat" required></div>
+                                <div class="mb-3"><label class="form-label fw-semibold">Nama Lengkap</label><input type="text" id="nameRegister" class="form-control" placeholder="Masukkan nama lengkap" required></div>
+                                <div class="mb-3"><label class="form-label fw-semibold">Email</label><input type="email" id="emailRegister" class="form-control" placeholder="nama@email.com" required></div>
+                                <div class="mb-4"><label class="form-label fw-semibold">Password</label><input type="password" id="passwordRegister" class="form-control" placeholder="Buat password yang kuat" required></div>
                                 <button type="submit" class="btn btn-emerald w-100 py-2">Buat Akun Baru</button>
                             </form>
                         </div>
@@ -104,42 +104,85 @@
         }
     });
 
-    // FUNGSI VALIDASI LOGIN
-    document.getElementById("loginForm").addEventListener("submit", function(event) {
-        event.preventDefault(); 
+    // FUNGSI VALIDASI LOGIN - MEMANGGIL API
+    document.getElementById("loginForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+        
+        // Show loading
+        Swal.fire({
+            title: 'Memproses...',
+            text: 'Mohon tunggu',
+            icon: 'info',
+            allowOutsideClick: false,
+            didOpen: (modal) => {
+                Swal.showLoading();
+            }
+        });
         
         // Ambil data yang diketik pengguna
         let role = document.getElementById("roleSelect").value;
         let email = document.getElementById("emailLogin").value;
         let password = document.getElementById("passwordLogin").value;
         
-        // simulasi login
-        // --- SKENARIO 1: Login Sebagai USER (Donatur) ---
-        if (role === "user" && email === "Kyosei@email.com" && password === "12345") {
-            prosesLogin(role, "Kyosei", "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80");
-        }
-        // --- SKENARIO 2: Login Sebagai ADMIN ---
-        else if (role === "admin" && email === "Kevin@email.com" && password === "12345") {
-            prosesLogin(role, "Admin DonasiKu", "https://ui-avatars.com/api/?name=Admin&background=059669&color=fff");
-        }
-        // --- SKENARIO 3: Email atau Password Salah ---
-        else {
+        try {
+            // Kirim request ke backend API
+            const response = await fetch('./api/login.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    role: role
+                })
+            });
+            
+            const responseText = await response.text();
+            let result;
+
+            try {
+                result = JSON.parse(responseText);
+            } catch (parseError) {
+                throw new Error(responseText || 'Response server tidak valid');
+            }
+            
+            if (response.ok && result.success) {
+                // Login berhasil
+                prosesLogin(result.data.role, result.data.name, result.data.id, result.data.admin_role);
+            } else {
+                // Login gagal
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Gagal',
+                    text: result.message || 'Terjadi kesalahan saat login',
+                    confirmButtonColor: '#d33'
+                });
+            }
+        } catch (error) {
+            console.error('Error:', error);
             Swal.fire({
                 icon: 'error',
-                title: 'Akses Ditolak!',
-                text: 'Email atau Password yang Anda masukkan salah.',
+                title: 'Kesalahan',
+                text: error.message || 'Terjadi kesalahan jaringan. Silahkan coba lagi.',
                 confirmButtonColor: '#d33'
             });
         }
     });
 
     // FUNGSI MENYIMPAN DATA & PINDAH HALAMAN
-    function prosesLogin(role, nama, avatar) {
-        // Simpan semua data profil ke memori browser
+    function prosesLogin(role, nama, id, adminRole) {
+        // Simpan status login di localStorage (untuk indikator client-side)
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("userRole", role);
         localStorage.setItem("userName", nama);
-        localStorage.setItem("avatarUrl", avatar);
+        localStorage.setItem("userId", id);
+
+        if (role === 'admin') {
+            localStorage.setItem('adminRole', adminRole || 'super_admin');
+        } else {
+            localStorage.removeItem('adminRole');
+        }
 
         // Munculkan notifikasi sukses lalu pindah halaman
         Swal.fire({ 
@@ -157,17 +200,63 @@
         });
     }
 
-    // FUNGSI SIMULASI DAFTAR (Register)
-    document.getElementById("registerForm").addEventListener("submit", function(event) {
+    // FUNGSI SIMULASI DAFTAR (Register) - MEMANGGIL API
+    document.getElementById("registerForm").addEventListener("submit", async function(event) {
         event.preventDefault();
-        Swal.fire({ 
-            icon: 'success', 
-            title: 'Pendaftaran Berhasil!', 
-            showConfirmButton: false, 
-            timer: 1500 
-        }).then(() => {
-            window.location.href = "verify-otp.php";
+        
+        // Show loading
+        Swal.fire({
+            title: 'Memproses...',
+            text: 'Membuat akun baru',
+            icon: 'info',
+            allowOutsideClick: false,
+            didOpen: (modal) => {
+                Swal.showLoading();
+            }
         });
+        
+        // Ambil data dari form
+        let name = document.getElementById("nameRegister").value;
+        let email = document.getElementById("emailRegister").value;
+        let password = document.getElementById("passwordRegister").value;
+        
+        try {
+            // Kirim request ke backend API
+            const response = await fetch('./api/register.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    password: password
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok && result.success) {
+                // Register berhasil
+                prosesLogin(result.data.role, result.data.name, result.data.id, result.data.admin_role);
+            } else {
+                // Register gagal
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Pendaftaran Gagal',
+                    text: result.message || 'Terjadi kesalahan saat pendaftaran',
+                    confirmButtonColor: '#d33'
+                });
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Kesalahan',
+                text: 'Terjadi kesalahan jaringan. Silahkan coba lagi.',
+                confirmButtonColor: '#d33'
+            });
+        }
     });
 </script>
 <script>

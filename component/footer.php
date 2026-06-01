@@ -126,13 +126,27 @@
                 icon: 'question', title: 'Keluar Akun?', text: 'Anda yakin ingin keluar dari sesi ini?',
                 showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Ya, Keluar', cancelButtonText: 'Batal'
-            }).then((result) => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
-                    localStorage.removeItem("isLoggedIn");
-                    localStorage.removeItem("userRole");
-                    localStorage.removeItem("userName");
-                    localStorage.removeItem("avatarUrl");
-                    window.location.reload(); 
+                    try {
+                        const response = await fetch('api/logout.php', { method: 'POST' });
+                        if (response.ok) {
+                            localStorage.removeItem("isLoggedIn");
+                            localStorage.removeItem("userRole");
+                            localStorage.removeItem("userName");
+                            localStorage.removeItem("avatarUrl");
+                            window.location.reload();
+                        } else {
+                            throw new Error('Gagal logout');
+                        }
+                    } catch (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal Logout',
+                            text: 'Terjadi kesalahan saat logout. Silahkan coba lagi.',
+                            confirmButtonColor: '#d33'
+                        });
+                    }
                 }
             });
         }
