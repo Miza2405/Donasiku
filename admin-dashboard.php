@@ -566,8 +566,16 @@ input:checked + .slider:before {
                         </div>
                         <div class="col-12">
                             <label class="form-label fw-semibold small">Upload Gambar/Banner Promosi</label>
-                            <input type="file" id="progImage" class="form-control" accept="image/jpeg,image/png,image/gif,image/jpg,image/webp" required>
-                            <small class="text-muted">Format: JPG, PNG, GIF | Max: 5MB</small>
+                            <div id="progImageDropzone" class="border rounded p-3 d-flex align-items-center justify-content-center flex-column" style="min-height:150px; cursor:pointer; background:#fff;">
+                                <img id="progImagePreview" src="" alt="" class="rounded mb-2" style="max-height:120px; display:none; object-fit:cover;">
+                                <div id="progImagePlaceholder" class="text-center text-muted">
+                                    <i class="bi bi-cloud-arrow-up-fill fs-1 text-emerald"></i>
+                                    <div>Pilih file atau seret gambar ke sini</div>
+                                    <small class="text-muted">Format: JPG, PNG, GIF, WEBP | Max: 5MB</small>
+                                </div>
+                                <input type="file" id="progImage" class="d-none" accept="image/jpeg,image/png,image/gif,image/jpg,image/webp" required>
+                                <button type="button" class="btn btn-sm btn-outline-secondary mt-2" onclick="document.getElementById('progImage').click()">Pilih Gambar</button>
+                            </div>
                         </div>
                         <div class="col-12">
                             <label class="form-label fw-semibold small">Kisah & Latar Belakang Program</label>
@@ -666,7 +674,16 @@ input:checked + .slider:before {
                         <input type="hidden" id="editImageUrl">
                         <div class="col-12">
                             <label class="form-label fw-semibold small">Ganti Gambar Program (Opsional)</label>
-                            <input type="file" id="editImage" class="form-control" accept="image/jpeg,image/png,image/gif,image/jpg,image/webp">
+                            <div id="editImageDropzone" class="border rounded p-3 d-flex align-items-center justify-content-center flex-column" style="min-height:150px; cursor:pointer; background:#fff;">
+                                <img id="editImagePreview" src="" alt="" class="rounded mb-2" style="max-height:120px; object-fit:cover; display:none;">
+                                <div id="editImagePlaceholder" class="text-center text-muted" style="display:none;">
+                                    <i class="bi bi-cloud-arrow-up-fill fs-1 text-emerald"></i>
+                                    <div>Seret file ke sini atau pilih</div>
+                                    <small class="text-muted">Kosongkan jika ingin mempertahankan gambar lama.</small>
+                                </div>
+                                <input type="file" id="editImage" class="d-none" accept="image/jpeg,image/png,image/gif,image/jpg,image/webp">
+                                <button type="button" class="btn btn-sm btn-outline-secondary mt-2" onclick="document.getElementById('editImage').click()">Pilih Gambar</button>
+                            </div>
                             <div class="form-text">Kosongkan jika ingin mempertahankan gambar lama.</div>
                         </div>
                         <div class="col-12">
@@ -1460,6 +1477,9 @@ input:checked + .slider:before {
             bootstrap.Modal.getInstance(document.getElementById('tambahProgramModal')).hide();
             Swal.fire({ icon: 'success', title: 'Program Diterbitkan!', text: result.message, confirmButtonColor: '#059669' });
             form.reset();
+            // Clear preview
+            const pPrev = document.getElementById('progImagePreview'); if (pPrev) { pPrev.src = ''; pPrev.style.display = 'none'; }
+            const pPlace = document.getElementById('progImagePlaceholder'); if (pPlace) pPlace.style.display = 'block';
             // Reload data program
             const programs = await fetchAdmin('programs');
             cachedPrograms = programs;
@@ -1536,6 +1556,123 @@ input:checked + .slider:before {
             const programs = await fetchAdmin('programs');
             cachedPrograms = programs;
             renderPrograms(programs);
+        } catch (error) {
+            Swal.fire({ icon: 'error', title: 'Gagal', text: error.message, confirmButtonColor: '#d33' });
+        }
+    }
+
+    // Image dropzone helper: supports drag & drop, click-to-select, preview, and validation
+    function initImageDropzone(dropzoneId, fileInputId, previewId, placeholderId) {
+        const dropzone = document.getElementById(dropzoneId);
+        const fileInput = document.getElementById(fileInputId);
+        const preview = document.getElementById(previewId);
+        const placeholder = document.getElementById(placeholderId);
+
+        if (!dropzone || !fileInput) return;
+
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg', 'image/webp'];
+        const maxSize = 5 * 1024 * 1024;
+
+        function showPreview(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                if (preview) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                if (placeholder) placeholder.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearPreview() {
+            if (preview) { preview.src = ''; preview.style.display = 'none'; }
+            if (placeholder) placeholder.style.display = 'block';
+        }
+
+        function setFile(file) {
+            // validate
+            if (!allowedTypes.includes(file.type)) {
+                Swal.fire({ icon: 'error', title: 'Tipe file tidak valid', text: 'Gunakan JPG, PNG, GIF atau WEBP.', confirmButtonColor: '#d33' });
+                return false;
+            }
+            if (file.size > maxSize) {
+                Swal.fire({ icon: 'error', title: 'File terlalu besar', text: 'Ukuran maksimal 5MB.', confirmButtonColor: '#d33' });
+                return false;
+            }
+
+            // assign file to hidden input using DataTransfer
+            try {
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                fileInput.files = dt.files;
+            } catch (err) {
+                // fallback: cannot set FileList programmatically in some older browsers
+                console.warn('Tidak bisa mengatur file input secara programatik:', err);
+            }
+
+            showPreview(file);
+            return true;
+        }
+
+        // Click on dropzone opens file selector
+        dropzone.addEventListener('click', (e) => { fileInput.click(); });
+
+        // File selected via dialog
+        fileInput.addEventListener('change', (e) => {
+            if (fileInput.files && fileInput.files.length > 0) {
+                setFile(fileInput.files[0]);
+            }
+        });
+
+        // Drag events
+        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); e.stopPropagation(); dropzone.classList.add('border-primary'); });
+        dropzone.addEventListener('dragleave', (e) => { e.preventDefault(); e.stopPropagation(); dropzone.classList.remove('border-primary'); });
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault(); e.stopPropagation(); dropzone.classList.remove('border-primary');
+            const files = e.dataTransfer.files;
+            if (files && files.length > 0) {
+                setFile(files[0]);
+            }
+        });
+    }
+
+    // Initialize dropzones now (elements already in DOM)
+    initImageDropzone('progImageDropzone', 'progImage', 'progImagePreview', 'progImagePlaceholder');
+    initImageDropzone('editImageDropzone', 'editImage', 'editImagePreview', 'editImagePlaceholder');
+
+    // When opening edit modal, show current image if available
+    const originalEditProgramFn = editProgram;
+    async function editProgram(programId) {
+        try {
+            const programs = await fetchAdmin('programs');
+            const program = programs.find(p => p.id == programId);
+
+            if (!program) throw new Error('Program tidak ditemukan');
+
+            currentEditProgramId = programId;
+            // Isi form edit dengan data program
+            document.getElementById('editTitle').value = program.title;
+            document.getElementById('editCategory').value = program.category;
+            document.getElementById('editTargetAmount').value = program.target_amount;
+            document.getElementById('editCollectedAmount').value = program.collected_amount;
+            document.getElementById('editDescription').value = program.description;
+            document.getElementById('editStatus').value = program.status;
+            document.getElementById('editImageUrl').value = program.image_url || '';
+            document.getElementById('editImage').value = '';
+
+            const editPreview = document.getElementById('editImagePreview');
+            const editPlaceholder = document.getElementById('editImagePlaceholder');
+            if (program.image_url) {
+                editPreview.src = program.image_url;
+                editPreview.style.display = 'block';
+                if (editPlaceholder) editPlaceholder.style.display = 'none';
+            } else {
+                if (editPreview) { editPreview.src = ''; editPreview.style.display = 'none'; }
+                if (editPlaceholder) editPlaceholder.style.display = 'block';
+            }
+
+            new bootstrap.Modal(document.getElementById('editProgramModal')).show();
         } catch (error) {
             Swal.fire({ icon: 'error', title: 'Gagal', text: error.message, confirmButtonColor: '#d33' });
         }
