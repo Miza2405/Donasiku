@@ -1,7 +1,41 @@
 <?php
-$currentDir = __DIR__;
+// Handle directory navigation
+$basePath = __DIR__;
+$requestedDir = isset($_GET['dir']) ? $_GET['dir'] : '';
+$currentDir = $basePath;
+
+if ($requestedDir) {
+    $cleanDir = str_replace(['..', '\\'], ['', '/'], $requestedDir);
+    $fullPath = realpath($basePath . DIRECTORY_SEPARATOR . $cleanDir);
+    
+    // Security check: ensure path is within base directory
+    if ($fullPath && strpos($fullPath, realpath($basePath)) === 0) {
+        $currentDir = $fullPath;
+    }
+}
+
+// Handle file download/view
+if (isset($_GET['file'])) {
+    $requestedFile = $_GET['file'];
+    $cleanFile = str_replace(['..', '\\'], ['', '/'], $requestedFile);
+    $filePath = realpath($basePath . DIRECTORY_SEPARATOR . $cleanFile);
+    
+    // Security check
+    if ($filePath && strpos($filePath, realpath($basePath)) === 0 && is_file($filePath)) {
+        $fileName = basename($filePath);
+        header('Content-Disposition: inline; filename="' . $fileName . '"');
+        header('Content-Type: ' . mime_content_type($filePath));
+        readfile($filePath);
+        exit;
+    }
+}
+
 $files = scandir($currentDir);
 sort($files);
+
+// Get relative path from base for display and navigation
+$relativePath = str_replace($basePath, '', $currentDir);
+$relativePath = trim($relativePath, DIRECTORY_SEPARATOR);
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -130,7 +164,11 @@ sort($files);
 <body>
     <div class="container">
         <h1>📁 Donasiku - File Browser</h1>
-        <div class="path">📍 <?php echo str_replace('\\', '/', $currentDir); ?></div>
+        <div class="path">📍 <?php echo $relativePath ? $relativePath : 'Root'; ?> 
+            <?php if ($relativePath): ?>
+                <a href="?" style="color: #667eea; text-decoration: none; margin-left: 10px;">🏠 Back to Root</a>
+            <?php endif; ?>
+        </div>
         
         <div class="file-list">
             <?php
@@ -166,9 +204,10 @@ sort($files);
             if (!empty($folders)) {
                 echo '<div class="category"><h2>📂 Folder</h2></div>';
                 foreach ($folders as $item) {
+                    $folderPath = $relativePath ? $relativePath . '/' . $item['name'] : $item['name'];
                     echo '<div class="file-item folder">';
                     echo '<div class="file-icon">📁</div>';
-                    echo '<a href="?dir=' . urlencode($item['name']) . '" class="file-name">' . htmlspecialchars($item['name']) . '</a>';
+                    echo '<a href="?dir=' . urlencode($folderPath) . '" class="file-name">' . htmlspecialchars($item['name']) . '</a>';
                     echo '</div>';
                 }
             }
@@ -177,9 +216,10 @@ sort($files);
             if (!empty($phpFiles)) {
                 echo '<div class="category"><h2>⚙️ PHP Files</h2></div>';
                 foreach ($phpFiles as $item) {
+                    $filePath = $relativePath ? $relativePath . '/' . $item['name'] : $item['name'];
                     echo '<div class="file-item php">';
                     echo '<div class="file-icon">🔧</div>';
-                    echo '<a href="' . htmlspecialchars($item['name']) . '" target="_blank" class="file-name">' . htmlspecialchars($item['name']) . '</a>';
+                    echo '<a href="?file=' . urlencode($filePath) . '" target="_blank" class="file-name">' . htmlspecialchars($item['name']) . '</a>';
                     echo '<div class="file-size">' . number_format($item['size'] / 1024, 2) . ' KB</div>';
                     echo '</div>';
                 }
@@ -204,7 +244,8 @@ sort($files);
                     echo '<div class="' . $class . '">';
                     echo '<div class="file-icon">' . $icon . '</div>';
                     if (in_array(strtolower($item['ext']), ['sql', 'md', 'txt', 'json'])) {
-                        echo '<a href="' . htmlspecialchars($item['name']) . '" target="_blank" class="file-name">' . htmlspecialchars($item['name']) . '</a>';
+                        $filePath = $relativePath ? $relativePath . '/' . $item['name'] : $item['name'];
+                        echo '<a href="?file=' . urlencode($filePath) . '" target="_blank" class="file-name">' . htmlspecialchars($item['name']) . '</a>';
                     } else {
                         echo '<span class="file-name">' . htmlspecialchars($item['name']) . '</span>';
                     }
