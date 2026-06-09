@@ -25,5 +25,14 @@
         "owner": "Yayasan Donasiku",
         "image": null,
         "active": true
+    },
+    {
+        "id": "m6a2771bc8d72d",
+        "type": "ewallet",
+        "name": "esfedsf",
+        "account": "sfdsfds",
+        "owner": "dsfsfs",
+        "image": "payments/method-1780969916-86b6b7c0.gif",
+        "active": true
     }
 ]

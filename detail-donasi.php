@@ -100,7 +100,11 @@
 
                         <div class="mb-4">
                             <label class="form-label small fw-semibold">Sertakan Doa (Opsional)</label>
-                            <textarea class="form-control bg-light border-0" id="inputDoa" rows="2" placeholder="Semoga berkah..."></textarea>
+                            <textarea class="form-control bg-light border-0"
+                             id="inputDoa"
+                             name="deskripsi"
+                             rows="2"
+                            placeholder="Semoga berkah..."></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-emerald w-100 py-3 fs-5 shadow-sm">
@@ -138,8 +142,9 @@
                 if (!response.ok || !result.success) {
                     throw new Error(result.message || 'Program tidak ditemukan');
                 }
-
+                
                 const program = result.data;
+                
                 currentProgramData = program;
 
                 const judul = program.title || 'Program Donasi';
@@ -164,28 +169,7 @@
                     badgeClass = "bg-secondary"; progColor = "#8b5cf6";
                 }
 
-                let teksCerita = kisahDefault;
-                let judulLower = judul.toLowerCase();
-
-                if (judulLower.includes("bencana") || judulLower.includes("longsor")) {
-                    teksCerita = "Bencana alam telah meluluhlantakkan rumah dan harapan saudara-saudara kita. Ribuan warga kini terpaksa mengungsi dengan fasilitas seadanya. Mari ulurkan tangan kita untuk menyediakan tenda darurat, selimut, obat-obatan, dan makanan siap saji bagi mereka yang terdampak.";
-                } else if (judulLower.includes("sembako")) {
-                    teksCerita = "Masih banyak keluarga dhuafa di sekitar kita yang kesulitan sekadar untuk makan esok hari. Kenaikan harga bahan pokok semakin mencekik mereka. Melalui program ini, kita akan mendistribusikan paket sembako bergizi (beras, minyak, lauk pauk) agar dapur mereka tetap mengepul.";
-                } else if (judulLower.includes("medis") || judulLower.includes("kesehatan")) {
-                    teksCerita = "Banyak pasien dari kalangan tidak mampu yang terpaksa menghentikan pengobatan karena terbentur biaya rumah sakit dan tebusan obat yang mahal. Donasi Anda akan disalurkan untuk melunasi tunggakan pengobatan, membelikan alat bantu medis, dan biaya pendampingan pasien kritis.";
-                } else if (judulLower.includes("palestina")) {
-                    teksCerita = "Saudara kita di Palestina terus menghadapi krisis kemanusiaan parah. Akses air bersih dan bahan pangan sangat terbatas. Bantuan dari Anda akan disalurkan langsung melalui mitra terpercaya untuk mendirikan dapur umum darurat dan mendistribusikan tangki air bersih di camp pengungsian.";
-                } else if (judulLower.includes("yatim")) {
-                    teksCerita = "Anak-anak yatim di pelosok negeri seringkali harus putus sekolah dan bekerja di usia dini demi membantu ibu mereka bertahan hidup. Program ini bertujuan untuk memberikan santunan bulanan, perlengkapan sekolah, serta biaya pendidikan agar mereka bisa meraih cita-citanya layaknya anak-anak lain.";
-                } else if (judulLower.includes("modal") || judulLower.includes("ibu tangguh")) {
-                    teksCerita = "Banyak ibu tunggal (janda) yang harus menjadi tulang punggung keluarga namun tidak memiliki modal untuk memulai usaha mikro. Program pemberdayaan ini akan memberikan bantuan modal berupa alat kerja, gerobak, atau uang tunai, disertai pendampingan agar mereka bisa mandiri secara finansial.";
-                } else if (judulLower.includes("masjid")) {
-                    teksCerita = "Di sebuah desa terpelosok, warga harus berjalan berkilo-kilometer untuk melaksanakan shalat berjamaah karena tidak ada masjid terdekat. Pembangunan rumah Allah ini terhenti di tengah jalan karena kurangnya dana patungan warga. Mari berinvestasi pahala jariyah dengan membelikan material bangunan untuk masjid ini.";
-                } else if (judulLower.includes("beasiswa") || judulLower.includes("santri")) {
-                    teksCerita = "Generasi penghafal Al-Quran adalah aset bangsa dan agama. Namun, banyak dari para santri berprestasi ini berasal dari keluarga pra-sejahtera. Beasiswa ini akan menjamin kebutuhan hidup, kitab, dan biaya asrama mereka, sehingga mereka bisa fokus menuntaskan hafalan 30 Juz.";
-                } else if (judulLower.includes("makanan") || judulLower.includes("pekerja")) {
-                    teksCerita = "Pekerja jalanan seperti pemulung, tukang becak, dan penyapu jalan bekerja keras dari pagi buta hingga malam hari, seringkali tanpa sempat makan yang layak. Program Sedekah ini akan rutin membagikan ratusan porsi makanan hangat bergizi sebagai sumber tenaga mereka mengais rezeki yang halal.";
-                }
+                let teksCerita = program.description || program.deskripsi || kisahDefault;
 
                 document.getElementById("viewJudul").innerText = judul;
                 document.getElementById("viewGambar").src = gambar;
@@ -198,7 +182,8 @@
                 progressBar.style.width = persentase + "%";
                 progressBar.style.backgroundColor = progColor;
 
-                document.getElementById("viewKisah").innerText = teksCerita;
+                document.getElementById("viewKisah").innerHTML =
+                    teksCerita.replace(/\n/g, "<br>");
                 document.getElementById("viewTerkumpul").innerText = "Rp " + new Intl.NumberFormat('id-ID').format(terkumpul);
                 document.getElementById("viewTarget").innerText = "Rp " + new Intl.NumberFormat('id-ID').format(target);
             } catch (error) {

@@ -82,7 +82,15 @@ try {
         throw new Exception('Prepare error: ' . $koneksi->error);
     }
     
-    $stmt->bind_param('ssdsss', $title, $category, $description, $target_amount, $image_url, $end_date);
+    $stmt->bind_param(
+    'sssdss',
+    $title,
+    $category,
+    $description,
+    $target_amount,
+    $image_url,
+    $end_date
+);
     
     if (!$stmt->execute()) {
         @unlink($filepath);

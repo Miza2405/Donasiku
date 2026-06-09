@@ -86,7 +86,7 @@
                 <h2 class="fw-bold text-emerald">Hubungi Layanan Kami</h2>
                 <p class="text-muted">Punya pertanyaan seputar program penyaluran atau donasi? Kami siap membantu.</p>
             </div>
-            <div class="row g-5 align-items-center">
+            <div class="row g-5 align-items-center justify-content-center">
                 <div class="col-lg-5" data-aos="fade-right">
                     <div class="card border-0 shadow-sm p-4 h-100 contact-card">
                         <h4 class="fw-bold mb-4">Informasi Kontak</h4>
@@ -108,48 +108,7 @@
                     </div>
                 </div>
                 
-                <div class="col-lg-7" data-aos="fade-left">
-                    <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 15px;">
-                        <h4 class="fw-bold mb-4">Kirim Pesan Langsung</h4>
-                        <form>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" placeholder="Nama Anda" required>
-                                        <label>Nama Lengkap</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="email" class="form-control" placeholder="name@example.com" required>
-                                        <label>Alamat Email</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <select id="kategoriPesan" class="form-select">
-                                            <option selected disabled>Pilih Kategori...</option>
-                                            <option value="1">Konsultasi Program Donasi</option>
-                                            <option value="2">Konfirmasi Pembayaran</option>
-                                            <option value="3">Kendala Teknis Aplikasi</option>
-                                        </select>
-                                        <label for="kategoriPesan">Kategori Pesan</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <textarea class="form-control" placeholder="Tulis pesan" style="height: 150px" required></textarea>
-                                        <label>Tuliskan pesan Anda...</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 mt-4">
-                                    <button type="submit" class="btn btn-emerald w-100 py-3 rounded-pill fw-bold">
-                                        <i class="bi bi-send-fill me-2"></i> Kirim Pesan Sekarang
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+
                 </div>
             </div>
         </div>

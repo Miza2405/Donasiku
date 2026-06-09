@@ -11,6 +11,7 @@
     
     <!-- Library Chart.js untuk Grafik Statistik -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f4f7f6; overflow-x: hidden; }
@@ -336,7 +337,10 @@ input:checked + .slider:before {
         <div id="sec-laporan" class="content-section">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="fw-bold mb-0">Laporan Keuangan & Penyaluran</h5>
-                <button class="btn btn-outline-success rounded-pill btn-sm fw-semibold"><i class="bi bi-printer me-1"></i> Cetak PDF</button>
+                    <button class="btn btn-outline-success rounded-pill btn-sm fw-semibold"
+                         onclick="cetakLaporanPDF()">
+                        <i class="bi bi-printer me-1"></i> Cetak PDF
+                    </button>
             </div>
             
             <!-- Kartu Statistik Atas -->
@@ -2098,6 +2102,112 @@ input:checked + .slider:before {
         loadAdminDashboardData();
         loadPaymentMethods();
     });
+
+
+ async function cetakLaporanPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const totalPemasukan =
+        document.getElementById('reportTotalIncome')?.innerText || 'Rp 0';
+
+    const totalPengeluaran =
+        document.getElementById('reportTotalExpense')?.innerText || 'Rp 0';
+
+    const pemasukan = parseInt(totalPemasukan.replace(/[^\d]/g, '')) || 0;
+    const pengeluaran = parseInt(totalPengeluaran.replace(/[^\d]/g, '')) || 0;
+    const totalBersih = pemasukan - pengeluaran;
+
+    let y = 20;
+
+    doc.setFontSize(18);
+    doc.text('LAPORAN KEUANGAN DONASIKU', 20, y);
+
+    y += 10;
+
+    doc.setFontSize(10);
+    doc.text(
+        'Tanggal Cetak : ' +
+        new Date().toLocaleString('id-ID'),
+        20,
+        y
+    );
+
+    y += 10;
+
+    doc.line(20, y, 190, y);
+
+    y += 15;
+
+    doc.setFontSize(14);
+    doc.text('Ringkasan Keuangan', 20, y);
+
+    y += 10;
+
+    doc.setFontSize(11);
+    doc.text('Total Pemasukan : ' + totalPemasukan, 25, y);
+
+    y += 8;
+    doc.text('Total Pengeluaran : ' + totalPengeluaran, 25, y);
+
+    y += 8;
+    doc.text(
+        'Total Bersih : Rp ' +
+        totalBersih.toLocaleString('id-ID'),
+        25,
+        y
+    );
+
+    y += 20;
+
+    doc.setFontSize(14);
+    doc.text('Riwayat Penyaluran Dana Terakhir', 20, y);
+
+    y += 10;
+
+    doc.setFontSize(10);
+
+    doc.text('Tanggal', 20, y);
+    doc.text('Program', 55, y);
+    doc.text('Penerima', 115, y);
+    doc.text('Nominal', 190, y, { align: 'right' });
+
+    y += 5;
+
+    doc.line(20, y, 190, y);
+
+    y += 8;
+
+    const rows = document.querySelectorAll(
+        '#tbody-penyaluran tr'
+    );
+
+    rows.forEach(row => {
+
+        const cols = row.querySelectorAll('td');
+
+        if (cols.length < 4) return;
+
+        if (y > 270) {
+            doc.addPage();
+            y = 20;
+        }
+
+        const tanggal = cols[0].innerText.trim();
+        const program = cols[1].innerText.trim();
+        const penerima = cols[2].innerText.trim();
+        const nominal = cols[3].innerText.trim();
+
+        doc.text(tanggal.substring(0, 20), 20, y);
+        doc.text(program.substring(0, 30), 55, y);
+        doc.text(penerima.substring(0, 25), 115, y);
+        doc.text(nominal, 190, y, { align: 'right' });
+
+        y += 8;
+    });
+
+    doc.save('laporan-keuangan-donasiku.pdf');
+}
 </script>
 </body>
 </html>
