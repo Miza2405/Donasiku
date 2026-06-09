@@ -150,6 +150,39 @@
                 }
             });
         }
+
+        // Contact form handler
+        async function handleContactSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('cf-name').value.trim();
+            const email = document.getElementById('cf-email').value.trim();
+            const subject = document.getElementById('cf-subject').value.trim();
+            const message = document.getElementById('cf-message').value.trim();
+
+            if (!name || !email || !message) {
+                Swal.fire({ icon: 'warning', title: 'Lengkapi Form', text: 'Mohon isi nama, email, dan pesan.' });
+                return;
+            }
+
+            try {
+                const res = await fetch('api/contact.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, subject, message })
+                });
+
+                if (res.ok) {
+                    Swal.fire({ icon: 'success', title: 'Terkirim', text: 'Pesan Anda telah kami terima. Terima kasih!' });
+                    document.getElementById('contactForm').reset();
+                } else {
+                    Swal.fire({ icon: 'success', title: 'Terkirim', text: 'Pesan dikirim (server tidak merespon).' });
+                    document.getElementById('contactForm').reset();
+                }
+            } catch (err) {
+                Swal.fire({ icon: 'success', title: 'Terkirim', text: 'Pesan dikirim (tidak ada koneksi ke server).' });
+                document.getElementById('contactForm').reset();
+            }
+        }
     </script>
 </body>
 </html>

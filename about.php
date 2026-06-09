@@ -108,6 +108,30 @@
                     </div>
                 </div>
                 
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="card border-0 shadow-sm p-4 h-100">
+                        <h4 class="fw-bold mb-4">Kirim Pesan</h4>
+                        <form id="contactForm" onsubmit="handleContactSubmit(event)" novalidate>
+                            <div class="mb-3">
+                                <label for="cf-name" class="form-label fw-semibold">Nama</label>
+                                <input type="text" class="form-control" id="cf-name" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cf-email" class="form-label fw-semibold">Email</label>
+                                <input type="email" class="form-control" id="cf-email" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cf-subject" class="form-label fw-semibold">Subjek</label>
+                                <input type="text" class="form-control" id="cf-subject" name="subject">
+                            </div>
+                            <div class="mb-3">
+                                <label for="cf-message" class="form-label fw-semibold">Pesan</label>
+                                <textarea class="form-control" id="cf-message" name="message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-emerald w-100 rounded-pill py-2 fw-bold">Kirim Pesan</button>
+                        </form>
+                    </div>
+                </div>
 
             </div>
         </div>
