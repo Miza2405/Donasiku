@@ -101,7 +101,7 @@ $halaman_aktif = basename($_SERVER['PHP_SELF']);
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link <?php echo ($halaman_aktif == 'donasi.php') ? 'active-page' : ''; ?>" href="#" onclick="requireLogin(event)">Layanan Donasi</a>
+                        <a class="nav-link <?php echo ($halaman_aktif == 'donasi.php') ? 'active-page' : ''; ?>" href="donasi.php">Layanan Donasi</a>
                     </li>
                     
                     <li class="nav-item">

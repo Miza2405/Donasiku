@@ -31,7 +31,7 @@ include 'component/header.php';
                 <div class="carousel-caption d-none d-md-block" data-aos="fade-up" data-aos-duration="1500">
                     <h1 class="fw-bold display-4">Satu Sedekah, Sejuta Harapan</h1>
                     <p class="fs-5">Salurkan donasi Anda dengan mudah, transparan, dan amanah.</p>
-                    <button onclick="requireLogin(event)" class="btn btn-emerald btn-lg mt-3 px-5 rounded-pill">Tunaikan Sedekah</button>
+                    <a href="donasi.php" class="btn btn-emerald btn-lg mt-3 px-5 rounded-pill">Tunaikan Sedekah</a>
                 </div>
             </div>
             <div class="carousel-item" data-bs-interval="5000">
@@ -39,7 +39,7 @@ include 'component/header.php';
                 <div class="carousel-caption d-none d-md-block">
                     <h1 class="fw-bold display-4">Bantu Sesama yang Membutuhkan</h1>
                     <p class="fs-5">Sedekah Anda adalah harapan baru bagi mereka yang menanti uluran tangan.</p>
-                    <button onclick="requireLogin(event)" class="btn btn-emerald btn-lg mt-3 px-5 rounded-pill">Mulai Berbagi</button>
+                    <a href="donasi.php" class="btn btn-emerald btn-lg mt-3 px-5 rounded-pill">Mulai Berbagi</a>
                 </div>
             </div>
         </div>
@@ -59,7 +59,7 @@ include 'component/header.php';
                     <div class="mb-3"><h1 class="display-3">🕌</h1></div>
                     <h4 class="fw-bold">Sedekah Jariyah</h4>
                     <p class="text-muted">Pahala tak terputus dengan berpartisipasi dalam pembangunan fasilitas umat dan rumah ibadah.</p>
-                    <button onclick="requireLogin(event)" class="btn btn-outline-success mt-auto rounded-pill fw-semibold w-100">Lihat Program</button>
+                    <a href="donasi.php" class="btn btn-outline-success mt-auto rounded-pill fw-semibold w-100">Lihat Program</a>
                 </div>
             </div>
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
@@ -67,7 +67,7 @@ include 'component/header.php';
                     <div class="mb-3"><h1 class="display-3">🤝</h1></div>
                     <h4 class="fw-bold">Donasi Kemanusiaan</h4>
                     <p class="text-muted">Bantu ringankan beban saudara kita yang sedang terdampak krisis, darurat pangan, dan musibah.</p>
-                    <button onclick="requireLogin(event)" class="btn btn-outline-success mt-auto rounded-pill fw-semibold w-100">Lihat Program</button>
+                    <a href="donasi.php" class="btn btn-outline-success mt-auto rounded-pill fw-semibold w-100">Lihat Program</a>
                 </div>
             </div>
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
@@ -75,7 +75,7 @@ include 'component/header.php';
                     <div class="mb-3"><h1 class="display-3">👦</h1></div>
                     <h4 class="fw-bold">Santunan Anak Yatim</h4>
                     <p class="text-muted">Ukir senyum di wajah mereka dengan memberikan dukungan pendidikan dan pemenuhan kebutuhan hidup.</p>
-                    <button onclick="requireLogin(event)" class="btn btn-outline-success mt-auto rounded-pill fw-semibold w-100">Lihat Program</button>
+                    <a href="donasi.php" class="btn btn-outline-success mt-auto rounded-pill fw-semibold w-100">Lihat Program</a>
                 </div>
             </div>
         </div>
@@ -101,39 +101,41 @@ $sisaHari = max(0, ceil((strtotime($program['end_date']) - time()) / 86400));
 $gambar = !empty($program['image_url']) ? $program['image_url'] : 'https://via.placeholder.com/600x400';
 ?>
 <div class="col-md-4 col-sm-6" data-aos="fade-up">
-    <div class="adara-card">
-        <div class="adara-img-wrapper">
-            <img src="<?= htmlspecialchars($gambar) ?>" class="adara-img" alt="<?= htmlspecialchars($program['title']) ?>">
-            <span class="adara-category-badge"><?= htmlspecialchars($program['category']) ?></span>
-        </div>
-
-        <div class="adara-body">
-            <h3 class="adara-title"><?= htmlspecialchars($program['title']) ?></h3>
-
-            <div class="adara-creator">
-                <i class="bi bi-patch-check-fill"></i> DonasiKu
+    <a href="detail-donasi.php?id=<?= intval($program['id']) ?>" onclick="requireLogin(event, this.href)" class="text-decoration-none text-dark">
+        <div class="adara-card">
+            <div class="adara-img-wrapper">
+                <img src="<?= htmlspecialchars($gambar) ?>" class="adara-img" alt="<?= htmlspecialchars($program['title']) ?>">
+                <span class="adara-category-badge"><?= htmlspecialchars($program['category']) ?></span>
             </div>
 
-            <div class="mt-auto">
-                <div class="progress adara-progress">
-                    <div class="progress-bar" style="width: <?= $persen ?>%"></div>
+            <div class="adara-body">
+                <h3 class="adara-title"><?= htmlspecialchars($program['title']) ?></h3>
+
+                <div class="adara-creator">
+                    <i class="bi bi-patch-check-fill"></i> DonasiKu
                 </div>
 
-                <div class="adara-footer">
-                    <div>
-                        <span class="adara-amount-label">Terkumpul</span>
-                        <span class="adara-amount">
-                            Rp <?= number_format($program['collected_amount'],0,',','.') ?>
-                        </span>
+                <div class="mt-auto">
+                    <div class="progress adara-progress">
+                        <div class="progress-bar" style="width: <?= $persen ?>%"></div>
                     </div>
 
-                    <div class="adara-days">
-                        <?= $sisaHari ?> Hari Lagi
+                    <div class="adara-footer">
+                        <div>
+                            <span class="adara-amount-label">Terkumpul</span>
+                            <span class="adara-amount">
+                                Rp <?= number_format($program['collected_amount'],0,',','.') ?>
+                            </span>
+                        </div>
+
+                        <div class="adara-days">
+                            <?= $sisaHari ?> Hari Lagi
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </a>
 </div>
 <?php endforeach; ?>
 
@@ -141,9 +143,9 @@ $gambar = !empty($program['image_url']) ? $program['image_url'] : 'https://via.p
 
 <div class="text-center mt-5"
  data-aos="zoom-in">
-            <button onclick="requireLogin(event)" class="btn btn-orange fw-bold rounded-pill px-5 py-3 shadow-sm">
+            <a href="donasi.php" class="btn btn-orange fw-bold rounded-pill px-5 py-3 shadow-sm text-decoration-none text-white">
                 Lihat Semua Program
-            </button>
+            </a>
         </div>
     </div>
 

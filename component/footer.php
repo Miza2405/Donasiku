@@ -77,12 +77,12 @@
         // ==========================================
         // 4. FUNGSI PERINGATAN WAJIB LOGIN
         // ==========================================
-        function requireLogin(event) {
+        function requireLogin(event, redirectUrl) {
             event.preventDefault(); 
             let statusLogin = localStorage.getItem("isLoggedIn");
 
             if (statusLogin === "true") {
-                window.location.href = 'donasi.php';
+                window.location.href = redirectUrl || 'donasi.php';
             } else {
                 Swal.fire({
                     icon: 'warning', title: 'Harap Login Dahulu', 

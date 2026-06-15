@@ -236,7 +236,7 @@
                                 '<small class="text-muted">Target: ' + formatCurrency(program.target_amount || 0) + '</small>' +
                             '</div>' +
                             
-                            '<a href="detail-donasi.php?id=' + program.id + '" class="btn btn-success w-100 mt-3 fw-bold d-block text-center text-decoration-none">' +
+                            '<a href="detail-donasi.php?id=' + program.id + '" onclick="requireLogin(event, this.href)" class="btn btn-success w-100 mt-3 fw-bold d-block text-center text-decoration-none">' +
                                 'Berikan Donasi' +
                             '</a>' +
 
