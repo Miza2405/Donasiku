@@ -5,7 +5,7 @@
         "name": "QRIS SEMUA PEMBAYARAN",
         "account": "SCAN QRIS",
         "owner": "kiweng",
-        "image": "qris/QRIS.jpg",
+        "image": "https://images.seeklogo.com/logo-png/39/1/quick-response-code-indonesia-standard-qris-logo-png_seeklogo-391791.png",
         "active": true
     },
     {
@@ -14,7 +14,7 @@
         "name": "BNI",
         "account": "12345678",
         "owner": "Donasiku",
-        "image": null,
+        "image": "https://vectorez.biz.id/wp-content/uploads/2023/10/Logo-Bank-Negara-Indonesia-BNI.png",
         "active": true
     },
     {
@@ -23,16 +23,7 @@
         "name": "Gopay",
         "account": "0897654321",
         "owner": "Yayasan Donasiku",
-        "image": null,
-        "active": true
-    },
-    {
-        "id": "m6a2771bc8d72d",
-        "type": "ewallet",
-        "name": "esfedsf",
-        "account": "sfdsfds",
-        "owner": "dsfsfs",
-        "image": "payments/method-1780969916-86b6b7c0.gif",
+        "image": "https://assets.zonalogo.com/finance/gopay.co.id/icon-dark-1769271477912.png",
         "active": true
     }
 ]

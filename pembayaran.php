@@ -16,6 +16,7 @@
         .payment-method { border: 2px solid #eee; border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.3s; }
         .payment-method:hover { border-color: #059669; background-color: #f0fdf4; }
         .payment-method.selected { border-color: #059669; background-color: #e6fced; }
+        .payment-method img { max-height: 50px; max-width: 100px; object-fit: contain; border-radius: 4px; }
         .btn-emerald { background-color: #059669; color: white; border-radius: 10px; font-weight: 600; transition: 0.3s; }
         .btn-emerald:hover { background-color: #047857; color: white; transform: translateY(-2px); }
     </style>
@@ -131,10 +132,19 @@
                 const icon = m.type === 'qris' ? 'bi-qr-code-scan text-success' : 'bi-bank2 text-primary';
                 const col = document.createElement('div');
                 col.className = 'col-md-6';
+                
+                // Buat logo atau icon
+                let logoHtml = '';
+                if (m.image) {
+                    logoHtml = `<img src="${m.image}" alt="${m.name}" style="height: 45px; object-fit: contain; border-radius: 6px;">`;
+                } else {
+                    logoHtml = `<i class="bi ${icon} fs-4"></i>`;
+                }
+                
                 col.innerHTML = `<div class="payment-method ${idx===0? 'selected':''}" onclick="pilihMetode(this, '${m.id}')">
                     <div class="d-flex justify-content-between align-items-center">
                         <div><span class="fw-bold">${m.name}</span><div class="small text-muted">${m.account}</div></div>
-                        <div><i class="bi ${icon} fs-4"></i></div>
+                        <div>${logoHtml}</div>
                     </div>
                 </div>`;
                 container.appendChild(col);

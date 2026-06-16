@@ -2047,14 +2047,21 @@ input:checked + .slider:before {
         list.forEach(function(m) {
             const activeClass = m.active ? 'border-success' : 'border-secondary';
             const icon = m.type === 'qris' ? 'bi-qr-code-scan text-danger' : 'bi-bank2 text-primary';
-            const imgHtml = m.image ? '<img src="' + m.image + '" style="height:48px;object-fit:contain;" class="me-3 rounded">' : '';
+            
+            // Tampilkan logo jika ada, atau fallback ke icon
+            let logoDisplay = '';
+            if (m.image) {
+                logoDisplay = `<img src="${m.image}" style="height:48px;width:auto;object-fit:contain;" class="me-3 rounded shadow-sm" alt="${m.name}">`;
+            } else {
+                logoDisplay = `<div class="bg-white p-2 rounded shadow-sm me-3 border"><i class="bi ${icon} fs-4"></i></div>`;
+            }
 
             const col = document.createElement('div');
             col.className = 'col-md-6';
             col.innerHTML = `<div class="card border ${activeClass} border-opacity-25 rounded-3 h-100 bg-light">
                 <div class="card-body p-3 d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
-                        <div class="bg-white p-2 rounded shadow-sm me-3 border"><i class="bi ${icon} fs-4"></i></div>
+                        ${logoDisplay}
                         <div>
                             <h6 class="fw-bold mb-0">${escapeHtml(m.name)}</h6>
                             <small class="text-muted d-block">${escapeHtml(m.account)} ${m.owner ? ('a.n ' + escapeHtml(m.owner)) : ''}</small>
