@@ -17,6 +17,7 @@
         .payment-method:hover { border-color: #059669; background-color: #f0fdf4; }
         .payment-method.selected { border-color: #059669; background-color: #e6fced; }
         .payment-method img { max-height: 50px; max-width: 100px; object-fit: contain; border-radius: 4px; }
+        .site-logo { height: 76px; width: auto; object-fit: contain; }
         .btn-emerald { background-color: #059669; color: white; border-radius: 10px; font-weight: 600; transition: 0.3s; }
         .btn-emerald:hover { background-color: #047857; color: white; transform: translateY(-2px); }
     </style>
@@ -25,7 +26,10 @@
 
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container d-flex justify-content-center">
-            <a class="navbar-brand fw-bold text-emerald fs-4" href="index.php">💚 DonasiKu <span class="text-muted fs-6 fw-normal">| Checkout Aman</span></a>
+            <a class="navbar-brand d-flex align-items-center fw-bold text-emerald fs-5" href="index.php">
+                <img src="img/logo/Logo.png" alt="DonasiKu" class="me-2 site-logo">
+                <span>DonasiKu</span>
+            </a>
         </div>
     </nav>
 
@@ -177,7 +181,7 @@
                 return;
             }
 
-            const qrisImageHtml = method.image ? `<div class="text-center mb-3"><img src="${method.image}" alt="QR" class="img-fluid rounded-3" style="max-height:220px; object-fit:contain;"></div>` : '';
+            const qrisImageHtml = method.image ? `<div class="text-center mb-3"><img src="${method.image}" alt="QR" class="img-fluid rounded-3" style="max-height:120px; object-fit:contain;"></div>` : '';
 
             const detailHtml = `
                 <div class="text-start">

@@ -29,6 +29,7 @@
         .dash-card { border: none; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: 0.3s; }
         .dash-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.08); }
         .icon-box { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .site-logo { height: 56px; width: auto; object-fit: contain; }
         
         .table-custom { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
         .table-custom th, .table-custom td { padding: 15px; vertical-align: middle; }
@@ -121,7 +122,11 @@ input:checked + .slider:before {
 <div class="wrapper">
     <!-- SIDEBAR NAVIGASI -->
     <nav id="sidebar" class="d-none d-md-block">
-        <div class="sidebar-header"><h3 class="fw-bold mb-0">🎁 DonasiKu</h3><small>Panel Admin</small></div>
+        <div class="sidebar-header text-center">
+            <img src="img/logo/Logo.png" alt="DonasiKu" class="site-logo mb-2">
+            <h3 class="fw-bold mb-0">DonasiKu</h3>
+            <small>Panel Admin</small>
+        </div>
         <ul class="list-unstyled components" id="menu-list">
             <li class="active" id="menu-dashboard"><a onclick="switchMenu('dashboard', 'Dashboard Utama')"><i class="bi bi-grid-1x2-fill me-2"></i> Dashboard</a></li>
             <li id="menu-program"><a onclick="switchMenu('program', 'Manajemen Program')"><i class="bi bi-box2-heart-fill me-2"></i> Program Donasi</a></li>

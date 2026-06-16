@@ -1,6 +1,9 @@
 <footer class="py-4 text-center mt-auto" style="background-color: #111827; color: #d1d5db;">
         <div class="container">
-            <h4 class="text-emerald fw-bold mb-3" style="color: #059669;">🎁 DonasiKu</h4>
+            <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
+                <img src="img/logo/Logo.png" alt="DonasiKu" class="site-logo" style="height: 56px; width: auto;">
+                <h4 class="text-emerald fw-bold mb-0" style="color: #059669;">DonasiKu</h4>
+            </div>
             <p class="mb-0">© 2026 DonasiKu. Dibuat dengan niat baik untuk sesama.</p>
         </div>
     </footer>

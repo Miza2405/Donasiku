@@ -84,6 +84,7 @@
             padding: 10px 20px;
             margin-bottom: 30px;
         }
+        .site-logo { height: 56px; width: auto; object-fit: contain; }
 
         .dash-card {
             border: none;
@@ -240,7 +241,8 @@
 <body>
     <div class="wrapper">
         <nav id="sidebar" class="d-none d-md-block">
-            <div class="sidebar-header">
+            <div class="sidebar-header text-center">
+                <img src="img/logo/Logo.png" alt="DonasiKu" class="site-logo mb-2">
                 <h3 class="fw-bold mb-0">DonasiKu</h3>
                 <small>Panel Donatur</small>
             </div>
