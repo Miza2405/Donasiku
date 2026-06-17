@@ -1,8 +1,12 @@
 <footer class="py-4 text-center mt-auto" style="background-color: #111827; color: #d1d5db;">
         <div class="container">
             <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
-                <img src="img/logo/Logo.png" alt="DonasiKu" class="site-logo" style="height: 56px; width: auto;">
+                <img src="img/logo/Logo3.png" alt="DonasiKu" class="site-logo" style="height: 56px; width: auto;">
                 <h4 class="text-emerald fw-bold mb-0" style="color: #059669;">DonasiKu</h4>
+            </div>
+            <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
+                <img src="img/Logo/baznaz.png" alt="Baznaz" style="height: 40px; width: auto; filter: brightness(0) invert(1);">
+                <img src="img/Logo/ojk.png" alt="OJK" style="height: 40px; width: auto; filter: brightness(0) invert(1);">
             </div>
             <p class="mb-0">© 2026 DonasiKu. Dibuat dengan niat baik untuk sesama.</p>
         </div>
@@ -157,33 +161,34 @@
         // Contact form handler
         async function handleContactSubmit(event) {
             event.preventDefault();
-            const name = document.getElementById('cf-name').value.trim();
             const email = document.getElementById('cf-email').value.trim();
-            const subject = document.getElementById('cf-subject').value.trim();
-            const message = document.getElementById('cf-message').value.trim();
+            const judul = document.getElementById('cf-subject').value.trim();
+            const pesan = document.getElementById('cf-message').value.trim();
 
-            if (!name || !email || !message) {
-                Swal.fire({ icon: 'warning', title: 'Lengkapi Form', text: 'Mohon isi nama, email, dan pesan.' });
+            if (!email || !pesan) {
+                Swal.fire({ icon: 'warning', title: 'Lengkapi Form', text: 'Mohon isi email dan pesan.' });
                 return;
             }
 
             try {
-                const res = await fetch('api/contact.php', {
+                const formData = new FormData();
+                formData.append('email', email);
+                formData.append('judul', judul || 'Pesan dari DonasiKu');
+                formData.append('pesan', pesan);
+
+                const res = await fetch('api/kirim.php', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, subject, message })
+                    body: formData
                 });
 
                 if (res.ok) {
                     Swal.fire({ icon: 'success', title: 'Terkirim', text: 'Pesan Anda telah kami terima. Terima kasih!' });
                     document.getElementById('contactForm').reset();
                 } else {
-                    Swal.fire({ icon: 'success', title: 'Terkirim', text: 'Pesan dikirim (server tidak merespon).' });
-                    document.getElementById('contactForm').reset();
+                    Swal.fire({ icon: 'error', title: 'Gagal', text: 'Pesan gagal dikirim. Silahkan coba lagi.' });
                 }
             } catch (err) {
-                Swal.fire({ icon: 'success', title: 'Terkirim', text: 'Pesan dikirim (tidak ada koneksi ke server).' });
-                document.getElementById('contactForm').reset();
+                Swal.fire({ icon: 'error', title: 'Gagal', text: 'Terjadi kesalahan: ' + err.message });
             }
         }
     </script>

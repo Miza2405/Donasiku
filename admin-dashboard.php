@@ -123,7 +123,7 @@ input:checked + .slider:before {
     <!-- SIDEBAR NAVIGASI -->
     <nav id="sidebar" class="d-none d-md-block">
         <div class="sidebar-header text-center">
-            <img src="img/logo/Logo.png" alt="DonasiKu" class="site-logo mb-2">
+            <img src="img/logo/Logo3.png" alt="DonasiKu" class="site-logo mb-2">
             <h3 class="fw-bold mb-0">DonasiKu</h3>
             <small>Panel Admin</small>
         </div>

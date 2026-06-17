@@ -114,18 +114,18 @@
                         <form id="contactForm" onsubmit="handleContactSubmit(event)" novalidate>
                             <div class="mb-3">
                                 <label for="cf-name" class="form-label fw-semibold">Nama</label>
-                                <input type="text" class="form-control" id="cf-name" name="name" required>
+                                <input type="text" class="form-control" id="cf-name" name="name">
                             </div>
                             <div class="mb-3">
-                                <label for="cf-email" class="form-label fw-semibold">Email</label>
+                                <label for="cf-email" class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
                                 <input type="email" class="form-control" id="cf-email" name="email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="cf-subject" class="form-label fw-semibold">Subjek</label>
-                                <input type="text" class="form-control" id="cf-subject" name="subject">
+                                <input type="text" class="form-control" id="cf-subject" name="subject" placeholder="Opsional">
                             </div>
                             <div class="mb-3">
-                                <label for="cf-message" class="form-label fw-semibold">Pesan</label>
+                                <label for="cf-message" class="form-label fw-semibold">Pesan <span class="text-danger">*</span></label>
                                 <textarea class="form-control" id="cf-message" name="message" rows="5" required></textarea>
                             </div>
                             <button type="submit" class="btn btn-emerald w-100 rounded-pill py-2 fw-bold">Kirim Pesan</button>
@@ -136,5 +136,55 @@
             </div>
         </div>
     </section>
+
+    <script>
+        async function handleContactSubmit(e) {
+            e.preventDefault();
+            const form = document.getElementById('contactForm');
+            const btn = form.querySelector('button[type="submit"]');
+            const name = document.getElementById('cf-name').value.trim();
+            const email = document.getElementById('cf-email').value.trim();
+            const subject = document.getElementById('cf-subject').value.trim();
+            const message = document.getElementById('cf-message').value.trim();
+
+            const category = subject || 'Umum';
+
+            if (!email || !message) {
+                alert('Silakan lengkapi email dan pesan Anda.');
+                return;
+            }
+
+            btn.disabled = true;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Mengirim...';
+
+            try {
+                const fd = new FormData();
+                fd.append('name', name);
+                fd.append('email', email);
+                fd.append('subject', category);
+                fd.append('message', message);
+
+                const resp = await fetch('api/kirim.php', {
+                    method: 'POST',
+                    body: fd,
+                });
+
+                const data = await resp.json();
+                if (resp.ok && data.success) {
+                    alert(data.message || 'Pesan berhasil dikirim.');
+                    form.reset();
+                } else {
+                    alert(data.message || 'Gagal mengirim pesan.');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Gagal mengirim pesan: ' + (err.message || err));
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+    </script>
 
 <?php include 'component/footer.php'; ?>
