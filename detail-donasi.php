@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
+
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f4f7f6; padding-top: 80px; }
         .text-emerald { color: #059669; } .bg-emerald { background-color: #059669; }
@@ -24,14 +25,21 @@
         .btn-nominal:hover, .btn-nominal.active { background-color: #059669; color: white; border-color: #059669; }
         .btn-emerald { background-color: #059669; color: white; border-radius: 10px; font-weight: 600; transition: 0.3s; }
         .btn-emerald:hover { background-color: #047857; color: white; transform: translateY(-2px); }
+        .site-logo {height: 76px; width: auto; object-fit: contain;}
+        .navbar {background-color: #ffffff;box-shadow: 0 4px 6px rgba(0,0,0,0.05);}
+        body {padding-top: 76px;}
+        .navbar-brand { font-size: 1.5rem; }
     </style>
 </head>
 <body>
 
+
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold text-emerald" href="index.php">💚 DonasiKu</a>
-            <a href="donasi.php" class="btn btn-outline-secondary btn-sm rounded-pill"><i class="bi bi-arrow-left me-1"></i> Kembali</a>
+            <a class="navbar-brand d-flex align-items-center" href="index.php">
+                <img src="img/logo/Logo.png" alt="DonasiKu" class="me-2 site-logo">
+                <span class="fw-bold text-emerald mb-0">DonasiKu</span>
+            </a>
         </div>
     </nav>
 
