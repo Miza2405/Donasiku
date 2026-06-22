@@ -1,7 +1,7 @@
 <footer class="py-4 text-center mt-auto" style="background-color: #111827; color: #d1d5db;">
         <div class="container">
             <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
-                <img src="img/logo/Logo3.png" alt="DonasiKu" class="site-logo" style="height: 56px; width: auto;">
+                <img src="img/Logo/Logo3.png" alt="DonasiKu" class="site-logo" style="height: 56px; width: auto;">
                 <h4 class="text-emerald fw-bold mb-0" style="color: #059669;">DonasiKu</h4>
             </div>
             <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
