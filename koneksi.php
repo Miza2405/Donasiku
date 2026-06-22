@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "db_donasiku";
+$servername = "sql210.infinityfree.com";
+$username = "if0_42242004";
+$password = "GK7z0yaMe9Vt";
+$database = "if0_42242004_db_donasiku";
 
     $koneksi = new mysqli($servername, $username, $password, $database);
 
