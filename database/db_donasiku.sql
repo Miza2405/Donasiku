@@ -2,7 +2,7 @@
 -- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
+-- Host: sql210.infinityfree.com
 -- Waktu pembuatan: 16 Jun 2026 pada 07.12
 -- Versi server: 10.4.11-MariaDB
 -- Versi PHP: 7.4.1
