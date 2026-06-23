@@ -78,7 +78,7 @@
                         <label class="form-label fw-semibold">Alamat Email</label>
                         <div class="input-group">
                             <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope text-muted"></i></span>
-                            <input type="email" class="form-control border-start-0 ps-0 bg-light" placeholder="nama@email.com" required>
+                            <input type="email" name="email" class="form-control border-start-0 ps-0 bg-light" placeholder="nama@gmail.com" required>
                         </div>
                     </div>
                     
@@ -104,34 +104,39 @@
 <script>
     AOS.init({ once: true });
 
-    // Simulasi pengiriman email reset password
     document.getElementById("resetForm").addEventListener("submit", function(event) {
         event.preventDefault(); 
         
-        // Memunculkan loading buatan
+        let formData = new FormData(this);
+
         Swal.fire({
             title: 'Memproses...',
-            text: 'Mencari email Anda di sistem kami',
+            text: 'Mengirim tautan reset ke email Anda...',
             allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
+            didOpen: () => { Swal.showLoading(); }
         });
 
-        // Simulasi delay server 1.5 detik, lalu munculkan pesan sukses
-        setTimeout(() => {
-            Swal.fire({
-                icon: 'success',
-                title: 'Email Terkirim!',
-                text: 'Silakan cek kotak masuk atau folder spam email Anda untuk tautan reset password.',
-                confirmButtonColor: '#059669',
-                confirmButtonText: 'Kembali ke Login'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "login.php";
-                }
-            });
-        }, 1500);
+        // Ganti URL ini dengan path file API Anda
+        fetch('api/forgot-password.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: data.message,
+                    confirmButtonColor: '#059669'
+                }).then(() => { window.location.href = "login.php"; });
+            } else {
+                Swal.fire({ icon: 'error', title: 'Oops...', text: data.message });
+            }
+        })
+        .catch(error => {
+            Swal.fire({ icon: 'error', title: 'Error', text: 'Terjadi kesalahan sistem.' });
+        });
     });
 </script>
 </body>
