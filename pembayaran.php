@@ -27,7 +27,7 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container d-flex justify-content-center">
             <a class="navbar-brand d-flex align-items-center fw-bold text-emerald fs-5" href="index.php">
-                <img src="img/logo/Logo3.png" alt="DonasiKu" class="me-2 site-logo">
+                <img src="img/Logo/Logo3.png" alt="DonasiKu" class="me-2 site-logo">
                 <span>DonasiKu</span>
             </a>
         </div>
